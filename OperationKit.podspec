@@ -1,5 +1,5 @@
 #
-#  Be sure to run `pod spec lint OperatonKit.podspec' to ensure this is a
+#  Be sure to run `pod spec lint OperationKit.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
   #
 
   s.ios.deployment_target = '8.0'
-  s.name         = "OperatonKit"
+  s.name         = "OperationKit"
   s.version      = "0.0.1"
-  s.summary      = "OperatonKit is a small group of classes."
+  s.summary      = "OperationKit is a small group of classes."
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
                    Couple of operation class that helps in the development
                    DESC
 
-  s.homepage     = "http://EXAMPLE/OperatonKit"
+  s.homepage     = "http://EXAMPLE/OperationKit"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
