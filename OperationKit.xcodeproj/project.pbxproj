@@ -10,6 +10,14 @@
 		CF35B7421D3814F500F74678 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = CF35B7411D3814F500F74678 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CF35B7491D3814F500F74678 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF35B73E1D3814F500F74678 /* OperationKit.framework */; };
 		CF35B74E1D3814F500F74678 /* OperationKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B74D1D3814F500F74678 /* OperationKitTests.swift */; };
+		CF35B7641D38176900F74678 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7591D38176900F74678 /* OperationCondition.swift */; };
+		CF35B7651D38176900F74678 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */; };
+		CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75C1D38176900F74678 /* OperationQueue.swift */; };
+		CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75E1D38176900F74678 /* DownloadOperation.swift */; };
+		CF35B7681D38176900F74678 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75F1D38176900F74678 /* GroupOperation.swift */; };
+		CF35B7691D38176900F74678 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7601D38176900F74678 /* Operation.swift */; };
+		CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7611D38176900F74678 /* UploadOperation.swift */; };
+		CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7631D38176900F74678 /* ParameterEncoding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +37,14 @@
 		CF35B7481D3814F500F74678 /* OperationKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OperationKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF35B74D1D3814F500F74678 /* OperationKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationKitTests.swift; sourceTree = "<group>"; };
 		CF35B74F1D3814F500F74678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF35B7591D38176900F74678 /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
+		CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
+		CF35B75C1D38176900F74678 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
+		CF35B75E1D38176900F74678 /* DownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
+		CF35B75F1D38176900F74678 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
+		CF35B7601D38176900F74678 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		CF35B7611D38176900F74678 /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
+		CF35B7631D38176900F74678 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +87,10 @@
 		CF35B7401D3814F500F74678 /* OperationKit */ = {
 			isa = PBXGroup;
 			children = (
+				CF35B7581D38176900F74678 /* Conditions */,
+				CF35B75B1D38176900F74678 /* Operation Queue */,
+				CF35B75D1D38176900F74678 /* Operations */,
+				CF35B7621D38176900F74678 /* ParameterEncoding */,
 				CF35B7411D3814F500F74678 /* OperationKit.h */,
 				CF35B7431D3814F500F74678 /* Info.plist */,
 			);
@@ -84,6 +104,46 @@
 				CF35B74F1D3814F500F74678 /* Info.plist */,
 			);
 			path = OperationKitTests;
+			sourceTree = "<group>";
+		};
+		CF35B7581D38176900F74678 /* Conditions */ = {
+			isa = PBXGroup;
+			children = (
+				CF35B7591D38176900F74678 /* OperationCondition.swift */,
+				CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */,
+			);
+			name = Conditions;
+			path = Operations/Conditions;
+			sourceTree = "<group>";
+		};
+		CF35B75B1D38176900F74678 /* Operation Queue */ = {
+			isa = PBXGroup;
+			children = (
+				CF35B75C1D38176900F74678 /* OperationQueue.swift */,
+			);
+			name = "Operation Queue";
+			path = "Operations/Operation Queue";
+			sourceTree = "<group>";
+		};
+		CF35B75D1D38176900F74678 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				CF35B75E1D38176900F74678 /* DownloadOperation.swift */,
+				CF35B75F1D38176900F74678 /* GroupOperation.swift */,
+				CF35B7601D38176900F74678 /* Operation.swift */,
+				CF35B7611D38176900F74678 /* UploadOperation.swift */,
+			);
+			name = Operations;
+			path = Operations/Operations;
+			sourceTree = "<group>";
+		};
+		CF35B7621D38176900F74678 /* ParameterEncoding */ = {
+			isa = PBXGroup;
+			children = (
+				CF35B7631D38176900F74678 /* ParameterEncoding.swift */,
+			);
+			name = ParameterEncoding;
+			path = Operations/ParameterEncoding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +254,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF35B7651D38176900F74678 /* ReachabilityCondition.swift in Sources */,
+				CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */,
+				CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */,
+				CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */,
+				CF35B7641D38176900F74678 /* OperationCondition.swift in Sources */,
+				CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */,
+				CF35B7681D38176900F74678 /* GroupOperation.swift in Sources */,
+				CF35B7691D38176900F74678 /* Operation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

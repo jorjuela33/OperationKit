@@ -46,7 +46,7 @@ enum ParameterEncoding {
             }
             
         case .URL:
-            guard let parameters = parameters as? JSONDictionary else { fatalError("array parameters is not implemented yet") }
+            guard let parameters = parameters as? [String: AnyObject] else { fatalError("array parameters is not implemented yet") }
             
             if let method = HTTPMethod(rawValue: mutableURLRequest.HTTPMethod) where allowEncodingInURL(method) {
                 if let URLComponents = NSURLComponents(URL: mutableURLRequest.URL!, resolvingAgainstBaseURL: false) {
