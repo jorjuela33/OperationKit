@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
                    Couple of operation class that helps in the development
                    DESC
 
-  s.homepage     = "http://EXAMPLE/OperationKit"
+  s.homepage     = "https://github.com/jorjuela33/OperationKit"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -124,6 +124,9 @@ Pod::Spec.new do |s|
   # s.library   = "iconv"
   # s.libraries = "iconv", "xml2"
 
+
+    s.source_files = "OperationKit/**/*.{swift}"
+  # s.resources = "OperationKit/**/*.{png,jpeg,jpg,storyboard,xib}"
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
