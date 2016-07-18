@@ -53,11 +53,11 @@ public class DownloadOperation: Operation {
     
     // MARK: Overrided methods
     
-    override func execute() {
+    override public func execute() {
         downloadTask?.resume()
     }
     
-    override func finished(errors: [NSError]) {
+    override public func finished(errors: [NSError]) {
         session.invalidateAndCancel()
     }
 }
