@@ -30,7 +30,7 @@ public class UploadOperation: Operation {
     private var session: NSURLSession!
     
     /// the data returned for the server
-    private(set) var data = NSMutableData()
+    public private(set) var data = NSMutableData()
     
     /// the response from the host
     public var response: NSHTTPURLResponse? {

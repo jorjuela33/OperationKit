@@ -26,12 +26,12 @@ import SystemConfiguration
 
 public struct ReachabilityCondition: OperationCondition {
     
-    static let hostKey = "Host"
+    public static let hostKey = "Host"
     public static let name = "Reachability"
     
-    let host: NSURL
+    public let host: NSURL
     
-    init(host: NSURL) {
+    public init(host: NSURL) {
         self.host = host
     }
     
@@ -67,9 +67,9 @@ public class ReachabilityManager {
     private static var reachabilityRefs = [String: SCNetworkReachability]()
     private let queue = dispatch_queue_create("com.operations.reachability", DISPATCH_QUEUE_SERIAL)
     
-    private(set) var status: ReachabilityStatus = .NotReachable
+    public private(set) var status: ReachabilityStatus = .NotReachable
     
-    enum ReachabilityStatus {
+    public enum ReachabilityStatus {
         case NotReachable, ReachableViaWiFi, ReachableViaWWAN
     }
     
@@ -93,7 +93,7 @@ public class ReachabilityManager {
         }
     }
     
-    convenience init(host: String) throws {
+    public convenience init(host: String) throws {
         guard let ref = ReachabilityManager.reachabilityRefs[host] ?? SCNetworkReachabilityCreateWithName(nil, host.cStringUsingEncoding(NSUTF8StringEncoding)!) else {
             throw ReachabilityError.FailedToCreateWithHostname(host)
         }
@@ -103,7 +103,7 @@ public class ReachabilityManager {
     
     // MARK: Static methods
     
-    static func reachabilityForInternetConnection() throws -> ReachabilityManager {
+    public static func reachabilityForInternetConnection() throws -> ReachabilityManager {
         var address = sockaddr_in()
         address.sin_len = UInt8(sizeofValue(address))
         address.sin_family = sa_family_t(AF_INET)
@@ -118,7 +118,7 @@ public class ReachabilityManager {
     
     /// Naive implementation of the reachability
     /// TODO: VPN, cellular connection.
-    static func requestReachability(url: NSURL, completionHandler: (Bool) -> Void) {
+    public static func requestReachability(url: NSURL, completionHandler: (Bool) -> Void) {
         guard let host = url.host else {
             completionHandler(false)
             return
