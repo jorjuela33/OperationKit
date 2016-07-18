@@ -24,7 +24,7 @@
 import CoreData
 import UIKit
 
-let OperationErrorDomainCode = "com.operation.domain.error"
+public let OperationErrorDomainCode = "com.operation.domain.error"
 
 public protocol ObservableOperation {
     /// Invoked immediately prior to the `Operation`'s `execute()` method.
@@ -171,14 +171,14 @@ public class Operation: NSOperation {
     // MARK: Intance methods
     
     /// Adds a new condition for this operation
-    final func addCondition(operationCondition: OperationCondition) {
+    public final func addCondition(operationCondition: OperationCondition) {
         assert(state < .EvaluatingConditions)
         
         conditions.append(operationCondition)
     }
     
     /// Adds a new observer for the operation
-    func addObserver(observer: ObservableOperation) {
+    public func addObserver(observer: ObservableOperation) {
         assert(state < .Executing)
         
         observers.append(observer)
@@ -187,13 +187,13 @@ public class Operation: NSOperation {
     /// Cancels the current request
     ///
     /// error - The error produced by the request
-    final func cancelWithError(error: NSError) {
+    public final func cancelWithError(error: NSError) {
         internalErrors.append(error)
         cancel()
     }
     
     /// The entry point of all operations
-    func execute() {
+    public func execute() {
         finish()
     }
     
@@ -201,7 +201,7 @@ public class Operation: NSOperation {
     ///
     /// errors - Optional value containing the errors
     ///          produced by the operation
-    final func finish(errors: [NSError] = []) {
+    public final func finish(errors: [NSError] = []) {
         guard hasFinishedAlready == false else { return }
         
         let combinedErrors = internalErrors + errors
@@ -218,14 +218,14 @@ public class Operation: NSOperation {
     }
     
     /// Should be overriden for the child operations
-    func finished(errors: [NSError]) {
+    public func finished(errors: [NSError]) {
         // No op.
     }
     
     /// Finish the current request
     ///
     /// error - The error produced by the request
-    final func finishWithError(error: NSError?) {
+    public final func finishWithError(error: NSError?) {
         guard let error = error else {
             finish()
             return
@@ -235,7 +235,7 @@ public class Operation: NSOperation {
     }
     
     /// Notify to the observer when a suboperation is created for this operation
-    final func produceOperation(operation: NSOperation) {
+    public final func produceOperation(operation: NSOperation) {
         for observer in observers {
             observer.operation(self, didProduceOperation: operation)
         }
@@ -243,7 +243,7 @@ public class Operation: NSOperation {
     
     /// Indicates that the Operation can now begin to evaluate readiness conditions,
     /// if appropriate.
-    func willEnqueue() {
+    public func willEnqueue() {
         state = .Pending
     }
     

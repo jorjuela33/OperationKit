@@ -23,7 +23,7 @@
 
 import Foundation
 
-let OperationConditionKey = "_operationConditionKey"
+public let OperationConditionKey = "_operationConditionKey"
 
 public enum OperationErrorCode: Int {
     case ConditionFailed = 1
