@@ -44,7 +44,7 @@ public class UploadOperation: Operation {
     
     // MARK: Initialization
     
-    init(request: NSURLRequest, sessionConfiguration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()) {
+    public init(request: NSURLRequest, sessionConfiguration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()) {
         super.init()
         
         session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)

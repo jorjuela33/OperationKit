@@ -39,7 +39,7 @@ public class DownloadOperation: Operation {
     
     // MARK: Initialization
     
-    init(request: NSURLRequest, cacheFile: NSURL, sessionConfiguration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()) {
+    public init(request: NSURLRequest, cacheFile: NSURL, sessionConfiguration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()) {
         self.cacheFile = cacheFile
         
         super.init()

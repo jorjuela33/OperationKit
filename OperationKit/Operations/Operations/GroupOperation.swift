@@ -31,11 +31,11 @@ public class GroupOperation: Operation {
     
     private var aggregatedErrors = [NSError]()
     
-    convenience init(operations: NSOperation...) {
+    public convenience init(operations: NSOperation...) {
         self.init(operations: operations)
     }
     
-    init(operations: [NSOperation]) {
+    public init(operations: [NSOperation]) {
         super.init()
         
         internalQueue.delegate = self
@@ -50,22 +50,22 @@ public class GroupOperation: Operation {
     // MARK: Instance methods
     
     /// Adds the operation to the internal queue
-    func addOperation(operation: NSOperation) {
+    public func addOperation(operation: NSOperation) {
         internalQueue.addOperation(operation)
     }
     
     /// Adds multiple operations to the queue
-    func addOperations(operations: [NSOperation]) {
+    public func addOperations(operations: [NSOperation]) {
         internalQueue.addOperations(operations)
     }
     
     /// Adds the new error to the internal errors array
-    final func aggregateError(error: NSError) {
+    public final func aggregateError(error: NSError) {
         aggregatedErrors.append(error)
     }
     
     /// For use by subclassers.
-    func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) { }
+    public func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) { }
     
     // MARK: Overrided methods
     

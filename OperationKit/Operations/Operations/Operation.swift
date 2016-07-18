@@ -125,7 +125,7 @@ public class Operation: NSOperation {
     }
     
     /// Wheter the resquest is user initiated or not
-    var userInitiated: Bool {
+    public var userInitiated: Bool {
         get {
             return qualityOfService == .UserInitiated
         }
