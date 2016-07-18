@@ -33,12 +33,12 @@ public class UploadOperation: Operation {
     private(set) var data = NSMutableData()
     
     /// the response from the host
-    var response: NSHTTPURLResponse? {
+    public var response: NSHTTPURLResponse? {
         return uploadTask?.response as? NSHTTPURLResponse
     }
     
     /// the URL for this operation
-    var URL: NSURL? {
+    public var URL: NSURL? {
         return uploadTask?.originalRequest?.URL
     }
     

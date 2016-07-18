@@ -29,11 +29,11 @@ public class DownloadOperation: Operation {
     private var downloadTask: NSURLSessionTask?
     private var session: NSURLSession!
     
-    var response: NSHTTPURLResponse? {
+    public var response: NSHTTPURLResponse? {
         return downloadTask?.response as? NSHTTPURLResponse
     }
     
-    var URL: NSURL? {
+    public var URL: NSURL? {
         return downloadTask?.originalRequest?.URL
     }
     
