@@ -38,7 +38,7 @@ public class OperationQueue: NSOperationQueue {
     // MARK: Instance methods
     
     /// adds the operations to the queue
-    func addOperations(ops: [NSOperation]) {
+    public func addOperations(ops: [NSOperation]) {
         for operation in ops {
             addOperation(operation)
         }
