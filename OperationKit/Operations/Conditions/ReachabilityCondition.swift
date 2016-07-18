@@ -24,10 +24,10 @@
 import Foundation
 import SystemConfiguration
 
-struct ReachabilityCondition: OperationCondition {
+public struct ReachabilityCondition: OperationCondition {
     
     static let hostKey = "Host"
-    static let name = "Reachability"
+    public static let name = "Reachability"
     
     let host: NSURL
     
@@ -37,11 +37,11 @@ struct ReachabilityCondition: OperationCondition {
     
     // MARK: OperationCondition
     
-    func dependencyForOperation(operation: Operation) -> NSOperation? {
+    public func dependencyForOperation(operation: Operation) -> NSOperation? {
         return nil
     }
     
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
+    public func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
         ReachabilityManager.requestReachability(host) { reachable in
             guard reachable else {
                 let userInfo = [OperationConditionKey: self.dynamicType.name, ReachabilityCondition.hostKey: self.host]
@@ -57,12 +57,12 @@ struct ReachabilityCondition: OperationCondition {
 
 private let defaultReferenceKey = "_defaultReferenceKey"
 
-enum ReachabilityError: ErrorType {
+public enum ReachabilityError: ErrorType {
     case FailedToCreateWithAddress(sockaddr_in)
     case FailedToCreateWithHostname(String)
 }
 
-class ReachabilityManager {
+public class ReachabilityManager {
     // Properties
     private static var reachabilityRefs = [String: SCNetworkReachability]()
     private let queue = dispatch_queue_create("com.operations.reachability", DISPATCH_QUEUE_SERIAL)
@@ -75,7 +75,7 @@ class ReachabilityManager {
     
     // MARK: Initialization 
     
-    required init(reference: SCNetworkReachability, host: String = defaultReferenceKey) {
+    required public init(reference: SCNetworkReachability, host: String = defaultReferenceKey) {
         dispatch_sync(queue) {
             var reachabilityFlags: SCNetworkReachabilityFlags = []
             if SCNetworkReachabilityGetFlags(reference, &reachabilityFlags) {

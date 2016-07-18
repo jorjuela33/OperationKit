@@ -25,12 +25,12 @@ import Foundation
 
 let OperationConditionKey = "_operationConditionKey"
 
-enum OperationErrorCode: Int {
+public enum OperationErrorCode: Int {
     case ConditionFailed = 1
     case ExecutionFailed = 2
 }
 
-protocol OperationCondition {
+public protocol OperationCondition {
     
     /// The name of the condition. This is used in userInfo dictionaries of `.ConditionFailed`
     static var name: String { get }
@@ -42,7 +42,7 @@ protocol OperationCondition {
     func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void)
 }
 
-enum OperationConditionResult {
+public enum OperationConditionResult {
     case Satisfied
     case Failed(NSError)
     
