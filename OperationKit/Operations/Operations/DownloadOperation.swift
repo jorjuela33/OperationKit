@@ -23,7 +23,7 @@
 
 import Foundation
 
-class DownloadOperation: Operation {
+public class DownloadOperation: Operation {
     // MARK: Properties
     private let cacheFile: NSURL
     private var downloadTask: NSURLSessionTask?
@@ -66,9 +66,9 @@ extension DownloadOperation: NSURLSessionDownloadDelegate {
     
     // MARK: NSURLSessionDownloadDelegate
     
-    func URLSession(session: NSURLSession,
-                    downloadTask: NSURLSessionDownloadTask,
-                    didFinishDownloadingToURL location: NSURL) {
+    public func URLSession(session: NSURLSession,
+                           downloadTask: NSURLSessionDownloadTask,
+                           didFinishDownloadingToURL location: NSURL) {
 
         do {
             try NSFileManager.defaultManager().removeItemAtURL(cacheFile)
@@ -95,7 +95,7 @@ extension DownloadOperation: NSURLSessionDownloadDelegate {
             completionHandler(.Allow)
     }
     
-    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         guard cancelled == false else { return }
         
         finishWithError(error)

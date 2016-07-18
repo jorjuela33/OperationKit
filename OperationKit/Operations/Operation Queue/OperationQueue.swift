@@ -23,7 +23,7 @@
 
 import Foundation
 
-protocol OperationQueueDelegate: NSObjectProtocol {
+public protocol OperationQueueDelegate: NSObjectProtocol {
     /// Invoked when the queue is adding a new operation
     func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation)
     
@@ -31,7 +31,7 @@ protocol OperationQueueDelegate: NSObjectProtocol {
     func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError])
 }
 
-class OperationQueue: NSOperationQueue {
+public class OperationQueue: NSOperationQueue {
     
     weak var delegate: OperationQueueDelegate?
     
@@ -46,7 +46,7 @@ class OperationQueue: NSOperationQueue {
     
     // MARK: Overrided methods
     
-    override func addOperation(op: NSOperation) {
+    override public func addOperation(op: NSOperation) {
         if let operation = op as? Operation {
             operation.addObserver(self)
             
@@ -75,13 +75,13 @@ extension OperationQueue: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    func operation(operation: Operation, didProduceOperation newOperation: NSOperation) {
+    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) {
         addOperation(newOperation)
     }
     
-    func operationDidFinish(operation: Operation, errors: [NSError]) {
+    public func operationDidFinish(operation: Operation, errors: [NSError]) {
         delegate?.operationQueue(self, operationDidFinish: operation, withErrors: errors)
     }
     
-    func operationDidStart(operation: Operation) { /* No OP */ }
+    public func operationDidStart(operation: Operation) { /* No OP */ }
 }

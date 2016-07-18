@@ -23,11 +23,11 @@
 
 import Foundation
 
-enum HTTPMethod: String {
+public enum HTTPMethod: String {
     case DELETE, GET, POST, PUT
 }
 
-enum ParameterEncoding {
+public enum ParameterEncoding {
     case JSON
     case URL
     

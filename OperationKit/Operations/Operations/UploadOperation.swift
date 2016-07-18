@@ -23,7 +23,7 @@
 
 import Foundation
 
-class UploadOperation: Operation {
+public class UploadOperation: Operation {
     
     // MARK: Properties
     private var uploadTask: NSURLSessionDataTask?
@@ -69,7 +69,7 @@ extension UploadOperation: NSURLSessionDataDelegate {
     
     // MARK: NSURLSessionDataDelegate
     
-    func URLSession(session: NSURLSession,
+    public func URLSession(session: NSURLSession,
                     dataTask: NSURLSessionDataTask,
                     didReceiveResponse response: NSURLResponse,
                     completionHandler: (NSURLSessionResponseDisposition) -> Void) {
@@ -83,11 +83,11 @@ extension UploadOperation: NSURLSessionDataDelegate {
             completionHandler(.Allow)
     }
     
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
+    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
         self.data.appendData(data)
     }
     
-    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         guard cancelled == false else { return }
         
         finishWithError(error)

@@ -23,7 +23,7 @@
 
 import Foundation
 
-class GroupOperation: Operation {
+public class GroupOperation: Operation {
     
     private let internalQueue = OperationQueue()
     private let startingOperation = NSBlockOperation(block: {})
@@ -69,7 +69,7 @@ class GroupOperation: Operation {
     
     // MARK: Overrided methods
     
-    override func cancel() {
+    override public func cancel() {
         internalQueue.cancelAllOperations()
         super.cancel()
     }
@@ -84,7 +84,7 @@ extension GroupOperation: OperationQueueDelegate {
     
     // MARK: OperationQueueDelegate
     
-    final func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation) {
+    final public func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation) {
         assert(!finishingOperation.finished && !finishingOperation.executing, "cannot add new operations to a group after the group has completed")
         
         if operation !== finishingOperation {
@@ -96,7 +96,7 @@ extension GroupOperation: OperationQueueDelegate {
         }
     }
     
-    func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
+    public func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
         aggregatedErrors.appendContentsOf(errors)
         
         if operation === finishingOperation {

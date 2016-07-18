@@ -26,7 +26,7 @@ import UIKit
 
 let OperationErrorDomainCode = "com.operation.domain.error"
 
-protocol ObservableOperation {
+public protocol ObservableOperation {
     /// Invoked immediately prior to the `Operation`'s `execute()` method.
     func operationDidStart(operation: Operation)
     
@@ -38,7 +38,7 @@ protocol ObservableOperation {
     func operationDidFinish(operation: Operation, errors: [NSError])
 }
 
-class Operation: NSOperation {
+public class Operation: NSOperation {
     // MARK: Properties
     
     private enum State: Int, Comparable {
@@ -120,7 +120,7 @@ class Operation: NSOperation {
     /// The observers of the operation
     private(set) var observers = [ObservableOperation]()
     
-    override var asynchronous: Bool {
+    override public var asynchronous: Bool {
         return true
     }
     
@@ -137,15 +137,15 @@ class Operation: NSOperation {
         }
     }
     
-    override var executing: Bool {
+    override public var executing: Bool {
         return state == .Executing
     }
     
-    override var finished: Bool {
+    override public var finished: Bool {
         return state == .Finished
     }
     
-    override var ready: Bool {
+    override public var ready: Bool {
         switch state {
         case .Initialized:
             return cancelled
@@ -263,7 +263,7 @@ class Operation: NSOperation {
     
     // MARK: Overrided methods
     
-    override final func main() {
+    override final public func main() {
         assert(state == .Ready)
         
         guard cancelled == false && internalErrors.isEmpty else {
@@ -280,7 +280,7 @@ class Operation: NSOperation {
         execute()
     }
     
-    override func start() {
+    override public func start() {
         super.start()
         if cancelled {
             finish()
