@@ -10,6 +10,10 @@ import UIKit
 
 public struct NetworkObserver: ObservableOperation {
     
+    // MARK: Initializer
+    
+    public init() {}
+    
     // MARK: ObservableOperation
     
     public func operationDidStart(operation: Operation) {
