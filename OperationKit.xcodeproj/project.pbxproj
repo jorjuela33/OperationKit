@@ -21,6 +21,9 @@
 		CF35B7701D381BE100F74678 /* DownloadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */; };
 		CF35B7711D381BE100F74678 /* OperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76E1D381BE100F74678 /* OperationTests.swift */; };
 		CF35B7721D381BE100F74678 /* UploadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */; };
+		CFF022761D514E4400421603 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022751D514E4400421603 /* TimeoutObserver.swift */; };
+		CFF0227A1D514EA900421603 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022781D514EA900421603 /* BackgroundObserver.swift */; };
+		CFF0227B1D514EA900421603 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022791D514EA900421603 /* NetworkObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,9 @@
 		CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperationTests.swift; sourceTree = "<group>"; };
 		CF35B76E1D381BE100F74678 /* OperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTests.swift; sourceTree = "<group>"; };
 		CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperationTests.swift; sourceTree = "<group>"; };
+		CFF022751D514E4400421603 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Observers/TimeoutObserver.swift; sourceTree = "<group>"; };
+		CFF022781D514EA900421603 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundObserver.swift; path = Observers/BackgroundObserver.swift; sourceTree = "<group>"; };
+		CFF022791D514EA900421603 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkObserver.swift; path = Observers/NetworkObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				CF35B7581D38176900F74678 /* Conditions */,
+				CFF022771D514E5500421603 /* Observers */,
 				CF35B75B1D38176900F74678 /* Operation Queue */,
 				CF35B75D1D38176900F74678 /* Operations */,
 				CF35B7621D38176900F74678 /* ParameterEncoding */,
@@ -161,6 +168,16 @@
 				CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */,
 			);
 			path = Operations;
+			sourceTree = "<group>";
+		};
+		CFF022771D514E5500421603 /* Observers */ = {
+			isa = PBXGroup;
+			children = (
+				CFF022781D514EA900421603 /* BackgroundObserver.swift */,
+				CFF022791D514EA900421603 /* NetworkObserver.swift */,
+				CFF022751D514E4400421603 /* TimeoutObserver.swift */,
+			);
+			name = Observers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,11 +291,14 @@
 				CF35B7651D38176900F74678 /* ReachabilityCondition.swift in Sources */,
 				CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */,
 				CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */,
+				CFF0227A1D514EA900421603 /* BackgroundObserver.swift in Sources */,
 				CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */,
 				CF35B7641D38176900F74678 /* OperationCondition.swift in Sources */,
 				CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */,
 				CF35B7681D38176900F74678 /* GroupOperation.swift in Sources */,
 				CF35B7691D38176900F74678 /* Operation.swift in Sources */,
+				CFF022761D514E4400421603 /* TimeoutObserver.swift in Sources */,
+				CFF0227B1D514EA900421603 /* NetworkObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +486,7 @@
 				CF35B7541D3814F500F74678 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CF35B7551D3814F500F74678 /* Build configuration list for PBXNativeTarget "OperationKitTests" */ = {
 			isa = XCConfigurationList;
@@ -474,6 +495,7 @@
 				CF35B7571D3814F500F74678 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
