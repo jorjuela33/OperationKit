@@ -8,19 +8,19 @@
 
 import UIKit
 
-struct NetworkObserver: ObservableOperation {
+public struct NetworkObserver: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    func operationDidStart(operation: Operation) {
+    public func operationDidStart(operation: Operation) {
         dispatch_async(dispatch_get_main_queue()) {
             NetworkIndicatorManager.sharedIndicatorController.networkActivityDidStart()
         }
     }
     
-    func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { }
+    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { }
     
-    func operationDidFinish(operation: Operation, errors: [NSError]) {
+    public func operationDidFinish(operation: Operation, errors: [NSError]) {
         dispatch_async(dispatch_get_main_queue()) {
             NetworkIndicatorManager.sharedIndicatorController.networkActivityDidEnd()
         }

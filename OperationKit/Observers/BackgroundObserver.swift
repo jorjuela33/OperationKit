@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-final class BackgroundObserver: NSObject {
+public final class BackgroundObserver: NSObject {
     // MARK: Properties
     
     private var identifier = UIBackgroundTaskInvalid
@@ -17,7 +17,7 @@ final class BackgroundObserver: NSObject {
     
     // MARK: Initialization
     
-    override init() {
+    public override init() {
         super.init()
         
         setupNotifications()
@@ -73,11 +73,11 @@ extension BackgroundObserver: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    func operationDidStart(operation: Operation) {  /* No Op */ }
+    public func operationDidStart(operation: Operation) {  /* No Op */ }
     
-    func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { /* No Op */ }
+    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { /* No Op */ }
     
-    func operationDidFinish(operation: Operation, errors: [NSError]) {
+    public func operationDidFinish(operation: Operation, errors: [NSError]) {
         endBackgroundTask()
     }
 }

@@ -8,21 +8,21 @@
 
 import Foundation
 
-struct TimeoutObserver: ObservableOperation {
+public struct TimeoutObserver: ObservableOperation {
     
-    static let timeoutKey = "Timeout"
+    public static let timeoutKey = "Timeout"
     
     private let timeout: NSTimeInterval
     
     // MARK: Initialization
     
-    init(timeout: NSTimeInterval = 30) {
+    public init(timeout: NSTimeInterval = 30) {
         self.timeout = timeout
     }
     
     // MARK: OperationObserver
     
-    func operationDidStart(operation: Operation) {
+    public func operationDidStart(operation: Operation) {
         // When the operation starts, queue up a block to cause it to time out.
         let when = dispatch_time(DISPATCH_TIME_NOW, Int64(timeout * Double(NSEC_PER_SEC)))
         
@@ -34,7 +34,7 @@ struct TimeoutObserver: ObservableOperation {
         }
     }
     
-    func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { /* No op.*/ }
+    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { /* No op.*/ }
     
-    func operationDidFinish(operation: Operation, errors: [NSError]) { /* No op. */ }
+    public func operationDidFinish(operation: Operation, errors: [NSError]) { /* No op. */ }
 }
