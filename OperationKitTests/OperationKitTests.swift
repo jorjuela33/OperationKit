@@ -26,14 +26,14 @@ import XCTest
 
 class OperationKitTests: XCTestCase {
     
-    var cacheFolder: NSURL {
-        return try! NSFileManager.defaultManager().URLForDirectory(.CachesDirectory,
-                                                                   inDomain: .UserDomainMask,
-                                                                   appropriateForURL: nil,
+    var cacheFolder: URL {
+        return try! FileManager.default.url(for: .cachesDirectory,
+                                                                   in: .userDomainMask,
+                                                                   appropriateFor: nil,
                                                                    create: true)
     }
     
-    let networkTimeout: NSTimeInterval = 30.0
+    let networkTimeout: TimeInterval = 30.0
     
     override func setUp() {
         super.setUp()

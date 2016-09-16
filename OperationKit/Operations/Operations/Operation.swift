@@ -28,60 +28,60 @@ public let OperationErrorDomainCode = "com.operation.domain.error"
 
 public protocol ObservableOperation {
     /// Invoked immediately prior to the `Operation`'s `execute()` method.
-    func operationDidStart(operation: Operation)
+    func operationDidStart(_ operation: Operation)
     
     /// Invoked when `Operation.produceOperation(_:)` is executed.
-    func operation(operation: Operation, didProduceOperation newOperation: NSOperation)
+    func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation)
     
     /// Invoked as an `Operation` finishes, along with any errors produced during
     /// execution (or readiness evaluation).
-    func operationDidFinish(operation: Operation, errors: [NSError])
+    func operationDidFinish(_ operation: Operation, errors: [Error])
 }
 
-public class Operation: NSOperation {
+open class Operation: Foundation.Operation {
     // MARK: Properties
     
-    private enum State: Int, Comparable {
+    fileprivate enum State: Int, Comparable {
         /// The initial state of an `Operation`.
-        case Initialized
+        case initialized
         
         /// The `Operation` is ready to begin evaluating conditions.
-        case Pending
+        case pending
         
         /// The `Operation` is evaluating conditions.
-        case EvaluatingConditions
+        case evaluatingConditions
         
         /// The `Operation`'s conditions have all been satisfied, 
         /// and it is ready to execute.
-        case Ready
+        case ready
         
         /// The `Operation` is executing.
-        case Executing
+        case executing
         
         /// Execution of the `Operation` has finished, but it has not yet notified
         /// the queue of this.
-        case Finishing
+        case finishing
         
         /// The `Operation` has finished executing.
-        case Finished
+        case finished
         
-        func canTransitionToState(target: State) -> Bool {
+        func canTransitionToState(_ target: State) -> Bool {
             switch (self, target) {
-            case (.Initialized, .Pending):
+            case (.initialized, .pending):
                 return true
-            case (.Pending, .EvaluatingConditions):
+            case (.pending, .evaluatingConditions):
                 return true
-            case (.EvaluatingConditions, .Ready):
+            case (.evaluatingConditions, .ready):
                 return true
-            case (.Ready, .Executing):
+            case (.ready, .executing):
                 return true
-            case (.Ready, .Finishing):
+            case (.ready, .finishing):
                 return true
-            case (.Executing, .Finishing):
+            case (.executing, .finishing):
                 return true
-            case (.Finishing, .Finished):
+            case (.finishing, .finished):
                 return true
-            case (.Pending, .Finishing):
+            case (.pending, .finishing):
                 return true
             default:
                 return false
@@ -89,12 +89,12 @@ public class Operation: NSOperation {
         }
     }
     
-    private var hasFinishedAlready = false
-    private var internalErrors: [NSError] = []
-    private var lock = NSLock()
-    private var _state: State = .Initialized
+    fileprivate var hasFinishedAlready = false
+    fileprivate var internalErrors: [Error] = []
+    fileprivate var lock = NSLock()
+    fileprivate var _state: State = .initialized
     
-    private var state: State {
+    fileprivate var state: State {
         get {
             lock.lock()
             defer { lock.unlock() }
@@ -104,64 +104,64 @@ public class Operation: NSOperation {
         set(newState) {
             assert(_state.canTransitionToState(newState))
             
-            guard _state != .Finished else { return }
+            guard _state != .finished else { return }
             
-            willChangeValueForKey("state")
+            willChangeValue(forKey: "state")
             lock.lock()
             _state = newState
             lock.unlock()
-            didChangeValueForKey("state")
+            didChangeValue(forKey: "state")
         }
     }
     
     /// The conditions for this operation
-    private(set) var conditions: [OperationCondition] = []
+    fileprivate(set) var conditions: [OperationCondition] = []
     
     /// The observers of the operation
-    private(set) var observers = [ObservableOperation]()
+    fileprivate(set) var observers = [ObservableOperation]()
     
-    override public var asynchronous: Bool {
+    override open var isAsynchronous: Bool {
         return true
     }
     
     /// Wheter the resquest is user initiated or not
-    public var userInitiated: Bool {
+    open var userInitiated: Bool {
         get {
-            return qualityOfService == .UserInitiated
+            return qualityOfService == .userInitiated
         }
         
         set {
-            assert(state < .Executing)
+            assert(state < .executing)
             
-            qualityOfService = newValue ? .UserInitiated : .Default
+            qualityOfService = newValue ? .userInitiated : .default
         }
     }
     
-    override public var executing: Bool {
-        return state == .Executing
+    override open var isExecuting: Bool {
+        return state == .executing
     }
     
-    override public var finished: Bool {
-        return state == .Finished
+    override open var isFinished: Bool {
+        return state == .finished
     }
     
-    override public var ready: Bool {
+    override open var isReady: Bool {
         switch state {
-        case .Initialized:
-            return cancelled
+        case .initialized:
+            return isCancelled
             
-        case .Pending:
-            guard !cancelled else {
+        case .pending:
+            guard !isCancelled else {
                 return true
             }
             
-            if super.ready {
+            if super.isReady {
                 evaluateConditions()
             }
             
             return false
-        case .Ready:
-            return super.ready || cancelled
+        case .ready:
+            return super.isReady || isCancelled
             
         default:
             return false
@@ -171,15 +171,15 @@ public class Operation: NSOperation {
     // MARK: Intance methods
     
     /// Adds a new condition for this operation
-    public final func addCondition(operationCondition: OperationCondition) {
-        assert(state < .EvaluatingConditions)
+    public final func addCondition(_ operationCondition: OperationCondition) {
+        assert(state < .evaluatingConditions)
         
         conditions.append(operationCondition)
     }
     
     /// Adds a new observer for the operation
-    public func addObserver(observer: ObservableOperation) {
-        assert(state < .Executing)
+    open func addObserver(_ observer: ObservableOperation) {
+        assert(state < .executing)
         
         observers.append(observer)
     }
@@ -187,13 +187,13 @@ public class Operation: NSOperation {
     /// Cancels the current request
     ///
     /// error - The error produced by the request
-    public final func cancelWithError(error: NSError) {
+    public final func cancelWithError(_ error: Error) {
         internalErrors.append(error)
         cancel()
     }
     
     /// The entry point of all operations
-    public func execute() {
+    open func execute() {
         finish()
     }
     
@@ -201,12 +201,12 @@ public class Operation: NSOperation {
     ///
     /// errors - Optional value containing the errors
     ///          produced by the operation
-    public final func finish(errors: [NSError] = []) {
+    public final func finish(_ errors: [Error] = []) {
         guard hasFinishedAlready == false else { return }
         
         let combinedErrors = internalErrors + errors
         hasFinishedAlready = true
-        state = .Finishing
+        state = .finishing
         finished(combinedErrors)
         
         for observer in observers {
@@ -214,18 +214,18 @@ public class Operation: NSOperation {
         }
         
         observers.removeAll()
-        state = .Finished
+        state = .finished
     }
     
     /// Should be overriden for the child operations
-    public func finished(errors: [NSError]) {
+    open func finished(_ errors: [Error]) {
         // No op.
     }
     
     /// Finish the current request
     ///
     /// error - The error produced by the request
-    public final func finishWithError(error: NSError?) {
+    public final func finishWithError(_ error: Error?) {
         guard let error = error else {
             finish()
             return
@@ -235,7 +235,7 @@ public class Operation: NSOperation {
     }
     
     /// Notify to the observer when a suboperation is created for this operation
-    public final func produceOperation(operation: NSOperation) {
+    public final func produceOperation(_ operation: Foundation.Operation) {
         for observer in observers {
             observer.operation(self, didProduceOperation: operation)
         }
@@ -243,35 +243,35 @@ public class Operation: NSOperation {
     
     /// Indicates that the Operation can now begin to evaluate readiness conditions,
     /// if appropriate.
-    public func willEnqueue() {
-        state = .Pending
+    open func willEnqueue() {
+        state = .pending
     }
     
     // MARK: KVO methods
     
     class func keyPathsForValuesAffectingIsReady() -> Set<NSObject> {
-        return ["state"]
+        return ["state" as NSObject]
     }
     
     class func keyPathsForValuesAffectingIsExecuting() -> Set<NSObject> {
-        return ["state"]
+        return ["state" as NSObject]
     }
     
     class func keyPathsForValuesAffectingIsFinished() -> Set<NSObject> {
-        return ["state"]
+        return ["state" as NSObject]
     }
     
     // MARK: Overrided methods
     
     override final public func main() {
-        assert(state == .Ready)
+        assert(state == .ready)
         
-        guard cancelled == false && internalErrors.isEmpty else {
+        guard isCancelled == false && internalErrors.isEmpty else {
             finish()
             return
         }
         
-        state = .Executing
+        state = .executing
         
         for observer in observers {
             observer.operationDidStart(self)
@@ -280,41 +280,41 @@ public class Operation: NSOperation {
         execute()
     }
     
-    override public func start() {
+    override open func start() {
         super.start()
-        if cancelled {
+        if isCancelled {
             finish()
         }
     }
     
     // MARK: Private methods
     
-    private func evaluateConditions() {
-        assert(state == .Pending && !cancelled)
+    fileprivate func evaluateConditions() {
+        assert(state == .pending && !isCancelled)
         
-        state = .EvaluatingConditions
+        state = .evaluatingConditions
         
-        let conditionGroup = dispatch_group_create()
+        let conditionGroup = DispatchGroup()
         
-        var results = [OperationConditionResult?](count: conditions.count, repeatedValue: nil)
+        var results = [OperationConditionResult?](repeating: nil, count: conditions.count)
         
-        for (index, condition) in conditions.enumerate() {
-            dispatch_group_enter(conditionGroup)
+        for (index, condition) in conditions.enumerated() {
+            conditionGroup.enter()
             condition.evaluateForOperation(self) { result in
                 results[index] = result
-                dispatch_group_leave(conditionGroup)
+                conditionGroup.leave()
             }
         }
         
-        dispatch_group_notify(conditionGroup, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
+        conditionGroup.notify(queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default)) {
             self.internalErrors += results.flatMap { $0?.error }
             
-            if self.cancelled {
-                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.ConditionFailed.rawValue, userInfo: nil)
+            if self.isCancelled {
+                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.conditionFailed.rawValue, userInfo: nil)
                 self.internalErrors.append(error)
             }
             
-            self.state = .Ready
+            self.state = .ready
         }
     }
 }

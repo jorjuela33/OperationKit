@@ -23,80 +23,80 @@
 
 import Foundation
 
-public class DownloadOperation: Operation {
+open class DownloadOperation: Operation {
     // MARK: Properties
-    private let cacheFile: NSURL
-    private var downloadTask: NSURLSessionTask?
-    private var session: NSURLSession!
+    fileprivate let cacheFile: Foundation.URL
+    fileprivate var downloadTask: URLSessionTask?
+    fileprivate var session: Foundation.URLSession!
     
-    public var response: NSHTTPURLResponse? {
-        return downloadTask?.response as? NSHTTPURLResponse
+    open var response: HTTPURLResponse? {
+        return downloadTask?.response as? HTTPURLResponse
     }
     
-    public var URL: NSURL? {
-        return downloadTask?.originalRequest?.URL
+    open var URL: Foundation.URL? {
+        return downloadTask?.originalRequest?.url
     }
     
     // MARK: Initialization
     
-    public init(request: NSURLRequest, cacheFile: NSURL, sessionConfiguration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()) {
+    public init(request: URLRequest, cacheFile: Foundation.URL, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         self.cacheFile = cacheFile
         
         super.init()
         
-        session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-        downloadTask = session.downloadTaskWithRequest(request)
-        addCondition(ReachabilityCondition(host: request.URL!))
+        session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+        downloadTask = session.downloadTask(with: request)
+        addCondition(ReachabilityCondition(host: request.url!))
         
-        name = request.URL?.absoluteString
+        name = request.url?.absoluteString
     }
     
     // MARK: Overrided methods
     
-    override public func execute() {
+    override open func execute() {
         downloadTask?.resume()
     }
     
-    override public func finished(errors: [NSError]) {
+    override open func finished(_ errors: [Error]) {
         session.invalidateAndCancel()
     }
 }
 
-extension DownloadOperation: NSURLSessionDownloadDelegate {
+extension DownloadOperation: URLSessionDownloadDelegate {
     
     // MARK: NSURLSessionDownloadDelegate
     
-    public func URLSession(session: NSURLSession,
-                           downloadTask: NSURLSessionDownloadTask,
-                           didFinishDownloadingToURL location: NSURL) {
+    public func urlSession(_ session: URLSession,
+                           downloadTask: URLSessionDownloadTask,
+                           didFinishDownloadingTo location: URL) {
 
         do {
-            try NSFileManager.defaultManager().removeItemAtURL(cacheFile)
+            try FileManager.default.removeItem(at: cacheFile)
         } catch { }
             
         do {
-            try NSFileManager.defaultManager().moveItemAtURL(location, toURL: cacheFile)
+            try FileManager.default.moveItem(at: location, to: cacheFile)
         } catch {
-            finishWithError(error as NSError)
+            finishWithError(error)
         }
     }
     
-    func URLSession(session: NSURLSession,
-                    dataTask: NSURLSessionDataTask,
-                    didReceiveResponse response: NSURLResponse,
-                    completionHandler: (NSURLSessionResponseDisposition) -> Void) {
+    public func URLSession(_ session: Foundation.URLSession,
+                    dataTask: URLSessionDataTask,
+                    didReceiveResponse response: URLResponse,
+                    completionHandler: (Foundation.URLSession.ResponseDisposition) -> Void) {
             
-            guard cancelled == false else {
+            guard isCancelled == false else {
                 finish()
                 downloadTask?.cancel()
                 return
             }
             
-            completionHandler(.Allow)
+            completionHandler(.allow)
     }
     
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        guard cancelled == false else { return }
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard isCancelled == false else { return }
         
         finishWithError(error)
     }

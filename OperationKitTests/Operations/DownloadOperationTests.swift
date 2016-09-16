@@ -24,18 +24,18 @@
 import XCTest
 @testable import OperationKit
 
-extension NSFileManager {
+extension FileManager {
     
-    func removeItemAt(URL: NSURL) {
+    func removeItemAt(_ URL: Foundation.URL) {
         do {
-            try removeItemAtURL(URL)
+            try removeItem(at: URL)
         } catch {}
     }
 }
 
 class DownloadOperationTests: OperationKitTests {
 
-    private let operationQueue = OperationQueue()
+    fileprivate let operationQueue = OperationKit.OperationQueue()
     
     override func setUp() {
         super.setUp()
@@ -49,12 +49,12 @@ class DownloadOperationTests: OperationKitTests {
     
     func testThatExecuteDownloOperationWithDefaultSessionAndSuccessResponse() {
         /// given
-        let expectation = expectationWithDescription("download operation should get success response")
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
-        request.HTTPMethod = HTTPMethod.GET.rawValue
-        let cacheFile = cacheFolder.URLByAppendingPathComponent("\(rand()).json")
+        let expectation = self.expectation(description: "download operation should get success response")
+        let request = NSMutableURLRequest(url: URL(string: "http://httpbin.org/get")!)
+        request.httpMethod = HTTPMethod.GET.rawValue
+        let cacheFile = cacheFolder.appendingPathComponent("\(arc4random()).json")
         let downloadOperation = DownloadOperation(request: request, cacheFile: cacheFile)
-        let finishOperation = NSBlockOperation {
+        let finishOperation = BlockOperation {
             expectation.fulfill()
         }
         
@@ -63,23 +63,23 @@ class DownloadOperationTests: OperationKitTests {
         operationQueue.addOperations([downloadOperation, finishOperation])
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(downloadOperation.response?.statusCode == 200)
-        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(cacheFile.path!))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: cacheFile!.path))
         
         defer {
-            NSFileManager.defaultManager().removeItemAt(cacheFile)
+            FileManager.default.removeItemAt(cacheFile!)
         }
     }
     
     func testThatExecuteDownloadOperationWithCustomSessionConfigurationAndSuccessResponse() {
         /// given
-        let expectation = expectationWithDescription("download operation should get success response with custom session")
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
-        request.HTTPMethod = HTTPMethod.GET.rawValue
-        let cacheFile = cacheFolder.URLByAppendingPathComponent("\(rand()).json")
+        let expectation = self.expectation(description: "download operation should get success response with custom session")
+        let request = NSMutableURLRequest(url: URL(string: "http://httpbin.org/get")!)
+        request.httpMethod = HTTPMethod.GET.rawValue
+        let cacheFile = cacheFolder.appendingPathComponent("\(arc4random()).json")
         let downloadOperation = DownloadOperation(request: request, cacheFile: cacheFile)
-        let finishOperation = NSBlockOperation {
+        let finishOperation = BlockOperation {
             expectation.fulfill()
         }
         
@@ -88,23 +88,23 @@ class DownloadOperationTests: OperationKitTests {
         operationQueue.addOperations([downloadOperation, finishOperation])
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(downloadOperation.response?.statusCode == 200)
-        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(cacheFile.path!))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: cacheFile!.path))
         
         defer {
-            NSFileManager.defaultManager().removeItemAt(cacheFile)
+            FileManager.default.removeItemAt(cacheFile!)
         }
     }
     
     func testThatDownloadOperationCancellation() {
         /// given
-        let expectation = expectationWithDescription("download operation should get cancelled")
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
-        request.HTTPMethod = HTTPMethod.GET.rawValue
-        let cacheFile = cacheFolder.URLByAppendingPathComponent("\(rand()).json")
+        let expectation = self.expectation(description: "download operation should get cancelled")
+        let request = NSMutableURLRequest(url: URL(string: "http://httpbin.org/get")!)
+        request.httpMethod = HTTPMethod.GET.rawValue
+        let cacheFile = cacheFolder.appendingPathComponent("\(arc4random()).json")
         let downloadOperation = DownloadOperation(request: request, cacheFile: cacheFile)
-        let finishOperation = NSBlockOperation {
+        let finishOperation = BlockOperation {
             expectation.fulfill()
         }
         
@@ -114,9 +114,9 @@ class DownloadOperationTests: OperationKitTests {
         downloadOperation.cancel()
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertNil(downloadOperation.response)
-        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(cacheFile.path!))
-        XCTAssertTrue(downloadOperation.cancelled)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: cacheFile!.path))
+        XCTAssertTrue(downloadOperation.isCancelled)
     }
 }

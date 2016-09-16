@@ -16,16 +16,16 @@ public struct NetworkObserver: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    public func operationDidStart(operation: Operation) {
-        dispatch_async(dispatch_get_main_queue()) {
+    public func operationDidStart(_ operation: Operation) {
+        DispatchQueue.main.async {
             NetworkIndicatorManager.sharedIndicatorController.networkActivityDidStart()
         }
     }
     
-    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { }
+    public func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) { }
     
-    public func operationDidFinish(operation: Operation, errors: [NSError]) {
-        dispatch_async(dispatch_get_main_queue()) {
+    public func operationDidFinish(_ operation: Operation, errors: [Error]) {
+        DispatchQueue.main.async {
             NetworkIndicatorManager.sharedIndicatorController.networkActivityDidEnd()
         }
     }
@@ -35,20 +35,20 @@ private class NetworkIndicatorManager {
     // MARK: Properties
     
     static let sharedIndicatorController = NetworkIndicatorManager()
-    private var activityCount = 0
-    private var cancelled = false
+    fileprivate var activityCount = 0
+    fileprivate var cancelled = false
     
     // MARK: Instance methods
     
     func networkActivityDidStart() {
-        assert(NSThread.isMainThread())
+        assert(Thread.isMainThread)
         
         activityCount += 1
         updateIndicatorVisibility()
     }
     
     func networkActivityDidEnd() {
-        assert(NSThread.isMainThread())
+        assert(Thread.isMainThread)
         
         activityCount -= 1
         updateIndicatorVisibility()
@@ -56,22 +56,22 @@ private class NetworkIndicatorManager {
     
     // MARK: Private methods
     
-    private func hideIndicator() {
+    fileprivate func hideIndicator() {
         cancelled = true
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
-    private func showIndicator() {
+    fileprivate func showIndicator() {
         cancelled = false
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    private func updateIndicatorVisibility() {
+    fileprivate func updateIndicatorVisibility() {
         if activityCount > 0 {
             showIndicator()
         } else {
-            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)))
-            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            let dispatchTime = DispatchTime.now() + Double(Int64(1.0 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 guard self.cancelled == false else { return }
                 
                 self.hideIndicator()

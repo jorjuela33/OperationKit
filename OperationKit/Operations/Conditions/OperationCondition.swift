@@ -26,8 +26,8 @@ import Foundation
 public let OperationConditionKey = "_operationConditionKey"
 
 public enum OperationErrorCode: Int {
-    case ConditionFailed = 1
-    case ExecutionFailed = 2
+    case conditionFailed = 1
+    case executionFailed = 2
 }
 
 public protocol OperationCondition {
@@ -36,19 +36,19 @@ public protocol OperationCondition {
     static var name: String { get }
     
     /// Returns the operation dependency for the given operation
-    func dependencyForOperation(operation: Operation) -> NSOperation?
+    func dependencyForOperation(_ operation: Operation) -> Foundation.Operation?
     
     /// Evaluate the condition, to see if it has been satisfied or not.
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void)
+    func evaluateForOperation(_ operation: Operation, completion: (OperationConditionResult) -> Void)
 }
 
 public enum OperationConditionResult {
-    case Satisfied
-    case Failed(NSError)
+    case satisfied
+    case failed(NSError)
     
-    var error: NSError? {
+    var error: Error? {
         switch self {
-        case .Failed(let error):
+        case .failed(let error):
             return error
             
         default:

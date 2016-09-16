@@ -29,27 +29,27 @@ private struct FailTestCondition: OperationCondition {
     // MARK: OperationCondition
     static var name = "test condition"
     
-    func dependencyForOperation(operation: Operation) -> NSOperation? { return nil }
+    func dependencyForOperation(_ operation: OperationKit.Operation) -> Foundation.Operation? { return nil }
     
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
+    func evaluateForOperation(_ operation: OperationKit.Operation, completion: (OperationConditionResult) -> Void) {
         let error = NSError(domain: "", code: 0, userInfo: [OperationConditionKey: FailTestCondition.name])
-        completion(.Failed(error))
+        completion(.failed(error))
     }
 }
 
-private class TestOperation: Operation {
+private class TestOperation: OperationKit.Operation {
     
     // MARK: Overrided methods
     
     override func execute() {
-        let operation = Operation()
+        let operation = OperationKit.Operation()
         produceOperation(operation)
     }
 }
 
 class OperationTests: OperationKitTests {
     
-    let operationQueue = OperationQueue()
+    let operationQueue = OperationKit.OperationQueue()
     
     override func setUp() {
         super.setUp()
@@ -63,19 +63,19 @@ class OperationTests: OperationKitTests {
     
     func testThatUserInitiated() {
         /// given
-        let operation = Operation()
+        let operation = OperationKit.Operation()
         
         /// when
         operation.userInitiated = true
         
         /// then
-        XCTAssertTrue(operation.qualityOfService == .UserInitiated)
+        XCTAssertTrue(operation.qualityOfService == .userInitiated)
     }
     
     func testThatOperationShouldCancelWithErrors() {
         /// given
-        let expectation = expectationWithDescription("Operation should be cancelled")
-        let operation = Operation()
+        let expectation = self.expectation(description: "Operation should be cancelled")
+        let operation = OperationKit.Operation()
         let error = NSError(domain: "", code: 0, userInfo: nil)
         var isSameError = false
         
@@ -89,14 +89,14 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(isSameError)
     }
 
     func testThatOperationShouldInvokeObserver() {
         /// given
-        let expectation = expectationWithDescription("Operation should invoke observer")
-        let operation = Operation()
+        let expectation = self.expectation(description: "Operation should invoke observer")
+        let operation = OperationKit.Operation()
         var invokedObserver = false
         
         /// when
@@ -108,15 +108,15 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(invokedObserver)
     }
     
     func testThatOperationShouldInvokeDidFinishMethodInObserver() {
         /// given
-        let expectation = expectationWithDescription("Operation should invoke observer")
-        let operation = Operation()
-        var finishedOperation: Operation?
+        let expectation = self.expectation(description: "Operation should invoke observer")
+        let operation = OperationKit.Operation()
+        var finishedOperation: OperationKit.Operation?
         
         /// when
         operation.addObserver(OperationTestObserver(operationDidFinishObserver: { op, errors in
@@ -127,15 +127,15 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(finishedOperation === operation)
     }
     
     func testThatOperationShouldInvokeDidStartMethodInObserver() {
         /// given
-        let expectation = expectationWithDescription("Operation should invoke observer")
-        let operation = Operation()
-        var statedOperation: Operation?
+        let expectation = self.expectation(description: "Operation should invoke observer")
+        let operation = OperationKit.Operation()
+        var statedOperation: OperationKit.Operation?
         
         /// when
         operation.addObserver(OperationTestObserver(operationDidStartObserver: { op in
@@ -146,16 +146,16 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(statedOperation === operation)
     }
 
     func testThatOperationShouldInvokeDidProduceOperationtMethodInObserver() {
         /// given
-        let expectation = expectationWithDescription("Operation should invoke observer")
+        let expectation = self.expectation(description: "Operation should invoke observer")
         let operation = TestOperation()
-        var oldOperation: Operation?
-        var producedOperation: NSOperation?
+        var oldOperation: OperationKit.Operation?
+        var producedOperation: Foundation.Operation?
         
         /// when
         operation.addObserver(OperationTestObserver(operationDidProduceNewOperationObserver: { op, newOp in
@@ -167,15 +167,15 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(oldOperation === oldOperation)
         XCTAssertNotNil(producedOperation)
     }
     
     func testThatOperationShouldFailForCondition() {
         /// given
-        let expectation = expectationWithDescription("Operation should fail for condition")
-        let operation = Operation()
+        let expectation = self.expectation(description: "Operation should fail for condition")
+        let operation = OperationKit.Operation()
         var failedForCondition = false
         
         /// when
@@ -189,18 +189,18 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(failedForCondition)
     }
     
     func testThatOperationShouldFailWithMultiplesErrors() {
         /// given
-        let expectation = expectationWithDescription("Operation should fail")
-        let operation = Operation()
+        let expectation = self.expectation(description: "Operation should fail")
+        let operation = OperationKit.Operation()
         var failingConditions = 0
         
         /// when
-        operation.addCondition(ReachabilityCondition(host: NSURL(string: "")!))
+        operation.addCondition(ReachabilityCondition(host: URL(string: "")!))
         operation.addCondition(FailTestCondition())
         operation.addCondition(FailTestCondition())
         
@@ -212,7 +212,7 @@ class OperationTests: OperationKitTests {
         operationQueue.addOperation(operation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(failingConditions > 1)
     }
 }

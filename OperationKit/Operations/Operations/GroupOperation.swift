@@ -23,23 +23,23 @@
 
 import Foundation
 
-public class GroupOperation: Operation {
+open class GroupOperation: Operation {
     
-    private let internalQueue = OperationQueue()
-    private let startingOperation = NSBlockOperation(block: {})
-    private let finishingOperation = NSBlockOperation(block: {})
+    fileprivate let internalQueue = OperationQueue()
+    fileprivate let startingOperation = BlockOperation(block: {})
+    fileprivate let finishingOperation = BlockOperation(block: {})
     
-    private var aggregatedErrors = [NSError]()
+    fileprivate var aggregatedErrors = [Error]()
     
-    public convenience init(operations: NSOperation...) {
+    public convenience init(operations: Foundation.Operation...) {
         self.init(operations: operations)
     }
     
-    public init(operations: [NSOperation]) {
+    public init(operations: [Foundation.Operation]) {
         super.init()
         
         internalQueue.delegate = self
-        internalQueue.suspended = true
+        internalQueue.isSuspended = true
         internalQueue.addOperation(startingOperation)
         
         for operation in operations {
@@ -50,32 +50,32 @@ public class GroupOperation: Operation {
     // MARK: Instance methods
     
     /// Adds the operation to the internal queue
-    public func addOperation(operation: NSOperation) {
+    open func addOperation(_ operation: Foundation.Operation) {
         internalQueue.addOperation(operation)
     }
     
     /// Adds multiple operations to the queue
-    public func addOperations(operations: [NSOperation]) {
+    open func addOperations(_ operations: [Foundation.Operation]) {
         internalQueue.addOperations(operations)
     }
     
     /// Adds the new error to the internal errors array
-    public final func aggregateError(error: NSError) {
+    public final func aggregateError(_ error: NSError) {
         aggregatedErrors.append(error)
     }
     
     /// For use by subclassers.
-    public func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) { }
+    open func operationDidFinish(_ operation: Foundation.Operation, withErrors errors: [Error]) { }
     
     // MARK: Overrided methods
     
-    override public func cancel() {
+    override open func cancel() {
         internalQueue.cancelAllOperations()
         super.cancel()
     }
     
-    override public func execute() {
-        internalQueue.suspended = false
+    override open func execute() {
+        internalQueue.isSuspended = false
         internalQueue.addOperation(finishingOperation)
     }
 }
@@ -84,8 +84,8 @@ extension GroupOperation: OperationQueueDelegate {
     
     // MARK: OperationQueueDelegate
     
-    final public func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation) {
-        assert(!finishingOperation.finished && !finishingOperation.executing, "cannot add new operations to a group after the group has completed")
+    final public func operationQueue(_ operationQueue: OperationQueue, willAddOperation operation: Foundation.Operation) {
+        assert(!finishingOperation.isFinished && !finishingOperation.isExecuting, "cannot add new operations to a group after the group has completed")
         
         if operation !== finishingOperation {
             finishingOperation.addDependency(operation)
@@ -96,11 +96,12 @@ extension GroupOperation: OperationQueueDelegate {
         }
     }
     
-    public func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
-        aggregatedErrors.appendContentsOf(errors)
+    public func operationQueue(_ operationQueue: OperationQueue, operationDidFinish operation: Foundation.Operation, withErrors errors: [Error]) {
+        
+        aggregatedErrors.append(contentsOf: errors)
         
         if operation === finishingOperation {
-            internalQueue.suspended = true
+            internalQueue.isSuspended = true
             finish(aggregatedErrors)
         }
         else if operation !== startingOperation {

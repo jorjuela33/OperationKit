@@ -23,72 +23,72 @@
 
 import Foundation
 
-public class UploadOperation: Operation {
+open class UploadOperation: Operation {
     
     // MARK: Properties
-    private var uploadTask: NSURLSessionDataTask?
-    private var session: NSURLSession!
+    fileprivate var uploadTask: URLSessionDataTask?
+    fileprivate var session: Foundation.URLSession!
     
     /// the data returned for the server
-    public private(set) var data = NSMutableData()
+    open fileprivate(set) var data = NSMutableData()
     
     /// the response from the host
-    public var response: NSHTTPURLResponse? {
-        return uploadTask?.response as? NSHTTPURLResponse
+    open var response: HTTPURLResponse? {
+        return uploadTask?.response as? HTTPURLResponse
     }
     
     /// the URL for this operation
-    public var URL: NSURL? {
-        return uploadTask?.originalRequest?.URL
+    open var URL: Foundation.URL? {
+        return uploadTask?.originalRequest?.url
     }
     
     // MARK: Initialization
     
-    public init(request: NSURLRequest, sessionConfiguration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()) {
+    public init(request: URLRequest, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         super.init()
         
-        session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-        uploadTask = session.dataTaskWithRequest(request)
-        addCondition(ReachabilityCondition(host: request.URL!))
+        session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+        uploadTask = session.dataTask(with: request)
+        addCondition(ReachabilityCondition(host: request.url!))
         
-        name = request.URL?.absoluteString ?? "Upload operation"
+        name = request.url?.absoluteString ?? "Upload operation"
     }
     
     // MARK: Overrided methods
     
-    override public func execute() {
+    override open func execute() {
         uploadTask?.resume()
     }
     
-    override public func finished(errors: [NSError]) {
+    override open func finished(_ errors: [Error]) {
         session.invalidateAndCancel()
     }
 }
 
-extension UploadOperation: NSURLSessionDataDelegate {
+extension UploadOperation: URLSessionDataDelegate {
     
     // MARK: NSURLSessionDataDelegate
     
-    public func URLSession(session: NSURLSession,
-                    dataTask: NSURLSessionDataTask,
-                    didReceiveResponse response: NSURLResponse,
-                    completionHandler: (NSURLSessionResponseDisposition) -> Void) {
+    public func urlSession(_ session: URLSession,
+                    dataTask: URLSessionDataTask,
+                    didReceive response: URLResponse,
+                    completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
             
-            guard cancelled == false else {
+            guard isCancelled == false else {
                 finish()
                 uploadTask?.cancel()
                 return
             }
             
-            completionHandler(.Allow)
+            completionHandler(.allow)
     }
     
-    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-        self.data.appendData(data)
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        self.data.append(data)
     }
     
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        guard cancelled == false else { return }
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard isCancelled == false else { return }
         
         finishWithError(error)
     }

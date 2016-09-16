@@ -12,29 +12,29 @@ public struct TimeoutObserver: ObservableOperation {
     
     public static let timeoutKey = "Timeout"
     
-    private let timeout: NSTimeInterval
+    fileprivate let timeout: TimeInterval
     
     // MARK: Initialization
     
-    public init(timeout: NSTimeInterval = 30) {
+    public init(timeout: TimeInterval = 30) {
         self.timeout = timeout
     }
     
     // MARK: OperationObserver
     
-    public func operationDidStart(operation: Operation) {
+    public func operationDidStart(_ operation: Operation) {
         // When the operation starts, queue up a block to cause it to time out.
-        let when = dispatch_time(DISPATCH_TIME_NOW, Int64(timeout * Double(NSEC_PER_SEC)))
+        let when = DispatchTime.now() + Double(Int64(timeout * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         
-        dispatch_after(when, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
-            if !operation.finished && !operation.cancelled {
-                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.ExecutionFailed.rawValue, userInfo: [self.dynamicType.timeoutKey: self.timeout ])
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).asyncAfter(deadline: when) {
+            if !operation.isFinished && !operation.isCancelled {
+                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.executionFailed.rawValue, userInfo: [type(of: self).timeoutKey: self.timeout ])
                 operation.cancelWithError(error)
             }
         }
     }
     
-    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { /* No op.*/ }
+    public func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) { /* No op.*/ }
     
-    public func operationDidFinish(operation: Operation, errors: [NSError]) { /* No op. */ }
+    public func operationDidFinish(_ operation: Operation, errors: [Error]) { /* No op. */ }
 }

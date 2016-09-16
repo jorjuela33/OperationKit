@@ -25,20 +25,20 @@ import Foundation
 
 public protocol OperationQueueDelegate: NSObjectProtocol {
     /// Invoked when the queue is adding a new operation
-    func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation)
+    func operationQueue(_ operationQueue: OperationQueue, willAddOperation operation: Foundation.Operation)
     
     /// Invoked when the operation finished
-    func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError])
+    func operationQueue(_ operationQueue: OperationQueue, operationDidFinish operation: Foundation.Operation, withErrors errors: [Error])
 }
 
-public class OperationQueue: NSOperationQueue {
+open class OperationQueue: Foundation.OperationQueue {
     
     weak var delegate: OperationQueueDelegate?
     
     // MARK: Instance methods
     
     /// adds the operations to the queue
-    public func addOperations(ops: [NSOperation]) {
+    open func addOperations(_ ops: [Foundation.Operation]) {
         for operation in ops {
             addOperation(operation)
         }
@@ -46,7 +46,7 @@ public class OperationQueue: NSOperationQueue {
     
     // MARK: Overrided methods
     
-    override public func addOperation(op: NSOperation) {
+    override open func addOperation(_ op: Foundation.Operation) {
         if let operation = op as? Operation {
             operation.addObserver(self)
             
@@ -60,7 +60,7 @@ public class OperationQueue: NSOperationQueue {
             operation.willEnqueue()
         } else {
             op.completionBlock = { [weak self, weak op] in
-                guard let queue = self, operation = op else { return }
+                guard let queue = self, let operation = op else { return }
                 
                 queue.delegate?.operationQueue(queue, operationDidFinish: operation, withErrors: [])
             }
@@ -75,13 +75,13 @@ extension OperationQueue: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) {
+    public func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) {
         addOperation(newOperation)
     }
     
-    public func operationDidFinish(operation: Operation, errors: [NSError]) {
+    public func operationDidFinish(_ operation: Operation, errors: [Error]) {
         delegate?.operationQueue(self, operationDidFinish: operation, withErrors: errors)
     }
     
-    public func operationDidStart(operation: Operation) { /* No OP */ }
+    public func operationDidStart(_ operation: Operation) { /* No OP */ }
 }

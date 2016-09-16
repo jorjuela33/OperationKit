@@ -12,8 +12,8 @@ import UIKit
 public final class BackgroundObserver: NSObject {
     // MARK: Properties
     
-    private var identifier = UIBackgroundTaskInvalid
-    private var isInBackground = false
+    fileprivate var identifier = UIBackgroundTaskInvalid
+    fileprivate var isInBackground = false
     
     // MARK: Initialization
     
@@ -22,7 +22,7 @@ public final class BackgroundObserver: NSObject {
         
         setupNotifications()
         
-        isInBackground = UIApplication.sharedApplication().applicationState == .Background
+        isInBackground = UIApplication.shared.applicationState == .background
         
         if isInBackground {
             startBackgroundTask()
@@ -30,40 +30,40 @@ public final class BackgroundObserver: NSObject {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: Notification methods
     
-    func applicationDidEnterBackground(notification: NSNotification) {
+    func applicationDidEnterBackground(_ notification: Notification) {
         isInBackground = true
         
         startBackgroundTask()
     }
     
-    func applicationWillEnterForeground(notification: NSNotification) {
+    func applicationWillEnterForeground(_ notification: Notification) {
         isInBackground = false
         endBackgroundTask()
     }
     
     // MARK: Private methods
     
-    private func endBackgroundTask() {
+    fileprivate func endBackgroundTask() {
         guard identifier != UIBackgroundTaskInvalid else { return }
 
-        UIApplication.sharedApplication().endBackgroundTask(identifier)
+        UIApplication.shared.endBackgroundTask(identifier)
         identifier = UIBackgroundTaskInvalid
     }
     
-    private final func setupNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
+    fileprivate final func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
     
-    private func startBackgroundTask() {
+    fileprivate func startBackgroundTask() {
         guard identifier == UIBackgroundTaskInvalid else { return }
 
-        identifier = UIApplication.sharedApplication().beginBackgroundTaskWithName("BackgroundObserver", expirationHandler: {
+        identifier = UIApplication.shared.beginBackgroundTask(withName: "BackgroundObserver", expirationHandler: {
             self.endBackgroundTask()
         })
     }
@@ -73,11 +73,11 @@ extension BackgroundObserver: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    public func operationDidStart(operation: Operation) {  /* No Op */ }
+    public func operationDidStart(_ operation: Operation) {  /* No Op */ }
     
-    public func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { /* No Op */ }
+    public func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) { /* No Op */ }
     
-    public func operationDidFinish(operation: Operation, errors: [NSError]) {
+    public func operationDidFinish(_ operation: Operation, errors: [Error]) {
         endBackgroundTask()
     }
 }

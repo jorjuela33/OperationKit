@@ -29,61 +29,61 @@ public struct ReachabilityCondition: OperationCondition {
     public static let hostKey = "Host"
     public static let name = "Reachability"
     
-    public let host: NSURL
+    public let host: URL
     
-    public init(host: NSURL) {
+    public init(host: URL) {
         self.host = host
     }
     
     // MARK: OperationCondition
     
-    public func dependencyForOperation(operation: Operation) -> NSOperation? {
+    public func dependencyForOperation(_ operation: Operation) -> Foundation.Operation? {
         return nil
     }
     
-    public func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
+    public func evaluateForOperation(_ operation: Operation, completion: (OperationConditionResult) -> Void) {
         ReachabilityManager.requestReachability(host) { reachable in
             guard reachable else {
-                let userInfo = [OperationConditionKey: self.dynamicType.name, ReachabilityCondition.hostKey: self.host]
-                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.ConditionFailed.rawValue, userInfo: userInfo)
-                completion(.Failed(error))
+                let userInfo = [OperationConditionKey: type(of: self).name, ReachabilityCondition.hostKey: self.host] as [String : Any]
+                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.conditionFailed.rawValue, userInfo: userInfo)
+                completion(.failed(error))
                 return
             }
             
-            completion(.Satisfied)
+            completion(.satisfied)
         }
     }
 }
 
 private let defaultReferenceKey = "_defaultReferenceKey"
 
-public enum ReachabilityError: ErrorType {
-    case FailedToCreateWithAddress(sockaddr_in)
-    case FailedToCreateWithHostname(String)
+public enum ReachabilityError: Error {
+    case failedToCreateWithAddress(sockaddr_in)
+    case failedToCreateWithHostname(String)
 }
 
-public class ReachabilityManager {
+open class ReachabilityManager {
     // Properties
-    private static var reachabilityRefs = [String: SCNetworkReachability]()
-    private let queue = dispatch_queue_create("com.operations.reachability", DISPATCH_QUEUE_SERIAL)
+    fileprivate static var reachabilityRefs = [String: SCNetworkReachability]()
+    fileprivate let queue = DispatchQueue(label: "com.operations.reachability", attributes: [])
     
-    public private(set) var status: ReachabilityStatus = .NotReachable
+    open fileprivate(set) var status: ReachabilityStatus = .notReachable
     
     public enum ReachabilityStatus {
-        case NotReachable, ReachableViaWiFi, ReachableViaWWAN
+        case notReachable, reachableViaWiFi, reachableViaWWAN
     }
     
     // MARK: Initialization 
     
     required public init(reference: SCNetworkReachability, host: String = defaultReferenceKey) {
-        dispatch_sync(queue) {
+        queue.sync {
             var reachabilityFlags: SCNetworkReachabilityFlags = []
             if SCNetworkReachabilityGetFlags(reference, &reachabilityFlags) {
-                if reachabilityFlags.contains(.Reachable) && reachabilityFlags.contains(.IsWWAN) == false {
-                    self.status = .ReachableViaWiFi
+                if reachabilityFlags.contains(.reachable) && reachabilityFlags.contains(.isWWAN) == false {
+                    self.status = .reachableViaWiFi
                 }
                 else {
-                    self.status = .ReachableViaWWAN
+                    self.status = .reachableViaWWAN
                 }
             }
             
@@ -94,8 +94,8 @@ public class ReachabilityManager {
     }
     
     public convenience init(host: String) throws {
-        guard let ref = ReachabilityManager.reachabilityRefs[host] ?? SCNetworkReachabilityCreateWithName(nil, host.cStringUsingEncoding(NSUTF8StringEncoding)!) else {
-            throw ReachabilityError.FailedToCreateWithHostname(host)
+        guard let ref = ReachabilityManager.reachabilityRefs[host] ?? SCNetworkReachabilityCreateWithName(nil, host.cString(using: String.Encoding.utf8)!) else {
+            throw ReachabilityError.failedToCreateWithHostname(host)
         }
         
         self.init(reference: ref, host: host)
@@ -103,22 +103,23 @@ public class ReachabilityManager {
     
     // MARK: Static methods
     
-    public static func reachabilityForInternetConnection() throws -> ReachabilityManager {
+    open static func reachabilityForInternetConnection() throws -> ReachabilityManager {
         var address = sockaddr_in()
-        address.sin_len = UInt8(sizeofValue(address))
+        address.sin_len = UInt8(MemoryLayout.size(ofValue: address))
         address.sin_family = sa_family_t(AF_INET)
-        let ref = withUnsafePointer(&address) {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-        }
         
-        guard let reference = ref else { throw ReachabilityError.FailedToCreateWithAddress(address) }
+        guard let reference = withUnsafePointer(to: &address, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        }) else { throw ReachabilityError.failedToCreateWithAddress(address) }
         
         return ReachabilityManager(reference: reference)
     }
     
     /// Naive implementation of the reachability
     /// TODO: VPN, cellular connection.
-    public static func requestReachability(url: NSURL, completionHandler: (Bool) -> Void) {
+    open static func requestReachability(_ url: URL, completionHandler: (Bool) -> Void) {
         guard let host = url.host else {
             completionHandler(false)
             return
@@ -126,7 +127,7 @@ public class ReachabilityManager {
         
         do {
           let reachabilityManager = try ReachabilityManager(host: host)
-          completionHandler(reachabilityManager.status != .NotReachable)
+          completionHandler(reachabilityManager.status != .notReachable)
         }
         catch {
             completionHandler(false)

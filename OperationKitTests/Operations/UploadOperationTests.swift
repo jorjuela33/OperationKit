@@ -26,15 +26,15 @@ import XCTest
 
 struct OperationTestObserver: ObservableOperation {
     
-    let operationDidStartObserver: (Operation -> Void)?
-    let operationDidProduceNewOperationObserver: ((Operation, NSOperation) -> Void)?
-    let operationDidFinishObserver: ((Operation, [NSError]?) -> Void)?
+    let operationDidStartObserver: ((OperationKit.Operation) -> Void)?
+    let operationDidProduceNewOperationObserver: ((OperationKit.Operation, Foundation.Operation) -> Void)?
+    let operationDidFinishObserver: ((OperationKit.Operation, [NSError]?) -> Void)?
     
     // MARK: Initialization
     
-    init(operationDidStartObserver: (Operation -> Void)? = nil,
-         operationDidProduceNewOperationObserver: ((Operation, NSOperation) -> Void)? = nil,
-         operationDidFinishObserver: ((Operation, [NSError]?) -> Void)? = nil) {
+    init(operationDidStartObserver: ((OperationKit.Operation) -> Void)? = nil,
+         operationDidProduceNewOperationObserver: ((OperationKit.Operation, Foundation.Operation) -> Void)? = nil,
+         operationDidFinishObserver: ((OperationKit.Operation, [NSError]?) -> Void)? = nil) {
         
         self.operationDidStartObserver = operationDidStartObserver
         self.operationDidProduceNewOperationObserver = operationDidProduceNewOperationObserver
@@ -43,22 +43,22 @@ struct OperationTestObserver: ObservableOperation {
     
     // MARK: ObservableOperation
     
-    func operationDidStart(operation: Operation) {
+    func operationDidStart(_ operation: OperationKit.Operation) {
         operationDidStartObserver?(operation)
     }
     
-    func operation(operation: Operation, didProduceOperation newOperation: NSOperation) {
+    func operation(_ operation: OperationKit.Operation, didProduceOperation newOperation: Foundation.Operation) {
         operationDidProduceNewOperationObserver?(operation, newOperation)
     }
     
-    func operationDidFinish(operation: Operation, errors: [NSError]) {
+    func operationDidFinish(_ operation: OperationKit.Operation, errors: [NSError]) {
         operationDidFinishObserver?(operation, errors)
     }
 }
 
 class UploadOperationTests: OperationKitTests {
     
-    private let operationQueue = OperationQueue()
+    fileprivate let operationQueue = OperationKit.OperationQueue()
     
     override func setUp() {
         super.setUp()
@@ -72,11 +72,11 @@ class UploadOperationTests: OperationKitTests {
     
     func testThatExecuteUploadOperationWithDefaultSessionAndSuccessResponse() {
         /// given
-        let expectation = expectationWithDescription("upload operation should get success response")
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/post")!)
-        request.HTTPMethod = HTTPMethod.POST.rawValue
+        let expectation = self.expectation(description: "upload operation should get success response")
+        let request = NSMutableURLRequest(url: URL(string: "http://httpbin.org/post")!)
+        request.httpMethod = HTTPMethod.POST.rawValue
         let uploadOperation = UploadOperation(request: request)
-        let finishOperation = NSBlockOperation {
+        let finishOperation = BlockOperation {
             expectation.fulfill()
         }
         
@@ -85,19 +85,19 @@ class UploadOperationTests: OperationKitTests {
         operationQueue.addOperations([uploadOperation, finishOperation])
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(uploadOperation.response?.statusCode == 200)
         XCTAssertTrue(uploadOperation.data.length > 0)
     }
     
     func testThatExecuteUploadOperationWithCustomSessionConfigurationAndSuccessResponse() {
         /// given
-        let expectation = expectationWithDescription("upload operation should get success response")
-        let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/post")!)
-        request.HTTPMethod = HTTPMethod.POST.rawValue
+        let expectation = self.expectation(description: "upload operation should get success response")
+        let sessionConfiguration = URLSessionConfiguration.ephemeral
+        let request = NSMutableURLRequest(url: URL(string: "http://httpbin.org/post")!)
+        request.httpMethod = HTTPMethod.POST.rawValue
         let uploadOperation = UploadOperation(request: request, sessionConfiguration: sessionConfiguration)
-        let finishOperation = NSBlockOperation {
+        let finishOperation = BlockOperation {
             expectation.fulfill()
         }
         
@@ -106,18 +106,18 @@ class UploadOperationTests: OperationKitTests {
         operationQueue.addOperations([uploadOperation, finishOperation])
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(uploadOperation.response?.statusCode == 200)
         XCTAssertTrue(uploadOperation.data.length > 0)
     }
     
     func testThatUploadOperationCancellation() {
         /// given
-        let expectation = expectationWithDescription("upload operation should get cancelled")
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/post")!)
-        request.HTTPMethod = HTTPMethod.POST.rawValue
+        let expectation = self.expectation(description: "upload operation should get cancelled")
+        let request = NSMutableURLRequest(url: URL(string: "http://httpbin.org/post")!)
+        request.httpMethod = HTTPMethod.POST.rawValue
         let uploadOperation = UploadOperation(request: request)
-        let finishOperation = NSBlockOperation {
+        let finishOperation = BlockOperation {
             expectation.fulfill()
         }
         
@@ -127,17 +127,17 @@ class UploadOperationTests: OperationKitTests {
         uploadOperation.cancel()
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertNil(uploadOperation.response)
-        XCTAssertTrue(uploadOperation.cancelled)
+        XCTAssertTrue(uploadOperation.isCancelled)
     }
     
     func testThatUploadOperationShouldFailWithUnReachableHost() {
         /// given
-        let expectation = expectationWithDescription("upload operation should fail")
-        let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
-        let request = NSMutableURLRequest(URL: NSURL(string: "/post")!)
-        request.HTTPMethod = HTTPMethod.POST.rawValue
+        let expectation = self.expectation(description: "upload operation should fail")
+        let sessionConfiguration = URLSessionConfiguration.ephemeral
+        let request = NSMutableURLRequest(url: URL(string: "/post")!)
+        request.httpMethod = HTTPMethod.POST.rawValue
         let uploadOperation = UploadOperation(request: request, sessionConfiguration: sessionConfiguration)
         var _errors: [NSError]?
         
@@ -150,11 +150,11 @@ class UploadOperationTests: OperationKitTests {
         operationQueue.addOperation(uploadOperation)
         
         /// then
-        waitForExpectationsWithTimeout(networkTimeout, handler: nil)
+        waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertNil(uploadOperation.response)
         XCTAssertTrue(uploadOperation.data.length == 0)
         
-        if let error = _errors?.first, conditionKey = error.userInfo[OperationConditionKey] as? String  {
+        if let error = _errors?.first, let conditionKey = error.userInfo[OperationConditionKey] as? String  {
             XCTAssertEqual(conditionKey, ReachabilityCondition.name)
         }
         else {

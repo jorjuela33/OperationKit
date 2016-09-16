@@ -28,8 +28,8 @@ public enum HTTPMethod: String {
 }
 
 public enum ParameterEncoding {
-    case JSON
-    case URL
+    case json
+    case url
     
     // MARK: Instance methods
     
@@ -37,42 +37,37 @@ public enum ParameterEncoding {
     ///
     /// URLRequest - The request to have parameters applied
     /// parameters - The parameters to apply
-    func encode(request: NSURLRequest, parameters: AnyObject?) -> (NSURLRequest, NSError?) {
-        guard let
-            // The parameters
-            parameters = parameters,
-            
-            // MutableURLRequest
-            mutableURLRequest = request.mutableCopy() as? NSMutableURLRequest else {
-                
-                return (request, nil)
+    func encode(request: URLRequest, parameters: AnyObject?) -> (URLRequest, NSError?) {
+        guard let parameters = parameters else {
+            return (request, nil)
         }
         
         var encodingError: NSError?
+        var mutableURLRequest = request
         
         switch self {
-        case .JSON:
+        case .json:
             do {
-                let data = try NSJSONSerialization.dataWithJSONObject(parameters, options: .PrettyPrinted)
+                let data = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
                 mutableURLRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                mutableURLRequest.HTTPBody = data
+                mutableURLRequest.httpBody = data
             } catch {
                 encodingError = error as NSError
             }
             
-        case .URL:
+        case .url:
             guard let parameters = parameters as? [String: AnyObject] else { fatalError("array parameters is not implemented yet") }
             
-            if let method = HTTPMethod(rawValue: mutableURLRequest.HTTPMethod) where allowEncodingInURL(method) {
-                if let URLComponents = NSURLComponents(URL: mutableURLRequest.URL!, resolvingAgainstBaseURL: false) {
+            if let method = HTTPMethod(rawValue: mutableURLRequest.httpMethod!), allowEncodingInURL(method) {
+                if var URLComponents = URLComponents(url: mutableURLRequest.url!, resolvingAgainstBaseURL: false) {
                     let percentEncodedQuery = (URLComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + queryString(parameters)
                     URLComponents.percentEncodedQuery = percentEncodedQuery
-                    mutableURLRequest.URL = URLComponents.URL
+                    mutableURLRequest.url = URLComponents.url
                 }
             }
             else {
                 mutableURLRequest.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
-                mutableURLRequest.HTTPBody = queryString(parameters).dataUsingEncoding(NSUTF8StringEncoding)
+                mutableURLRequest.httpBody = queryString(parameters).data(using: String.Encoding.utf8)
             }
             
         }
@@ -82,7 +77,7 @@ public enum ParameterEncoding {
     
     // MARK: Private methods
     
-    private func allowEncodingInURL(method: HTTPMethod) -> Bool {
+    fileprivate func allowEncodingInURL(_ method: HTTPMethod) -> Bool {
         switch method {
         case .GET, .DELETE:
             return true
@@ -91,19 +86,19 @@ public enum ParameterEncoding {
         }
     }
     
-    private func queryString(parameters: [String: AnyObject]) -> String {
+    fileprivate func queryString(_ parameters: [String: AnyObject]) -> String {
         var components: [String] = []
         
-        for key in parameters.keys.sort(<) {
+        for key in parameters.keys.sorted(by: <) {
             guard let component = parameters[key] else { continue }
             
             components += queryComponent(key, component: component)
         }
         
-        return components.joinWithSeparator("&")
+        return components.joined(separator: "&")
     }
     
-    private func queryComponent(key: String, component: AnyObject) -> [String] {
+    fileprivate func queryComponent(_ key: String, component: AnyObject) -> [String] {
         var components: [String] = []
         
         if let dictionary = component as? [String: AnyObject] {
@@ -121,8 +116,8 @@ public enum ParameterEncoding {
         return components
     }
     
-    private func scape(string: String) -> String {
-        let allowedCharacterSet = NSCharacterSet(charactersInString:" =\"#%/<>?@\\^`{}[]|&+").invertedSet
-        return string.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) ?? string
+    fileprivate func scape(_ string: String) -> String {
+        let allowedCharacterSet = CharacterSet(charactersIn:" =\"#%/<>?@\\^`{}[]|&+").inverted
+        return string.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? string
     }
 }
