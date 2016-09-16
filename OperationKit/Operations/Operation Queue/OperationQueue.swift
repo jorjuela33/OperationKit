@@ -50,7 +50,7 @@ open class OperationQueue: Foundation.OperationQueue {
         if let operation = op as? Operation {
             operation.addObserver(self)
             
-            let dependencies = operation.conditions.flatMap({ $0.dependencyForOperation(operation) })
+            let dependencies = operation.conditions.flatMap({ $0.dependency(for: operation) })
             
             for operationDependency in dependencies {
                 operation.addDependency(operationDependency)

@@ -300,7 +300,7 @@ open class Operation: Foundation.Operation {
         
         for (index, condition) in conditions.enumerated() {
             conditionGroup.enter()
-            condition.evaluateForOperation(self) { result in
+            condition.evaluate(for: self) { result in
                 results[index] = result
                 conditionGroup.leave()
             }

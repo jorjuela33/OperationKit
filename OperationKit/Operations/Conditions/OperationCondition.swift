@@ -36,15 +36,15 @@ public protocol OperationCondition {
     static var name: String { get }
     
     /// Returns the operation dependency for the given operation
-    func dependencyForOperation(_ operation: Operation) -> Foundation.Operation?
+    func dependency(for operation: Operation) -> Foundation.Operation?
     
     /// Evaluate the condition, to see if it has been satisfied or not.
-    func evaluateForOperation(_ operation: Operation, completion: (OperationConditionResult) -> Void)
+    func evaluate(for operation: Operation, completion: (OperationConditionResult) -> Void)
 }
 
 public enum OperationConditionResult {
     case satisfied
-    case failed(NSError)
+    case failed(Error)
     
     var error: Error? {
         switch self {

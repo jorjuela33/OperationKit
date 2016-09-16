@@ -37,11 +37,11 @@ public struct ReachabilityCondition: OperationCondition {
     
     // MARK: OperationCondition
     
-    public func dependencyForOperation(_ operation: Operation) -> Foundation.Operation? {
+    public func dependency(for operation: Operation) -> Foundation.Operation? {
         return nil
     }
     
-    public func evaluateForOperation(_ operation: Operation, completion: (OperationConditionResult) -> Void) {
+    public func evaluate(for operation: Operation, completion: (OperationConditionResult) -> Void) {
         ReachabilityManager.requestReachability(host) { reachable in
             guard reachable else {
                 let userInfo = [OperationConditionKey: type(of: self).name, ReachabilityCondition.hostKey: self.host] as [String : Any]
