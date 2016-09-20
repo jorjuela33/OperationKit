@@ -41,7 +41,7 @@ public struct ReachabilityCondition: OperationCondition {
         return nil
     }
     
-    public func evaluate(for operation: Operation, completion: (OperationConditionResult) -> Void) {
+    public func evaluate(for operation: Operation, completion: @escaping (OperationConditionResult) -> Void) {
         ReachabilityManager.requestReachability(host) { reachable in
             guard reachable else {
                 let userInfo = [OperationConditionKey: type(of: self).name, ReachabilityCondition.hostKey: self.host] as [String : Any]
