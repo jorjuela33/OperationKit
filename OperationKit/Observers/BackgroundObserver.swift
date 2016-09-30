@@ -10,10 +10,9 @@ import Foundation
 import UIKit
 
 public final class BackgroundObserver: NSObject {
-    // MARK: Properties
     
-    fileprivate var identifier = UIBackgroundTaskInvalid
-    fileprivate var isInBackground = false
+    private var identifier = UIBackgroundTaskInvalid
+    private var isInBackground = false
     
     // MARK: Initialization
     
@@ -55,7 +54,7 @@ public final class BackgroundObserver: NSObject {
         identifier = UIBackgroundTaskInvalid
     }
     
-    fileprivate final func setupNotifications() {
+    private final func setupNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationDidEnterBackground(_:)),
                                                name: NSNotification.Name.UIApplicationDidEnterBackground,
@@ -67,7 +66,7 @@ public final class BackgroundObserver: NSObject {
                                                object: nil)
     }
     
-    fileprivate func startBackgroundTask() {
+    private func startBackgroundTask() {
         guard identifier == UIBackgroundTaskInvalid else { return }
 
         identifier = UIApplication.shared.beginBackgroundTask(withName: "BackgroundObserver", expirationHandler: {

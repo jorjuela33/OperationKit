@@ -32,11 +32,10 @@ public struct NetworkObserver: ObservableOperation {
 }
 
 private class NetworkIndicatorManager {
-    // MARK: Properties
     
     static let sharedIndicatorController = NetworkIndicatorManager()
-    fileprivate var activityCount = 0
-    fileprivate var cancelled = false
+    private var activityCount = 0
+    private var cancelled = false
     
     // MARK: Instance methods
     
@@ -56,17 +55,17 @@ private class NetworkIndicatorManager {
     
     // MARK: Private methods
     
-    fileprivate func hideIndicator() {
+    private func hideIndicator() {
         cancelled = true
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
-    fileprivate func showIndicator() {
+    private func showIndicator() {
         cancelled = false
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    fileprivate func updateIndicatorVisibility() {
+    private func updateIndicatorVisibility() {
         if activityCount > 0 {
             showIndicator()
         } else {

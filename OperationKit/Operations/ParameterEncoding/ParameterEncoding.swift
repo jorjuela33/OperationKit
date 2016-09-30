@@ -77,7 +77,7 @@ public enum ParameterEncoding {
     
     // MARK: Private methods
     
-    fileprivate func allowEncodingInURL(_ method: HTTPMethod) -> Bool {
+    private func allowEncodingInURL(_ method: HTTPMethod) -> Bool {
         switch method {
         case .GET, .DELETE:
             return true
@@ -86,7 +86,7 @@ public enum ParameterEncoding {
         }
     }
     
-    fileprivate func queryString(_ parameters: [String: AnyObject]) -> String {
+    private func queryString(_ parameters: [String: AnyObject]) -> String {
         var components: [String] = []
         
         for key in parameters.keys.sorted(by: <) {
@@ -98,7 +98,7 @@ public enum ParameterEncoding {
         return components.joined(separator: "&")
     }
     
-    fileprivate func queryComponent(_ key: String, component: AnyObject) -> [String] {
+    private func queryComponent(_ key: String, component: AnyObject) -> [String] {
         var components: [String] = []
         
         if let dictionary = component as? [String: AnyObject] {
@@ -116,7 +116,7 @@ public enum ParameterEncoding {
         return components
     }
     
-    fileprivate func scape(_ string: String) -> String {
+    private func scape(_ string: String) -> String {
         let allowedCharacterSet = CharacterSet(charactersIn:" =\"#%/<>?@\\^`{}[]|&+").inverted
         return string.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? string
     }

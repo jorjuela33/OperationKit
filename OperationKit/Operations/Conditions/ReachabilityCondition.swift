@@ -63,11 +63,11 @@ public enum ReachabilityError: Error {
 }
 
 open class ReachabilityManager {
-    // Properties
-    fileprivate static var reachabilityRefs = [String: SCNetworkReachability]()
-    fileprivate let queue = DispatchQueue(label: "com.operations.reachability", attributes: [])
     
-    open fileprivate(set) var status: ReachabilityStatus = .notReachable
+    private static var reachabilityRefs = [String: SCNetworkReachability]()
+    private let queue = DispatchQueue(label: "com.operations.reachability", attributes: [])
+    
+    open private(set) var status: ReachabilityStatus = .notReachable
     
     public enum ReachabilityStatus {
         case notReachable, reachableViaWiFi, reachableViaWWAN
@@ -79,12 +79,9 @@ open class ReachabilityManager {
         queue.sync {
             var reachabilityFlags: SCNetworkReachabilityFlags = []
             if SCNetworkReachabilityGetFlags(reference, &reachabilityFlags) {
-                if reachabilityFlags.contains(.reachable) && reachabilityFlags.contains(.isWWAN) == false {
-                    self.status = .reachableViaWiFi
-                }
-                else {
-                    self.status = .reachableViaWWAN
-                }
+                guard reachabilityFlags.contains(.reachable) else { return }
+                
+                self.status = reachabilityFlags.contains(.isWWAN) == false ? .reachableViaWiFi : .reachableViaWWAN
             }
             
             if ReachabilityManager.reachabilityRefs.keys.contains(host) == false {

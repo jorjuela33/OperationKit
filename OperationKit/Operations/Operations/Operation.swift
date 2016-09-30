@@ -39,7 +39,6 @@ public protocol ObservableOperation {
 }
 
 open class Operation: Foundation.Operation {
-    // MARK: Properties
     
     fileprivate enum State: Int, Comparable {
         /// The initial state of an `Operation`.
@@ -89,10 +88,10 @@ open class Operation: Foundation.Operation {
         }
     }
     
-    fileprivate var hasFinishedAlready = false
-    fileprivate var internalErrors: [Error] = []
-    fileprivate var lock = NSLock()
-    fileprivate var _state: State = .initialized
+    private var hasFinishedAlready = false
+    private var internalErrors: [Error] = []
+    private var lock = NSLock()
+    private var _state: State = .initialized
     
     fileprivate var state: State {
         get {

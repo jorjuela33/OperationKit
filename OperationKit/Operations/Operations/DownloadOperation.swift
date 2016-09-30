@@ -24,22 +24,22 @@
 import Foundation
 
 open class DownloadOperation: Operation {
-    // MARK: Properties
-    fileprivate let cacheFile: Foundation.URL
+    
+    fileprivate let cacheFile: URL
     fileprivate var downloadTask: URLSessionTask?
-    fileprivate var session: Foundation.URLSession!
+    private var session: Foundation.URLSession!
     
     open var response: HTTPURLResponse? {
         return downloadTask?.response as? HTTPURLResponse
     }
     
-    open var URL: Foundation.URL? {
+    open var url: URL? {
         return downloadTask?.originalRequest?.url
     }
     
     // MARK: Initialization
     
-    public init(request: URLRequest, cacheFile: Foundation.URL, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
+    public init(request: URLRequest, cacheFile: URL, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         self.cacheFile = cacheFile
         
         super.init()

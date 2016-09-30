@@ -25,12 +25,11 @@ import Foundation
 
 open class UploadOperation: Operation {
     
-    // MARK: Properties
     fileprivate var uploadTask: URLSessionDataTask?
-    fileprivate var session: Foundation.URLSession!
+    private var session: URLSession!
     
     /// the data returned for the server
-    open fileprivate(set) var data = NSMutableData()
+    open fileprivate(set) var data = Data()
     
     /// the response from the host
     open var response: HTTPURLResponse? {
@@ -38,7 +37,7 @@ open class UploadOperation: Operation {
     }
     
     /// the URL for this operation
-    open var URL: Foundation.URL? {
+    open var url: URL? {
         return uploadTask?.originalRequest?.url
     }
     
