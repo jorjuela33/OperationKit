@@ -14,7 +14,6 @@
 		CF35B7651D38176900F74678 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */; };
 		CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75C1D38176900F74678 /* OperationQueue.swift */; };
 		CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75E1D38176900F74678 /* DownloadOperation.swift */; };
-		CF35B7681D38176900F74678 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75F1D38176900F74678 /* GroupOperation.swift */; };
 		CF35B7691D38176900F74678 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7601D38176900F74678 /* Operation.swift */; };
 		CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7611D38176900F74678 /* UploadOperation.swift */; };
 		CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7631D38176900F74678 /* ParameterEncoding.swift */; };
@@ -24,6 +23,7 @@
 		CFF022761D514E4400421603 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022751D514E4400421603 /* TimeoutObserver.swift */; };
 		CFF0227A1D514EA900421603 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022781D514EA900421603 /* BackgroundObserver.swift */; };
 		CFF0227B1D514EA900421603 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022791D514EA900421603 /* NetworkObserver.swift */; };
+		CFF4F2201DE01F5D00775B48 /* TaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF4F21F1DE01F5D00775B48 /* TaskOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +47,6 @@
 		CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
 		CF35B75C1D38176900F74678 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		CF35B75E1D38176900F74678 /* DownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
-		CF35B75F1D38176900F74678 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
 		CF35B7601D38176900F74678 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		CF35B7611D38176900F74678 /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
 		CF35B7631D38176900F74678 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
@@ -57,6 +56,7 @@
 		CFF022751D514E4400421603 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Observers/TimeoutObserver.swift; sourceTree = "<group>"; };
 		CFF022781D514EA900421603 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundObserver.swift; path = Observers/BackgroundObserver.swift; sourceTree = "<group>"; };
 		CFF022791D514EA900421603 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkObserver.swift; path = Observers/NetworkObserver.swift; sourceTree = "<group>"; };
+		CFF4F21F1DE01F5D00775B48 /* TaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,9 +143,9 @@
 			isa = PBXGroup;
 			children = (
 				CF35B75E1D38176900F74678 /* DownloadOperation.swift */,
-				CF35B75F1D38176900F74678 /* GroupOperation.swift */,
 				CF35B7601D38176900F74678 /* Operation.swift */,
 				CF35B7611D38176900F74678 /* UploadOperation.swift */,
+				CFF4F21F1DE01F5D00775B48 /* TaskOperation.swift */,
 			);
 			name = Operations;
 			path = Operations/Operations;
@@ -294,10 +294,10 @@
 				CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */,
 				CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */,
 				CFF0227A1D514EA900421603 /* BackgroundObserver.swift in Sources */,
+				CFF4F2201DE01F5D00775B48 /* TaskOperation.swift in Sources */,
 				CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */,
 				CF35B7641D38176900F74678 /* OperationCondition.swift in Sources */,
 				CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */,
-				CF35B7681D38176900F74678 /* GroupOperation.swift in Sources */,
 				CF35B7691D38176900F74678 /* Operation.swift in Sources */,
 				CFF022761D514E4400421603 /* TimeoutObserver.swift in Sources */,
 				CFF0227B1D514EA900421603 /* NetworkObserver.swift in Sources */,
