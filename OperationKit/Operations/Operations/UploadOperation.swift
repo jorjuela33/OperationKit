@@ -23,47 +23,11 @@
 
 import Foundation
 
-open class UploadOperation: Operation {
-    
-    fileprivate var uploadTask: URLSessionDataTask?
-    private var session: URLSession!
-    
-    /// the data returned for the server
-    open fileprivate(set) var data = Data()
-    
-    /// the response from the host
-    open var response: HTTPURLResponse? {
-        return uploadTask?.response as? HTTPURLResponse
-    }
-    
-    /// the URL for this operation
-    open var url: URL? {
-        return uploadTask?.originalRequest?.url
-    }
-    
-    // MARK: Initialization
-    
-    public init(request: URLRequest, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
-        super.init()
-        
-        session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-        uploadTask = session.dataTask(with: request)
-        addCondition(ReachabilityCondition(host: request.url!))
-        
-        name = request.url?.absoluteString ?? "Upload operation"
-    }
-    
-    // MARK: Overrided methods
-    
-    override open func execute() {
-        uploadTask?.resume()
-    }
-    
-    override open func finished(_ errors: [Error]) {
-        session.invalidateAndCancel()
-    }
-}
+open class UploadOperation: URLRequestOperation { }
 
+// TODO: Implement REAL UPLOAD OPERATION
+
+/*
 extension UploadOperation: URLSessionDataDelegate {
     
     // MARK: NSURLSessionDataDelegate
@@ -92,3 +56,4 @@ extension UploadOperation: URLSessionDataDelegate {
         finishWithError(error)
     }
 }
+*/

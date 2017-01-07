@@ -23,42 +23,19 @@
 
 import Foundation
 
-open class DownloadOperation: Operation {
+open class DownloadOperation: URLRequestOperation {
     
     fileprivate let cacheFile: URL
-    fileprivate var downloadTask: URLSessionTask?
-    private var session: Foundation.URLSession!
-    
-    open var response: HTTPURLResponse? {
-        return downloadTask?.response as? HTTPURLResponse
-    }
-    
-    open var url: URL? {
-        return downloadTask?.originalRequest?.url
-    }
     
     // MARK: Initialization
     
     public init(request: URLRequest, cacheFile: URL, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         self.cacheFile = cacheFile
         
-        super.init()
-        
-        session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-        downloadTask = session.downloadTask(with: request)
-        addCondition(ReachabilityCondition(host: request.url!))
+        super.init(request: request, sessionConfiguration: sessionConfiguration)
         
         name = request.url?.absoluteString
-    }
-    
-    // MARK: Overrided methods
-    
-    override open func execute() {
-        downloadTask?.resume()
-    }
-    
-    override open func finished(_ errors: [Error]) {
-        session.invalidateAndCancel()
+        sessionTask = session.downloadTask(with: request)
     }
 }
 
@@ -66,38 +43,13 @@ extension DownloadOperation: URLSessionDownloadDelegate {
     
     // MARK: NSURLSessionDownloadDelegate
     
-    public func urlSession(_ session: URLSession,
-                           downloadTask: URLSessionDownloadTask,
-                           didFinishDownloadingTo location: URL) {
-
-        do {
-            try FileManager.default.removeItem(at: cacheFile)
-        } catch { }
+    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        try? FileManager.default.removeItem(at: cacheFile)
             
         do {
             try FileManager.default.moveItem(at: location, to: cacheFile)
         } catch {
             finishWithError(error)
         }
-    }
-    
-    public func URLSession(_ session: Foundation.URLSession,
-                    dataTask: URLSessionDataTask,
-                    didReceiveResponse response: URLResponse,
-                    completionHandler: (Foundation.URLSession.ResponseDisposition) -> Void) {
-            
-            guard isCancelled == false else {
-                finish()
-                downloadTask?.cancel()
-                return
-            }
-            
-            completionHandler(.allow)
-    }
-    
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard isCancelled == false else { return }
-        
-        finishWithError(error)
     }
 }
