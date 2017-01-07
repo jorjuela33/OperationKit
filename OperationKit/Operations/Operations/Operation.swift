@@ -38,6 +38,14 @@ public protocol ObservableOperation {
     func operationDidFinish(_ operation: Operation, errors: [Error])
 }
 
+public protocol OperationStateObserver: ObservableOperation {
+    /// Invoked when `Operation.resume(_:)` is executed.
+    func operationDidResume(_ operation: Operation)
+    
+    /// Invoked when `Operation.suspend(_:)` is executed.
+    func operationDidSuspend(_ operation: Operation)
+}
+
 open class Operation: Foundation.Operation {
     
     fileprivate enum State: Int, Comparable {
@@ -173,14 +181,18 @@ open class Operation: Foundation.Operation {
     public final func addCondition(_ operationCondition: OperationCondition) {
         assert(state < .evaluatingConditions)
         
+        lock.lock()
         conditions.append(operationCondition)
+        lock.unlock()
     }
     
     /// Adds a new observer for the operation
     open func addObserver(_ observer: ObservableOperation) {
         assert(state < .executing)
         
+        lock.lock()
         observers.append(observer)
+        lock.unlock()
     }
     
     /// Cancels the current request

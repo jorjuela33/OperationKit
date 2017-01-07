@@ -21,17 +21,6 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-public protocol GroupOperationObservable: ObservableOperation {
-    /// Invoked when `GroupOperation.cancel(_:)` is executed.
-    func groupOperationDidCancel(_ groupOperation: GroupOperation)
-    
-    /// Invoked when `GroupOperation.resume(_:)` is executed.
-    func groupOperationDidResume(_ groupOperation: GroupOperation)
-    
-    /// Invoked when `GroupOperation.suspend(_:)` is executed.
-    func groupOperationDidSuspend(_ groupOperation: GroupOperation)
-}
-
 open class GroupOperation: OperationKit.Operation {
     
     fileprivate let internalQueue = OperationKit.OperationQueue()
@@ -70,9 +59,6 @@ open class GroupOperation: OperationKit.Operation {
         }
     }
     
-    /// the observers for the task
-    fileprivate var _observers: [GroupOperationObservable] = []
-    
     // MARK: Initialization
     
     public init(operations: [Foundation.Operation]) {
@@ -88,11 +74,6 @@ open class GroupOperation: OperationKit.Operation {
     }
     
     // MARK: Instance methods
-    
-    /// adds a new observer to the operation task
-    public final func add(observer: GroupOperationObservable) {
-        _observers.append(observer)
-    }
     
     /// Adds the operation to the internal queue
     open func addOperation(_ operation: Foundation.Operation) {
@@ -121,9 +102,7 @@ open class GroupOperation: OperationKit.Operation {
         
         state = .cancelled
         internalQueue.cancelAllOperations()
-        for observer in _observers {
-            observer.groupOperationDidCancel(self)
-        }
+        super.cancel()
     }
     
     /// adds a new operation to be executed when the operation finish
@@ -148,8 +127,10 @@ open class GroupOperation: OperationKit.Operation {
         
         state = .running
         internalQueue.isSuspended = false
-        for observer in _observers {
-            observer.groupOperationDidResume(self)
+        for observer in observers {
+            guard let ob = observer as? OperationStateObserver else { continue }
+            
+            ob.operationDidResume(self)
         }
         
         return self
@@ -162,8 +143,10 @@ open class GroupOperation: OperationKit.Operation {
         
         state = .suspended
         internalQueue.isSuspended = true
-        for observer in _observers {
-            observer.groupOperationDidSuspend(self)
+        for observer in observers {
+            guard let ob = observer as? OperationStateObserver else { continue }
+            
+            ob.operationDidSuspend(self)
         }
         
         return self

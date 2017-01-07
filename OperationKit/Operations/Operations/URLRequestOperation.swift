@@ -43,6 +43,23 @@ open class URLRequestOperation: Operation {
     
     // MARK: Instance methods
     
+    /// Resume the task.
+    @discardableResult
+    public func resume() -> Self {
+        sessionTask?.resume()
+        return self
+    }
+    
+    /// Suspend the task.
+    ///
+    /// Suspending a task preventing from continuing to
+    /// load data.
+    @discardableResult
+    public func suspend() -> Self {
+        sessionTask?.suspend()
+        return self
+    }
+    
     /// Validates the request, using the specified closure.
     ///
     /// validationBlock - A closure to validate the request.
