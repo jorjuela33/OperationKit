@@ -10,7 +10,7 @@ import Foundation
 
 public struct JSONResponseSerializer: ResponseSerializer {
     
-    private let readingOptions: JSONSerialization.ReadingOptions
+    private var readingOptions: JSONSerialization.ReadingOptions
     
     // MARK: Initialization
     

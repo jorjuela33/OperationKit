@@ -20,15 +20,17 @@
 		CF35B7701D381BE100F74678 /* DownloadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */; };
 		CF35B7711D381BE100F74678 /* OperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76E1D381BE100F74678 /* OperationTests.swift */; };
 		CF35B7721D381BE100F74678 /* UploadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */; };
-		CF943FC01E216B4300E9EEF3 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBB1E216B4300E9EEF3 /* DownloadOperation.swift */; };
+		CF943FC01E216B4300E9EEF3 /* DownloadRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBB1E216B4300E9EEF3 /* DownloadRequestOperation.swift */; };
 		CF943FC11E216B4300E9EEF3 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */; };
 		CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBD1E216B4300E9EEF3 /* Operation.swift */; };
-		CF943FC31E216B4300E9EEF3 /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBE1E216B4300E9EEF3 /* UploadOperation.swift */; };
+		CF943FC31E216B4300E9EEF3 /* UploadRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBE1E216B4300E9EEF3 /* UploadRequestOperation.swift */; };
 		CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */; };
 		CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FC51E216B5600E9EEF3 /* Protocols.swift */; };
 		CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */; };
 		CF943FCC1E217A1600E9EEF3 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCB1E217A1600E9EEF3 /* Result.swift */; };
 		CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */; };
+		CF943FD01E21892800E9EEF3 /* DataRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCF1E21892800E9EEF3 /* DataRequestOperation.swift */; };
+		CF943FD21E21900300E9EEF3 /* StringResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,15 +60,17 @@
 		CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperationTests.swift; sourceTree = "<group>"; };
 		CF35B76E1D381BE100F74678 /* OperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTests.swift; sourceTree = "<group>"; };
 		CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperationTests.swift; sourceTree = "<group>"; };
-		CF943FBB1E216B4300E9EEF3 /* DownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
+		CF943FBB1E216B4300E9EEF3 /* DownloadRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadRequestOperation.swift; sourceTree = "<group>"; };
 		CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
 		CF943FBD1E216B4300E9EEF3 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		CF943FBE1E216B4300E9EEF3 /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
+		CF943FBE1E216B4300E9EEF3 /* UploadRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRequestOperation.swift; sourceTree = "<group>"; };
 		CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestOperation.swift; sourceTree = "<group>"; };
 		CF943FC51E216B5600E9EEF3 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONResponseSerializer.swift; path = "Response Serializers/JSONResponseSerializer.swift"; sourceTree = "<group>"; };
 		CF943FCB1E217A1600E9EEF3 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Result/Result.swift; sourceTree = "<group>"; };
 		CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataResponseSerializer.swift; path = "Response Serializers/DataResponseSerializer.swift"; sourceTree = "<group>"; };
+		CF943FCF1E21892800E9EEF3 /* DataRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringResponseSerializer.swift; path = "Response Serializers/StringResponseSerializer.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,10 +122,11 @@
 		CF140CFB1E20471F00B9849C /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				CF943FBB1E216B4300E9EEF3 /* DownloadOperation.swift */,
+				CF943FBB1E216B4300E9EEF3 /* DownloadRequestOperation.swift */,
 				CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */,
 				CF943FBD1E216B4300E9EEF3 /* Operation.swift */,
-				CF943FBE1E216B4300E9EEF3 /* UploadOperation.swift */,
+				CF943FBE1E216B4300E9EEF3 /* UploadRequestOperation.swift */,
+				CF943FCF1E21892800E9EEF3 /* DataRequestOperation.swift */,
 				CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */,
 			);
 			path = Operations;
@@ -203,6 +208,7 @@
 			children = (
 				CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */,
 				CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */,
+				CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */,
 			);
 			name = "Response Serializers";
 			sourceTree = "<group>";
@@ -328,15 +334,17 @@
 				CF140D051E20471F00B9849C /* BackgroundObserver.swift in Sources */,
 				CF140D081E20471F00B9849C /* OperationQueue.swift in Sources */,
 				CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */,
+				CF943FD01E21892800E9EEF3 /* DataRequestOperation.swift in Sources */,
 				CF140D041E20471F00B9849C /* ReachabilityCondition.swift in Sources */,
 				CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */,
-				CF943FC01E216B4300E9EEF3 /* DownloadOperation.swift in Sources */,
+				CF943FC01E216B4300E9EEF3 /* DownloadRequestOperation.swift in Sources */,
+				CF943FD21E21900300E9EEF3 /* StringResponseSerializer.swift in Sources */,
 				CF943FCC1E217A1600E9EEF3 /* Result.swift in Sources */,
 				CF943FC11E216B4300E9EEF3 /* GroupOperation.swift in Sources */,
 				CF140D0D1E20471F00B9849C /* ParameterEncoding.swift in Sources */,
 				CF140D071E20471F00B9849C /* TimeoutObserver.swift in Sources */,
 				CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */,
-				CF943FC31E216B4300E9EEF3 /* UploadOperation.swift in Sources */,
+				CF943FC31E216B4300E9EEF3 /* UploadRequestOperation.swift in Sources */,
 				CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */,
 				CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */,
 				CF140D061E20471F00B9849C /* NetworkObserver.swift in Sources */,

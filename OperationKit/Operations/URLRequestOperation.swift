@@ -10,19 +10,16 @@ import Foundation
 
 open class URLRequestOperation: Operation {
    
-    public typealias ValidationBlock = (URLRequest?, HTTPURLResponse, Data?) -> Error?
+    public typealias ValidationBlock = (URLRequest?, HTTPURLResponse) -> Error?
     
     private let acceptableStatusCodes = Array(200..<300)
     fileprivate var aggregatedErrors: [Error] = []
-    fileprivate var finishOperation: BlockOperation!
+    fileprivate var finishingOperation: BlockOperation!
     fileprivate let operationQueue = Foundation.OperationQueue()
     fileprivate var validations: [() -> Error?] = []
     
     internal var session: URLSession!
     internal var sessionTask: URLSessionTask!
-    
-    /// the data returned for the server
-    open fileprivate(set) var data = Data()
     
     /// the response from the host
     open var response: HTTPURLResponse? {
@@ -45,13 +42,27 @@ open class URLRequestOperation: Operation {
         session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         sessionTask = session.dataTask(with: request)
         addCondition(ReachabilityCondition(host: request.url!))
-        finishOperation.addExecutionBlock { [unowned self] in
+        finishingOperation.addExecutionBlock { [unowned self] in
             self.finish(self.aggregatedErrors)
         }
-        operationQueue.addOperation(finishOperation)
+        operationQueue.addOperation(finishingOperation)
     }
     
     // MARK: Instance methods
+    
+    /// adds a new operation to be executed when 
+    /// the current operation is finishing
+    func addSubOperation(_ blockOperation: BlockOperation) {
+        assert(isFinished == false && isCancelled == false)
+        
+        finishingOperation.addDependency(blockOperation)
+        operationQueue.addOperation(blockOperation)
+    }
+    
+    /// agregate a new error in the array of errors
+    func aggregate(_ error: Error) {
+        aggregatedErrors.append(error)
+    }
     
     /// Resume the task.
     @discardableResult
@@ -82,7 +93,7 @@ open class URLRequestOperation: Operation {
         let _validationBlock: (() -> Error?) = { [unowned self] in
             guard let response = self.response else { return nil }
             
-            return validationBlock(self.sessionTask?.originalRequest, response, self.data)
+            return validationBlock(self.sessionTask?.originalRequest, response)
         }
         
         validations.append(_validationBlock)
@@ -102,7 +113,7 @@ open class URLRequestOperation: Operation {
     /// acceptableStatusCodes - The range of acceptable status codes.
     @discardableResult
     open func validate<S: Sequence>(acceptableStatusCodes: S) -> Self where S.Iterator.Element == Int {
-        return validate {[unowned self] _, response, _ in
+        return validate {[unowned self] _, response in
             return self.validate(acceptableStatusCodes: acceptableStatusCodes, response: response)
         }
     }
@@ -138,69 +149,9 @@ open class URLRequestOperation: Operation {
     }
 }
 
-extension URLRequestOperation {
+extension URLRequestOperation: URLSessionTaskDelegate {
     
-    // MARK: Response Serialization
-    
-    /// Returns a JSON object contained in a result type constructed from the response data using `JSONSerialization`
-    /// with the specified reading options.
-    public func responseJSON(readingOptions: JSONSerialization.ReadingOptions = .allowFragments, completionHandler: @escaping ((Result<Any>) -> ())) -> Self {
-        let blockOperation = BlockOperation { [unowned self] in
-            let result: Result<Any>
-            
-            if let error = self.aggregatedErrors.first {
-                result = .failure(error)
-            }
-            else {
-                result = JSONResponseSerializer(readingOptions: readingOptions).serialize(request: self.sessionTask.originalRequest, response: self.response, data: self.data)
-            }
-            
-            DispatchQueue.main.async {
-                completionHandler(result)
-            }
-        }
-        
-        finishOperation.addDependency(blockOperation)
-        operationQueue.addOperation(blockOperation)
-        return self
-    }
-    
-    /// Adds a handler to be called once the request has finished.
-    public func responseData(_ completionHandler: @escaping ((Result<Data>) -> ())) -> Self {
-        let blockOperation = BlockOperation { [unowned self] in
-            let result = DataResponseSerializer().serialize(request: self.sessionTask.originalRequest, response: self.response, data: self.data)
-            DispatchQueue.main.async {
-                completionHandler(result)
-            }
-        }
-        
-        finishOperation.addDependency(blockOperation)
-        operationQueue.addOperation(blockOperation)
-        return self
-    }
-}
-
-extension URLRequestOperation: URLSessionDataDelegate {
-    
-    // MARK: NSURLSessionDataDelegate
-    
-    public func urlSession(_ session: URLSession,
-                           dataTask: URLSessionDataTask,
-                           didReceive response: URLResponse,
-                           completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        
-        guard isCancelled == false else {
-            finish()
-            sessionTask?.cancel()
-            return
-        }
-        
-        completionHandler(.allow)
-    }
-    
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        self.data.append(data)
-    }
+    // MARK: URLSessionTaskDelegate
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard isCancelled == false else { return }

@@ -1,5 +1,5 @@
 //
-//  DownloadOperation.swift
+//  UploadOperation.swift
 //
 //  Copyright © 2016. All rights reserved.
 //
@@ -23,30 +23,37 @@
 
 import Foundation
 
-open class DownloadOperation: URLRequestOperation {
-    
-    fileprivate let cacheFile: URL
-    
-    // MARK: Initialization
-    
-    public init(request: URLRequest, cacheFile: URL, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
-        self.cacheFile = cacheFile
-        
-        super.init(request: request, sessionConfiguration: sessionConfiguration)
-    }
-}
+open class UploadRequestOperation: URLRequestOperation { }
 
-extension DownloadOperation: URLSessionDownloadDelegate {
+// TODO: Implement REAL UPLOAD OPERATION
+
+/*
+extension UploadOperation: URLSessionDataDelegate {
     
-    // MARK: NSURLSessionDownloadDelegate
+    // MARK: NSURLSessionDataDelegate
     
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        try? FileManager.default.removeItem(at: cacheFile)
+    public func urlSession(_ session: URLSession,
+                    dataTask: URLSessionDataTask,
+                    didReceive response: URLResponse,
+                    completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
             
-        do {
-            try FileManager.default.moveItem(at: location, to: cacheFile)
-        } catch {
-            finishWithError(error)
-        }
+            guard isCancelled == false else {
+                finish()
+                uploadTask?.cancel()
+                return
+            }
+            
+            completionHandler(.allow)
+    }
+    
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        self.data.append(data)
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard isCancelled == false else { return }
+        
+        finishWithError(error)
     }
 }
+*/
