@@ -33,9 +33,6 @@ open class DownloadOperation: URLRequestOperation {
         self.cacheFile = cacheFile
         
         super.init(request: request, sessionConfiguration: sessionConfiguration)
-        
-        name = request.url?.absoluteString
-        sessionTask = session.downloadTask(with: request)
     }
 }
 

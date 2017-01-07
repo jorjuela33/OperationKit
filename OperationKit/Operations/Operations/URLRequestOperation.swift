@@ -16,28 +16,29 @@ open class URLRequestOperation: Operation {
     fileprivate var validations: [() -> Error?] = []
     
     internal var session: URLSession!
-    internal var sessionTask: URLSessionTask?
+    internal var sessionTask: URLSessionTask!
     
     /// the data returned for the server
     open fileprivate(set) var data = Data()
     
     /// the response from the host
     open var response: HTTPURLResponse? {
-        return sessionTask?.response as? HTTPURLResponse
+        return sessionTask.response as? HTTPURLResponse
     }
     
     /// the URL for this operation
     open var url: URL? {
-        return sessionTask?.originalRequest?.url
+        return sessionTask.originalRequest?.url
     }
     
     // MARK: Initialization
     
-    init(request: URLRequest, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
+    public init(request: URLRequest, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         super.init()
         
         name = request.url?.absoluteString
         session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+        sessionTask = session.dataTask(with: request)
         addCondition(ReachabilityCondition(host: request.url!))
     }
     
@@ -46,6 +47,8 @@ open class URLRequestOperation: Operation {
     /// Resume the task.
     @discardableResult
     public func resume() -> Self {
+        assert(isExecuting == true)
+        
         sessionTask?.resume()
         return self
     }
@@ -56,6 +59,8 @@ open class URLRequestOperation: Operation {
     /// load data.
     @discardableResult
     public func suspend() -> Self {
+        assert(isExecuting == true)
+        
         sessionTask?.suspend()
         return self
     }
