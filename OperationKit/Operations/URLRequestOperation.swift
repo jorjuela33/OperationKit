@@ -13,6 +13,9 @@ open class URLRequestOperation: Operation {
     public typealias ValidationBlock = (URLRequest?, HTTPURLResponse, Data?) -> Error?
     
     private let acceptableStatusCodes = Array(200..<300)
+    fileprivate var aggregatedErrors: [Error] = []
+    fileprivate var finishOperation: BlockOperation!
+    fileprivate let operationQueue = Foundation.OperationQueue()
     fileprivate var validations: [() -> Error?] = []
     
     internal var session: URLSession!
@@ -37,9 +40,15 @@ open class URLRequestOperation: Operation {
         super.init()
         
         name = request.url?.absoluteString
+        operationQueue.maxConcurrentOperationCount = 1
+        operationQueue.isSuspended = true
         session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         sessionTask = session.dataTask(with: request)
         addCondition(ReachabilityCondition(host: request.url!))
+        finishOperation.addExecutionBlock { [unowned self] in
+            self.finish(self.aggregatedErrors)
+        }
+        operationQueue.addOperation(finishOperation)
     }
     
     // MARK: Instance methods
@@ -110,6 +119,14 @@ open class URLRequestOperation: Operation {
     
     // MARK: Private methods
     
+    fileprivate final func executeValidations() {
+        for validation in validations {
+            guard let error = validation() else { continue }
+            
+            aggregatedErrors.append(error)
+        }
+    }
+    
     private final func validate<S: Sequence>(acceptableStatusCodes: S, response: HTTPURLResponse) -> Error? where S.Iterator.Element == Int {
         var error: NSError?
         if !acceptableStatusCodes.contains(response.statusCode) {
@@ -118,6 +135,48 @@ open class URLRequestOperation: Operation {
         }
         
         return error
+    }
+}
+
+extension URLRequestOperation {
+    
+    // MARK: Response Serialization
+    
+    /// Returns a JSON object contained in a result type constructed from the response data using `JSONSerialization`
+    /// with the specified reading options.
+    public func responseJSON(readingOptions: JSONSerialization.ReadingOptions = .allowFragments, completionHandler: @escaping ((Result<Any>) -> ())) -> Self {
+        let blockOperation = BlockOperation { [unowned self] in
+            let result: Result<Any>
+            
+            if let error = self.aggregatedErrors.first {
+                result = .failure(error)
+            }
+            else {
+                result = JSONResponseSerializer(readingOptions: readingOptions).serialize(request: self.sessionTask.originalRequest, response: self.response, data: self.data)
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler(result)
+            }
+        }
+        
+        finishOperation.addDependency(blockOperation)
+        operationQueue.addOperation(blockOperation)
+        return self
+    }
+    
+    /// Adds a handler to be called once the request has finished.
+    public func responseData(_ completionHandler: @escaping ((Result<Data>) -> ())) -> Self {
+        let blockOperation = BlockOperation { [unowned self] in
+            let result = DataResponseSerializer().serialize(request: self.sessionTask.originalRequest, response: self.response, data: self.data)
+            DispatchQueue.main.async {
+                completionHandler(result)
+            }
+        }
+        
+        finishOperation.addDependency(blockOperation)
+        operationQueue.addOperation(blockOperation)
+        return self
     }
 }
 
@@ -146,17 +205,17 @@ extension URLRequestOperation: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard isCancelled == false else { return }
         
-        var errors: [Error] = []
         if let error = error {
-            errors.append(error)
+            aggregatedErrors.append(error)
         }
         
         for validation in validations {
             guard let error = validation() else { continue }
             
-            errors.append(error)
+            aggregatedErrors.append(error)
         }
         
-        finish(errors)
+        executeValidations()
+        operationQueue.isSuspended = false
     }
 }

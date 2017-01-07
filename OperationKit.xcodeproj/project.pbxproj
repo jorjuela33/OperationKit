@@ -13,10 +13,6 @@
 		CF140D061E20471F00B9849C /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF71E20471F00B9849C /* NetworkObserver.swift */; };
 		CF140D071E20471F00B9849C /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF81E20471F00B9849C /* TimeoutObserver.swift */; };
 		CF140D081E20471F00B9849C /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CFA1E20471F00B9849C /* OperationQueue.swift */; };
-		CF140D091E20471F00B9849C /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CFD1E20471F00B9849C /* DownloadOperation.swift */; };
-		CF140D0A1E20471F00B9849C /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CFE1E20471F00B9849C /* Operation.swift */; };
-		CF140D0B1E20471F00B9849C /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CFF1E20471F00B9849C /* GroupOperation.swift */; };
-		CF140D0C1E20471F00B9849C /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140D001E20471F00B9849C /* UploadOperation.swift */; };
 		CF140D0D1E20471F00B9849C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140D021E20471F00B9849C /* ParameterEncoding.swift */; };
 		CF35B7421D3814F500F74678 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = CF35B7411D3814F500F74678 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CF35B7491D3814F500F74678 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF35B73E1D3814F500F74678 /* OperationKit.framework */; };
@@ -24,7 +20,15 @@
 		CF35B7701D381BE100F74678 /* DownloadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */; };
 		CF35B7711D381BE100F74678 /* OperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76E1D381BE100F74678 /* OperationTests.swift */; };
 		CF35B7721D381BE100F74678 /* UploadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */; };
-		CF943FB91E20A19900E9EEF3 /* URLRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FB81E20A19900E9EEF3 /* URLRequestOperation.swift */; };
+		CF943FC01E216B4300E9EEF3 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBB1E216B4300E9EEF3 /* DownloadOperation.swift */; };
+		CF943FC11E216B4300E9EEF3 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */; };
+		CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBD1E216B4300E9EEF3 /* Operation.swift */; };
+		CF943FC31E216B4300E9EEF3 /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBE1E216B4300E9EEF3 /* UploadOperation.swift */; };
+		CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */; };
+		CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FC51E216B5600E9EEF3 /* Protocols.swift */; };
+		CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */; };
+		CF943FCC1E217A1600E9EEF3 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCB1E217A1600E9EEF3 /* Result.swift */; };
+		CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,10 +48,6 @@
 		CF140CF71E20471F00B9849C /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		CF140CF81E20471F00B9849C /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
 		CF140CFA1E20471F00B9849C /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
-		CF140CFD1E20471F00B9849C /* DownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
-		CF140CFE1E20471F00B9849C /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		CF140CFF1E20471F00B9849C /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
-		CF140D001E20471F00B9849C /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
 		CF140D021E20471F00B9849C /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		CF35B73E1D3814F500F74678 /* OperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF35B7411D3814F500F74678 /* OperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationKit.h; sourceTree = "<group>"; };
@@ -58,7 +58,15 @@
 		CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperationTests.swift; sourceTree = "<group>"; };
 		CF35B76E1D381BE100F74678 /* OperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTests.swift; sourceTree = "<group>"; };
 		CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperationTests.swift; sourceTree = "<group>"; };
-		CF943FB81E20A19900E9EEF3 /* URLRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FBB1E216B4300E9EEF3 /* DownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
+		CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
+		CF943FBD1E216B4300E9EEF3 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		CF943FBE1E216B4300E9EEF3 /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
+		CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FC51E216B5600E9EEF3 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONResponseSerializer.swift; path = "Response Serializers/JSONResponseSerializer.swift"; sourceTree = "<group>"; };
+		CF943FCB1E217A1600E9EEF3 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Result/Result.swift; sourceTree = "<group>"; };
+		CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataResponseSerializer.swift; path = "Response Serializers/DataResponseSerializer.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,19 +118,11 @@
 		CF140CFB1E20471F00B9849C /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				CF140CFC1E20471F00B9849C /* Operations */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
-		CF140CFC1E20471F00B9849C /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				CF140CFD1E20471F00B9849C /* DownloadOperation.swift */,
-				CF140CFF1E20471F00B9849C /* GroupOperation.swift */,
-				CF140CFE1E20471F00B9849C /* Operation.swift */,
-				CF943FB81E20A19900E9EEF3 /* URLRequestOperation.swift */,
-				CF140D001E20471F00B9849C /* UploadOperation.swift */,
+				CF943FBB1E216B4300E9EEF3 /* DownloadOperation.swift */,
+				CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */,
+				CF943FBD1E216B4300E9EEF3 /* Operation.swift */,
+				CF943FBE1E216B4300E9EEF3 /* UploadOperation.swift */,
+				CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -169,8 +169,11 @@
 				CF140CF91E20471F00B9849C /* Operation Queue */,
 				CF140CFB1E20471F00B9849C /* Operations */,
 				CF140D011E20471F00B9849C /* ParameterEncoding */,
-				CF35B7411D3814F500F74678 /* OperationKit.h */,
+				CF943FC71E216DA200E9EEF3 /* Response Serializers */,
+				CF943FCA1E217A0600E9EEF3 /* Result */,
 				CF35B7431D3814F500F74678 /* Info.plist */,
+				CF35B7411D3814F500F74678 /* OperationKit.h */,
+				CF943FC51E216B5600E9EEF3 /* Protocols.swift */,
 			);
 			path = OperationKit;
 			sourceTree = "<group>";
@@ -193,6 +196,23 @@
 				CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */,
 			);
 			path = Operations;
+			sourceTree = "<group>";
+		};
+		CF943FC71E216DA200E9EEF3 /* Response Serializers */ = {
+			isa = PBXGroup;
+			children = (
+				CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */,
+				CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */,
+			);
+			name = "Response Serializers";
+			sourceTree = "<group>";
+		};
+		CF943FCA1E217A0600E9EEF3 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				CF943FCB1E217A1600E9EEF3 /* Result.swift */,
+			);
+			name = Result;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,16 +327,20 @@
 			files = (
 				CF140D051E20471F00B9849C /* BackgroundObserver.swift in Sources */,
 				CF140D081E20471F00B9849C /* OperationQueue.swift in Sources */,
-				CF140D091E20471F00B9849C /* DownloadOperation.swift in Sources */,
-				CF140D0A1E20471F00B9849C /* Operation.swift in Sources */,
+				CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */,
 				CF140D041E20471F00B9849C /* ReachabilityCondition.swift in Sources */,
-				CF943FB91E20A19900E9EEF3 /* URLRequestOperation.swift in Sources */,
+				CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */,
+				CF943FC01E216B4300E9EEF3 /* DownloadOperation.swift in Sources */,
+				CF943FCC1E217A1600E9EEF3 /* Result.swift in Sources */,
+				CF943FC11E216B4300E9EEF3 /* GroupOperation.swift in Sources */,
 				CF140D0D1E20471F00B9849C /* ParameterEncoding.swift in Sources */,
 				CF140D071E20471F00B9849C /* TimeoutObserver.swift in Sources */,
+				CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */,
+				CF943FC31E216B4300E9EEF3 /* UploadOperation.swift in Sources */,
+				CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */,
+				CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */,
 				CF140D061E20471F00B9849C /* NetworkObserver.swift in Sources */,
 				CF140D031E20471F00B9849C /* OperationCondition.swift in Sources */,
-				CF140D0C1E20471F00B9849C /* UploadOperation.swift in Sources */,
-				CF140D0B1E20471F00B9849C /* GroupOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
