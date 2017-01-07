@@ -181,18 +181,14 @@ open class Operation: Foundation.Operation {
     public final func addCondition(_ operationCondition: OperationCondition) {
         assert(state < .evaluatingConditions)
         
-        lock.lock()
         conditions.append(operationCondition)
-        lock.unlock()
     }
     
     /// Adds a new observer for the operation
     open func addObserver(_ observer: ObservableOperation) {
         assert(state < .executing)
         
-        lock.lock()
         observers.append(observer)
-        lock.unlock()
     }
     
     /// Cancels the current request
