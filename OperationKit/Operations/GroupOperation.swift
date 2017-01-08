@@ -32,7 +32,7 @@ open class GroupOperation: OperationKit.Operation {
     
     fileprivate var aggregatedErrors = [Error]()
     
-    /// the allowed states for the Task
+    /// the allowed states for the Operation
     public enum State {
         case cancelled
         case finished
