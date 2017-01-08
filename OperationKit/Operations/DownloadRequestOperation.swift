@@ -47,7 +47,7 @@ extension DownloadRequestOperation {
         
         let blockOperation = BlockOperation { [unowned self] in
             guard let data = try? Data(contentsOf: cacheFile) else {
-                completionHandler(.failure(SerializationFailure.inputDataNil))
+                completionHandler(.failure(OperationKitError.inputDataNil))
                 return
             }
             

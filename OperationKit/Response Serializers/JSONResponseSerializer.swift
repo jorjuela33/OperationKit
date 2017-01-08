@@ -24,7 +24,7 @@ public struct JSONResponseSerializer: ResponseSerializer {
         guard let response = response, emptyResponseCodes.contains(response.statusCode) else { return .success(NSNull()) }
         
         guard data.count > 0 else {
-            return .failure(SerializationFailure.inputDataNilOrZeroLength)
+            return .failure(OperationKitError.inputDataNilOrZeroLength)
         }
         
         do {
@@ -32,7 +32,7 @@ public struct JSONResponseSerializer: ResponseSerializer {
             return .success(serializedObject)
         }
         catch {
-            return .failure(SerializationFailure.jsonSerializationFailed(error: error))
+            return .failure(OperationKitError.jsonSerializationFailed(error: error))
         }
     }
 }

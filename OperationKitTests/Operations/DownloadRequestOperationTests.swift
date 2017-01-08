@@ -33,7 +33,7 @@ extension FileManager {
     }
 }
 
-class DownloadOperationTests: OperationKitTests {
+class DownloadRequestOperationTests: OperationKitTests {
 
     private let operationQueue = OperationKit.OperationQueue()
     

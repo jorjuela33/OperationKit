@@ -24,11 +24,11 @@ public struct StringResponseSerializer: ResponseSerializer {
         guard let response = response, emptyResponseCodes.contains(response.statusCode) else { return .success("") }
         
         guard data.count > 0 else {
-            return .failure(SerializationFailure.inputDataNilOrZeroLength)
+            return .failure(OperationKitError.inputDataNilOrZeroLength)
         }
         
         guard let stringResponse = String(data: data, encoding: encoding) else {
-            return .failure(SerializationFailure.stringSerializationFailed(encoding: encoding))
+            return .failure(OperationKitError.stringSerializationFailed(encoding: encoding))
         }
         
         return .success(stringResponse)

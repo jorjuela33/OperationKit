@@ -10,11 +10,12 @@ import Foundation
 
 let emptyResponseCodes = [204, 205]
 
-public enum SerializationFailure: Error {
+public enum OperationKitError: Error {
     case inputDataNil
     case inputDataNilOrZeroLength
     case stringSerializationFailed(encoding: String.Encoding)
     case jsonSerializationFailed(error: Error)
+    case unacceptableStatusCode(code: Int)
 }
 
 public protocol ResponseSerializer {

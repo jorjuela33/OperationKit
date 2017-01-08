@@ -42,9 +42,9 @@ open class URLRequestOperation: Operation {
         session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         sessionTask = session.dataTask(with: request)
         addCondition(ReachabilityCondition(host: request.url!))
-        finishingOperation.addExecutionBlock { [unowned self] in
+        finishingOperation = BlockOperation(block: { [unowned self] in
             self.finish(self.aggregatedErrors)
-        }
+        })
         operationQueue.addOperation(finishingOperation)
     }
     
@@ -139,10 +139,9 @@ open class URLRequestOperation: Operation {
     }
     
     private final func validate<S: Sequence>(acceptableStatusCodes: S, response: HTTPURLResponse) -> Error? where S.Iterator.Element == Int {
-        var error: NSError?
+        var error: Error?
         if !acceptableStatusCodes.contains(response.statusCode) {
-            let userInfo = [NSLocalizedDescriptionKey: "unacceptable status code \(response.statusCode)"]
-            error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.conditionFailed.rawValue, userInfo: userInfo)
+            error = OperationKitError.unacceptableStatusCode(code: response.statusCode)
         }
         
         return error

@@ -16,7 +16,7 @@ public struct DataResponseSerializer: ResponseSerializer {
         guard let response = response, emptyResponseCodes.contains(response.statusCode) else { return .success(data) }
         
         guard data.count > 0 else {
-            return .failure(SerializationFailure.inputDataNilOrZeroLength)
+            return .failure(OperationKitError.inputDataNilOrZeroLength)
         }
         
         return .success(data)

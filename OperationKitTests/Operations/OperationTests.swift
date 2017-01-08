@@ -29,9 +29,11 @@ private struct FailTestCondition: OperationCondition {
     // MARK: OperationCondition
     static var name = "test condition"
     
-    func dependencyForOperation(_ operation: OperationKit.Operation) -> Foundation.Operation? { return nil }
+    public func dependency(for operation: OperationKit.Operation) -> Foundation.Operation? {
+        return nil
+    }
     
-    func evaluateForOperation(_ operation: OperationKit.Operation, completion: (OperationConditionResult) -> Void) {
+    func evaluate(for operation: OperationKit.Operation, completion: @escaping (OperationConditionResult) -> Void) {
         let error = NSError(domain: "", code: 0, userInfo: [OperationConditionKey: FailTestCondition.name])
         completion(.failed(error))
     }
@@ -81,7 +83,7 @@ class OperationTests: OperationKitTests {
         
         /// when
         operation.addObserver(OperationTestObserver(operationDidFinishObserver: { _, errors in
-            isSameError = error === errors?.first
+            isSameError = error === (errors?.first as? NSError)
             expectation.fulfill()
         }))
         
@@ -182,7 +184,7 @@ class OperationTests: OperationKitTests {
         operation.addCondition(FailTestCondition())
         
         operation.addObserver(OperationTestObserver(operationDidFinishObserver: { _, errors in
-            failedForCondition = errors?.first?.userInfo[OperationConditionKey] as? String == FailTestCondition.name
+            failedForCondition = (errors?.first as? NSError)?.userInfo[OperationConditionKey] as? String == FailTestCondition.name
             expectation.fulfill()
         }))
         

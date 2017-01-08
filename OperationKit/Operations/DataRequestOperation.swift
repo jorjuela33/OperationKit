@@ -11,7 +11,7 @@ import Foundation
 open class DataRequestOperation: URLRequestOperation {
     
     /// the data returned for the server
-    open fileprivate(set) var data = Data()
+    fileprivate(set) var data = Data()
 }
 
 extension DataRequestOperation {
