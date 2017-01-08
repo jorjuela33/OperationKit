@@ -12,14 +12,40 @@ open class URLRequestOperation: Operation {
    
     public typealias ValidationBlock = (URLRequest?, HTTPURLResponse) -> Error?
     
+    /// the allowed states for the Request
+    public enum State {
+        case initialized
+        case finished
+        case running
+        case suspended
+    }
+    
     private let acceptableStatusCodes = Array(200..<300)
     fileprivate var aggregatedErrors: [Error] = []
     fileprivate var finishingOperation: BlockOperation!
     fileprivate let operationQueue = Foundation.OperationQueue()
+    fileprivate let lock = NSLock()
+    fileprivate var _state: State = .initialized
     fileprivate var validations: [() -> Error?] = []
     
     internal var session: URLSession!
     internal var sessionTask: URLSessionTask!
+    
+    /// the state for the current request
+    public var state: State {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            
+            return _state
+        }
+        
+        set {
+            lock.lock()
+            _state = newValue
+            lock.unlock()
+        }
+    }
     
     /// the response from the host
     open var response: HTTPURLResponse? {
@@ -64,24 +90,48 @@ open class URLRequestOperation: Operation {
         aggregatedErrors.append(error)
     }
     
-    /// Resume the task.
+    /// Resume the operation.
     @discardableResult
     public func resume() -> Self {
-        assert(isExecuting == true)
+        assert(state == .suspended)
         
-        sessionTask?.resume()
+        state = .running
+        if sessionTask.state == .completed {
+            operationQueue.isSuspended = false
+        }
+        else {
+            sessionTask.resume()
+        }
+        
+        for observer in observers {
+            guard let ob = observer as? OperationStateObserver else { continue }
+            
+            ob.operationDidResume(self)
+        }
+        
         return self
     }
     
-    /// Suspend the task.
+    /// Suspend the operation.
     ///
     /// Suspending a task preventing from continuing to
     /// load data.
     @discardableResult
     public func suspend() -> Self {
-        assert(isExecuting == true)
+        assert(state != .finished)
         
-        sessionTask?.suspend()
+        state = .suspended
+        operationQueue.isSuspended = true
+        if sessionTask.state == .running {
+            sessionTask.suspend()
+        }
+        
+        for observer in observers {
+            guard let ob = observer as? OperationStateObserver else { continue }
+            
+            ob.operationDidSuspend(self)
+        }
+        
         return self
     }
     
@@ -121,10 +171,15 @@ open class URLRequestOperation: Operation {
     // MARK: Overrided methods
     
     override open func execute() {
+        guard state == .initialized else { return }
+            
+        state = .running
         sessionTask?.resume()
     }
     
     override open func finished(_ errors: [Error]) {
+        state = .finished
+        operationQueue.cancelAllOperations()
         session.invalidateAndCancel()
     }
     
@@ -166,6 +221,8 @@ extension URLRequestOperation: URLSessionTaskDelegate {
         }
         
         executeValidations()
-        operationQueue.isSuspended = false
+        if state == .running {
+            operationQueue.isSuspended = false
+        }
     }
 }

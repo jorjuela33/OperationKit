@@ -9,38 +9,6 @@
 import XCTest
 @testable import OperationKit
 
-struct OperationTestObserver: ObservableOperation {
-    
-    let operationDidStartObserver: ((OperationKit.Operation) -> Void)?
-    let operationDidProduceNewOperationObserver: ((OperationKit.Operation, Foundation.Operation) -> Void)?
-    let operationDidFinishObserver: ((OperationKit.Operation, [Error]?) -> Void)?
-    
-    // MARK: Initialization
-    
-    init(operationDidStartObserver: ((OperationKit.Operation) -> Void)? = nil,
-         operationDidProduceNewOperationObserver: ((OperationKit.Operation, Foundation.Operation) -> Void)? = nil,
-         operationDidFinishObserver: ((OperationKit.Operation, [Error]?) -> Void)? = nil) {
-        
-        self.operationDidStartObserver = operationDidStartObserver
-        self.operationDidProduceNewOperationObserver = operationDidProduceNewOperationObserver
-        self.operationDidFinishObserver = operationDidFinishObserver
-    }
-    
-    // MARK: ObservableOperation
-    
-    func operationDidStart(_ operation: OperationKit.Operation) {
-        operationDidStartObserver?(operation)
-    }
-    
-    func operation(_ operation: OperationKit.Operation, didProduceOperation newOperation: Foundation.Operation) {
-        operationDidProduceNewOperationObserver?(operation, newOperation)
-    }
-    
-    func operationDidFinish(_ operation: OperationKit.Operation, errors: [Error]) {
-        operationDidFinishObserver?(operation, errors)
-    }
-}
-
 class URLRequestOperationTests: OperationKitTests {
     
     fileprivate let operationQueue = OperationKit.OperationQueue()
@@ -55,7 +23,7 @@ class URLRequestOperationTests: OperationKitTests {
         super.tearDown()
     }
     
-    func testThatExecuteRequestOperationWithDefaultSessionAndSuccessResponse() {
+    func testThatExecuteURLRequestOperationWithDefaultSessionAndSuccessResponse() {
         /// given
         let expectation = self.expectation(description: "URL Request operation should get success response")
         var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
@@ -73,7 +41,7 @@ class URLRequestOperationTests: OperationKitTests {
         XCTAssertTrue(urlRequestOperation.response?.statusCode == 200)
     }
     
-    func testThatExecuteRequestOperationWithCustomSessionConfigurationAndSuccessResponse() {
+    func testThatExecuteURLRequestOperationWithCustomSessionConfigurationAndSuccessResponse() {
         /// given
         let expectation = self.expectation(description: "URL Request operation should get success response with custom session")
         var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
@@ -90,6 +58,36 @@ class URLRequestOperationTests: OperationKitTests {
         waitForExpectations(timeout: networkTimeout, handler: nil)
         XCTAssertTrue(urlRequestOperation.response?.statusCode == 200)
     }
+    
+    func testThatExecuteURLRequestOperationShouldInvokeDidSuspendAndResumeDelegate() {
+        /// given
+        let expectation = self.expectation(description: "URL Request operation should invoke did suspend and resume delegate")
+        var didResumeWasInvoked = false
+        var didSuspendWasInvoked = false
+        var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
+        request.httpMethod = HTTPMethod.GET.rawValue
+        let urlRequestOperation = URLRequestOperation(request: request)
+        urlRequestOperation.completionBlock = {
+            expectation.fulfill()
+        }
+        
+        let operationObserver = OperationTestObserver(operationDidResumeObserver: { _ in
+            didResumeWasInvoked = true
+        }, operationDidSuspendObserver: { _ in
+            didSuspendWasInvoked = true
+        })
+        
+        /// when
+        urlRequestOperation.addObserver(operationObserver)
+        operationQueue.addOperation(urlRequestOperation)
+        urlRequestOperation.suspend()
+        urlRequestOperation.resume()
+        
+        /// then
+        waitForExpectations(timeout: networkTimeout, handler: nil)
+        XCTAssertTrue(didResumeWasInvoked)
+        XCTAssertTrue(didSuspendWasInvoked)
+    }
 }
 
 extension URLRequestOperationTests {
@@ -103,10 +101,10 @@ extension URLRequestOperationTests {
         request.httpMethod = HTTPMethod.GET.rawValue
         let urlRequestOperation = URLRequestOperation(request: request)
         var errorsShouldNotContainsUnacceptableStatusCodeFailure = false
-        let operationObserver = OperationTestObserver { _, errors in
+        let operationObserver = OperationTestObserver(operationDidFinishObserver: { _, errors in
             errorsShouldNotContainsUnacceptableStatusCodeFailure = errors?.flatMap({ $0 as? OperationKitError }).filter({ $0.isUnacceptableStatusCode }).isEmpty == true
             expectation.fulfill()
-        }
+        })
         
         /// when
         urlRequestOperation.addObserver(operationObserver)
@@ -125,10 +123,10 @@ extension URLRequestOperationTests {
         request.httpMethod = HTTPMethod.GET.rawValue
         let urlRequestOperation = URLRequestOperation(request: request)
         var errorsShouldNotContainsUnacceptableStatusCodeFailure = false
-        let operationObserver = OperationTestObserver { _, errors in
+        let operationObserver = OperationTestObserver (operationDidFinishObserver: { _, errors in
             errorsShouldNotContainsUnacceptableStatusCodeFailure = errors?.flatMap({ $0 as? OperationKitError }).filter({ $0.isUnacceptableStatusCode }).isEmpty == true
             expectation.fulfill()
-        }
+        })
         
         /// when
         urlRequestOperation.addObserver(operationObserver)
@@ -147,10 +145,10 @@ extension URLRequestOperationTests {
         request.httpMethod = HTTPMethod.GET.rawValue
         let urlRequestOperation = URLRequestOperation(request: request)
         var errorsContainsUnacceptableStatusCodeFailure = false
-        let operationObserver = OperationTestObserver { _, errors in
+        let operationObserver = OperationTestObserver(operationDidFinishObserver: { _, errors in
             errorsContainsUnacceptableStatusCodeFailure = errors?.flatMap({ $0 as? OperationKitError }).filter({ $0.isUnacceptableStatusCode }).isEmpty == false
             expectation.fulfill()
-        }
+        })
         
         /// when
         urlRequestOperation.addObserver(operationObserver)
@@ -169,10 +167,10 @@ extension URLRequestOperationTests {
         request.httpMethod = HTTPMethod.GET.rawValue
         let urlRequestOperation = URLRequestOperation(request: request)
         var errorsContainsUnacceptableStatusCodeFailure = false
-        let operationObserver = OperationTestObserver { _, errors in
+        let operationObserver = OperationTestObserver(operationDidFinishObserver: { _, errors in
             errorsContainsUnacceptableStatusCodeFailure = errors?.flatMap({ $0 as? OperationKitError }).filter({ $0.isUnacceptableStatusCode }).isEmpty == false
             expectation.fulfill()
-        }
+        })
         
         /// when
         urlRequestOperation.addObserver(operationObserver)

@@ -202,7 +202,7 @@ class OperationTests: OperationKitTests {
         var failingConditions = 0
         
         /// when
-        operation.addCondition(ReachabilityCondition(host: URL(string: "")!))
+        operation.addCondition(ReachabilityCondition(host: URL(string: "http://httpbin.org/get")!))
         operation.addCondition(FailTestCondition())
         operation.addCondition(FailTestCondition())
         

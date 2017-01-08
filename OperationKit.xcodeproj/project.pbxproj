@@ -33,6 +33,7 @@
 		CF943FD21E21900300E9EEF3 /* StringResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */; };
 		CF943FD41E22CF6600E9EEF3 /* URLRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD31E22CF6600E9EEF3 /* URLRequestOperationTests.swift */; };
 		CF943FD71E22D9BC00E9EEF3 /* OperationKitError+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD61E22D9BC00E9EEF3 /* OperationKitError+Tests.swift */; };
+		CF943FD91E22DCC700E9EEF3 /* OperationTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringResponseSerializer.swift; path = "Response Serializers/StringResponseSerializer.swift"; sourceTree = "<group>"; };
 		CF943FD31E22CF6600E9EEF3 /* URLRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestOperationTests.swift; sourceTree = "<group>"; };
 		CF943FD61E22D9BC00E9EEF3 /* OperationKitError+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "OperationKitError+Tests.swift"; path = "Extensions/OperationKitError+Tests.swift"; sourceTree = "<group>"; };
+		CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 				CF943FD51E22D9A600E9EEF3 /* Extensions */,
 				CF35B76C1D381BE100F74678 /* Operations */,
 				CF35B74D1D3814F500F74678 /* OperationKitTests.swift */,
+				CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */,
 				CF35B74F1D3814F500F74678 /* Info.plist */,
 			);
 			path = OperationKitTests;
@@ -371,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF35B74E1D3814F500F74678 /* OperationKitTests.swift in Sources */,
+				CF943FD91E22DCC700E9EEF3 /* OperationTestObserver.swift in Sources */,
 				CF35B7701D381BE100F74678 /* DownloadRequestOperationTests.swift in Sources */,
 				CF35B7721D381BE100F74678 /* UploadRequestOperationTests.swift in Sources */,
 				CF943FD71E22D9BC00E9EEF3 /* OperationKitError+Tests.swift in Sources */,
