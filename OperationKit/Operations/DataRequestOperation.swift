@@ -27,6 +27,14 @@ open class DataRequestOperation: URLRequestOperation {
     
     /// the data returned for the server
     fileprivate(set) var data = Data()
+    
+    // MARK: Initialization
+    
+    public init(request: URLRequest, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
+        super.init(request: request, configuration: sessionConfiguration)
+        
+        sessionTask = session.dataTask(with: request)
+    }
 }
 
 extension DataRequestOperation {

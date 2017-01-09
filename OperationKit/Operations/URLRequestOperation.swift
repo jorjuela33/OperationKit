@@ -43,7 +43,7 @@ open class URLRequestOperation: Operation {
     fileprivate var _state: State = .initialized
     fileprivate var validations: [() -> Error?] = []
     
-    internal var session: URLSession!
+    internal fileprivate(set) var session: URLSession!
     internal var sessionTask: URLSessionTask!
     
     /// the state for the current request
@@ -74,19 +74,18 @@ open class URLRequestOperation: Operation {
     
     // MARK: Initialization
     
-    public init(request: URLRequest, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
+    internal init(request: URLRequest, configuration: URLSessionConfiguration) {
         super.init()
         
         name = request.url?.absoluteString
         operationQueue.maxConcurrentOperationCount = 1
         operationQueue.isSuspended = true
-        session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-        sessionTask = session.dataTask(with: request)
+        session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         addCondition(ReachabilityCondition(host: request.url!))
         finishingOperation = BlockOperation(block: { [unowned self] in
             self.finish(self.aggregatedErrors)
         })
-        operationQueue.addOperation(finishingOperation)
+        operationQueue.addOperation(finishingOperation)        
     }
     
     // MARK: Instance methods

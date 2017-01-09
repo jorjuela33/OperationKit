@@ -32,7 +32,9 @@ open class DownloadRequestOperation: URLRequestOperation {
     public init(request: URLRequest, cacheFile: URL, sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         self.cacheFile = cacheFile
         
-        super.init(request: request, sessionConfiguration: sessionConfiguration)
+        super.init(request: request, configuration: sessionConfiguration)
+        
+        sessionTask = session.downloadTask(with: request)
     }
 }
 
