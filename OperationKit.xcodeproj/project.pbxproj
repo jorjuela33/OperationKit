@@ -208,10 +208,10 @@
 		CF35B76C1D381BE100F74678 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */,
 				CF35B76D1D381BE100F74678 /* DownloadRequestOperationTests.swift */,
 				CF35B76E1D381BE100F74678 /* OperationTests.swift */,
 				CF35B76F1D381BE100F74678 /* UploadRequestOperationTests.swift */,
-				CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */,
 				CF943FD31E22CF6600E9EEF3 /* URLRequestOperationTests.swift */,
 			);
 			path = Operations;

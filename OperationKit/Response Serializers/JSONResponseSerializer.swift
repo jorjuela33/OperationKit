@@ -21,7 +21,7 @@ public struct JSONResponseSerializer: ResponseSerializer {
     // MARK: ResponseSerializer
     
     public func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data) -> Result<Any> {
-        guard let response = response, emptyResponseCodes.contains(response.statusCode) else { return .success(NSNull()) }
+        guard let response = response, emptyResponseCodes.contains(response.statusCode) == false else { return .success(NSNull()) }
         
         guard data.count > 0 else {
             return .failure(OperationKitError.inputDataNilOrZeroLength)

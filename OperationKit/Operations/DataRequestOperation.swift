@@ -42,6 +42,7 @@ extension DataRequestOperation {
     // MARK: Response Serialization
     
     /// Returns a object contained in a result type constructed from the response serializer passed as parameter.
+    @discardableResult
     public func response<Serializer: ResponseSerializer, T>(data: Data,
                          responseSerializer: Serializer,
                          completionHandler: @escaping ((Result<Serializer.SerializedValue>) -> ())) -> Self where Serializer.SerializedValue == T {
@@ -58,18 +59,21 @@ extension DataRequestOperation {
     }
     
     /// Adds a handler to be called once the request has finished.
+    @discardableResult
     public func responseData(_ completionHandler: @escaping ((Result<Data>) -> ())) -> Self {
         return response(data: data, responseSerializer: DataResponseSerializer(), completionHandler: completionHandler)
     }
     
     /// Returns a JSON object contained in a result type constructed from the response data using `JSONSerialization`
     /// with the specified reading options.
+    @discardableResult
     public func responseJSON(readingOptions: JSONSerialization.ReadingOptions = .allowFragments, completionHandler: @escaping ((Result<Any>) -> ())) -> Self {
         return response(data: data, responseSerializer: JSONResponseSerializer(readingOptions: readingOptions), completionHandler: completionHandler)
     }
     
     /// Returns a string object contained in a result type constructed from the response data using `String.Encoding`
     /// with the specified encoding options.
+    @discardableResult
     public func responseString(encoding: String.Encoding = .utf8, completionHandler: @escaping ((Result<String>) -> ())) -> Self {
         return response(data: data, responseSerializer: StringResponseSerializer(encoding: .utf8), completionHandler: completionHandler)
     }

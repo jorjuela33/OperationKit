@@ -13,7 +13,7 @@ public struct DataResponseSerializer: ResponseSerializer {
     // MARK: ResponseSerializer
     
     public func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data) -> Result<Data> {
-        guard let response = response, emptyResponseCodes.contains(response.statusCode) else { return .success(data) }
+        guard let response = response, emptyResponseCodes.contains(response.statusCode) == false else { return .success(data) }
         
         guard data.count > 0 else {
             return .failure(OperationKitError.inputDataNilOrZeroLength)
