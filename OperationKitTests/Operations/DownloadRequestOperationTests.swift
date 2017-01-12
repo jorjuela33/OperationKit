@@ -33,7 +33,7 @@ extension FileManager {
     }
 }
 
-class DownloadOperationTests: OperationKitTests {
+class DownloadRequestOperationTests: OperationKitTests {
 
     private let operationQueue = OperationKit.OperationQueue()
     
@@ -52,8 +52,8 @@ class DownloadOperationTests: OperationKitTests {
         let expectation = self.expectation(description: "download operation should get success response")
         var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
         request.httpMethod = HTTPMethod.GET.rawValue
-        let cacheFile = cacheFolder.appendingPathComponent("\(arc4random()).json")
-        let downloadOperation = DownloadOperation(request: request, cacheFile: cacheFile)
+        let cacheFile = cacheFolder.appendingPathComponent("\(NSUUID().uuidString).json")
+        let downloadOperation = DownloadRequestOperation(request: request, cacheFile: cacheFile)
         let finishOperation = BlockOperation {
             expectation.fulfill()
         }
@@ -77,8 +77,8 @@ class DownloadOperationTests: OperationKitTests {
         let expectation = self.expectation(description: "download operation should get success response with custom session")
         var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
         request.httpMethod = HTTPMethod.GET.rawValue
-        let cacheFile = cacheFolder.appendingPathComponent("\(arc4random()).json")
-        let downloadOperation = DownloadOperation(request: request, cacheFile: cacheFile)
+        let cacheFile = cacheFolder.appendingPathComponent("\(NSUUID().uuidString).json")
+        let downloadOperation = DownloadRequestOperation(request: request, cacheFile: cacheFile)
         let finishOperation = BlockOperation {
             expectation.fulfill()
         }
@@ -102,8 +102,8 @@ class DownloadOperationTests: OperationKitTests {
         let expectation = self.expectation(description: "download operation should get cancelled")
         var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
         request.httpMethod = HTTPMethod.GET.rawValue
-        let cacheFile = cacheFolder.appendingPathComponent("\(arc4random()).json")
-        let downloadOperation = DownloadOperation(request: request, cacheFile: cacheFile)
+        let cacheFile = cacheFolder.appendingPathComponent("\(NSUUID().uuidString).json")
+        let downloadOperation = DownloadRequestOperation(request: request, cacheFile: cacheFile)
         let finishOperation = BlockOperation {
             expectation.fulfill()
         }

@@ -7,23 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF140D031E20471F00B9849C /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF31E20471F00B9849C /* OperationCondition.swift */; };
+		CF140D041E20471F00B9849C /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF41E20471F00B9849C /* ReachabilityCondition.swift */; };
+		CF140D051E20471F00B9849C /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF61E20471F00B9849C /* BackgroundObserver.swift */; };
+		CF140D061E20471F00B9849C /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF71E20471F00B9849C /* NetworkObserver.swift */; };
+		CF140D071E20471F00B9849C /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CF81E20471F00B9849C /* TimeoutObserver.swift */; };
+		CF140D081E20471F00B9849C /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140CFA1E20471F00B9849C /* OperationQueue.swift */; };
+		CF140D0D1E20471F00B9849C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF140D021E20471F00B9849C /* ParameterEncoding.swift */; };
 		CF35B7421D3814F500F74678 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = CF35B7411D3814F500F74678 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CF35B7491D3814F500F74678 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF35B73E1D3814F500F74678 /* OperationKit.framework */; };
 		CF35B74E1D3814F500F74678 /* OperationKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B74D1D3814F500F74678 /* OperationKitTests.swift */; };
-		CF35B7641D38176900F74678 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7591D38176900F74678 /* OperationCondition.swift */; };
-		CF35B7651D38176900F74678 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */; };
-		CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75C1D38176900F74678 /* OperationQueue.swift */; };
-		CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B75E1D38176900F74678 /* DownloadOperation.swift */; };
-		CF35B7691D38176900F74678 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7601D38176900F74678 /* Operation.swift */; };
-		CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7611D38176900F74678 /* UploadOperation.swift */; };
-		CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B7631D38176900F74678 /* ParameterEncoding.swift */; };
-		CF35B7701D381BE100F74678 /* DownloadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */; };
+		CF35B7701D381BE100F74678 /* DownloadRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76D1D381BE100F74678 /* DownloadRequestOperationTests.swift */; };
 		CF35B7711D381BE100F74678 /* OperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76E1D381BE100F74678 /* OperationTests.swift */; };
-		CF35B7721D381BE100F74678 /* UploadOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */; };
-		CFF022761D514E4400421603 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022751D514E4400421603 /* TimeoutObserver.swift */; };
-		CFF0227A1D514EA900421603 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022781D514EA900421603 /* BackgroundObserver.swift */; };
-		CFF0227B1D514EA900421603 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF022791D514EA900421603 /* NetworkObserver.swift */; };
-		CFF4F2201DE01F5D00775B48 /* TaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF4F21F1DE01F5D00775B48 /* TaskOperation.swift */; };
+		CF35B7721D381BE100F74678 /* UploadRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF35B76F1D381BE100F74678 /* UploadRequestOperationTests.swift */; };
+		CF943FC01E216B4300E9EEF3 /* DownloadRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBB1E216B4300E9EEF3 /* DownloadRequestOperation.swift */; };
+		CF943FC11E216B4300E9EEF3 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */; };
+		CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBD1E216B4300E9EEF3 /* Operation.swift */; };
+		CF943FC31E216B4300E9EEF3 /* UploadRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBE1E216B4300E9EEF3 /* UploadRequestOperation.swift */; };
+		CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */; };
+		CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FC51E216B5600E9EEF3 /* Protocols.swift */; };
+		CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */; };
+		CF943FCC1E217A1600E9EEF3 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCB1E217A1600E9EEF3 /* Result.swift */; };
+		CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */; };
+		CF943FD01E21892800E9EEF3 /* DataRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FCF1E21892800E9EEF3 /* DataRequestOperation.swift */; };
+		CF943FD21E21900300E9EEF3 /* StringResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */; };
+		CF943FD41E22CF6600E9EEF3 /* URLRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD31E22CF6600E9EEF3 /* URLRequestOperationTests.swift */; };
+		CF943FD71E22D9BC00E9EEF3 /* OperationKitError+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD61E22D9BC00E9EEF3 /* OperationKitError+Tests.swift */; };
+		CF943FD91E22DCC700E9EEF3 /* OperationTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */; };
+		CF943FDB1E2409A900E9EEF3 /* DataRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */; };
+		CF943FDD1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,26 +49,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CF140CF31E20471F00B9849C /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
+		CF140CF41E20471F00B9849C /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
+		CF140CF61E20471F00B9849C /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundObserver.swift; sourceTree = "<group>"; };
+		CF140CF71E20471F00B9849C /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
+		CF140CF81E20471F00B9849C /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
+		CF140CFA1E20471F00B9849C /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
+		CF140D021E20471F00B9849C /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		CF35B73E1D3814F500F74678 /* OperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF35B7411D3814F500F74678 /* OperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationKit.h; sourceTree = "<group>"; };
 		CF35B7431D3814F500F74678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF35B7481D3814F500F74678 /* OperationKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OperationKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF35B74D1D3814F500F74678 /* OperationKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationKitTests.swift; sourceTree = "<group>"; };
 		CF35B74F1D3814F500F74678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CF35B7591D38176900F74678 /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
-		CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
-		CF35B75C1D38176900F74678 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
-		CF35B75E1D38176900F74678 /* DownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
-		CF35B7601D38176900F74678 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		CF35B7611D38176900F74678 /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
-		CF35B7631D38176900F74678 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
-		CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadOperationTests.swift; sourceTree = "<group>"; };
+		CF35B76D1D381BE100F74678 /* DownloadRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadRequestOperationTests.swift; sourceTree = "<group>"; };
 		CF35B76E1D381BE100F74678 /* OperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTests.swift; sourceTree = "<group>"; };
-		CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperationTests.swift; sourceTree = "<group>"; };
-		CFF022751D514E4400421603 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Observers/TimeoutObserver.swift; sourceTree = "<group>"; };
-		CFF022781D514EA900421603 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundObserver.swift; path = Observers/BackgroundObserver.swift; sourceTree = "<group>"; };
-		CFF022791D514EA900421603 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkObserver.swift; path = Observers/NetworkObserver.swift; sourceTree = "<group>"; };
-		CFF4F21F1DE01F5D00775B48 /* TaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskOperation.swift; sourceTree = "<group>"; };
+		CF35B76F1D381BE100F74678 /* UploadRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRequestOperationTests.swift; sourceTree = "<group>"; };
+		CF943FBB1E216B4300E9EEF3 /* DownloadRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
+		CF943FBD1E216B4300E9EEF3 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		CF943FBE1E216B4300E9EEF3 /* UploadRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FC51E216B5600E9EEF3 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONResponseSerializer.swift; path = "Response Serializers/JSONResponseSerializer.swift"; sourceTree = "<group>"; };
+		CF943FCB1E217A1600E9EEF3 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Result/Result.swift; sourceTree = "<group>"; };
+		CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataResponseSerializer.swift; path = "Response Serializers/DataResponseSerializer.swift"; sourceTree = "<group>"; };
+		CF943FCF1E21892800E9EEF3 /* DataRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestOperation.swift; sourceTree = "<group>"; };
+		CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringResponseSerializer.swift; path = "Response Serializers/StringResponseSerializer.swift"; sourceTree = "<group>"; };
+		CF943FD31E22CF6600E9EEF3 /* URLRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestOperationTests.swift; sourceTree = "<group>"; };
+		CF943FD61E22D9BC00E9EEF3 /* OperationKitError+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "OperationKitError+Tests.swift"; path = "Extensions/OperationKitError+Tests.swift"; sourceTree = "<group>"; };
+		CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTestObserver.swift; sourceTree = "<group>"; };
+		CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestOperationTests.swift; sourceTree = "<group>"; };
+		CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "URLRequestOperation+Tests.swift"; path = "Extensions/URLRequestOperation+Tests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +102,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF140CF21E20471F00B9849C /* Conditions */ = {
+			isa = PBXGroup;
+			children = (
+				CF140CF31E20471F00B9849C /* OperationCondition.swift */,
+				CF140CF41E20471F00B9849C /* ReachabilityCondition.swift */,
+			);
+			path = Conditions;
+			sourceTree = "<group>";
+		};
+		CF140CF51E20471F00B9849C /* Observers */ = {
+			isa = PBXGroup;
+			children = (
+				CF140CF61E20471F00B9849C /* BackgroundObserver.swift */,
+				CF140CF71E20471F00B9849C /* NetworkObserver.swift */,
+				CF140CF81E20471F00B9849C /* TimeoutObserver.swift */,
+			);
+			path = Observers;
+			sourceTree = "<group>";
+		};
+		CF140CF91E20471F00B9849C /* Operation Queue */ = {
+			isa = PBXGroup;
+			children = (
+				CF140CFA1E20471F00B9849C /* OperationQueue.swift */,
+			);
+			path = "Operation Queue";
+			sourceTree = "<group>";
+		};
+		CF140CFB1E20471F00B9849C /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				CF943FBB1E216B4300E9EEF3 /* DownloadRequestOperation.swift */,
+				CF943FBC1E216B4300E9EEF3 /* GroupOperation.swift */,
+				CF943FBD1E216B4300E9EEF3 /* Operation.swift */,
+				CF943FBE1E216B4300E9EEF3 /* UploadRequestOperation.swift */,
+				CF943FCF1E21892800E9EEF3 /* DataRequestOperation.swift */,
+				CF943FBF1E216B4300E9EEF3 /* URLRequestOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		CF140D011E20471F00B9849C /* ParameterEncoding */ = {
+			isa = PBXGroup;
+			children = (
+				CF140D021E20471F00B9849C /* ParameterEncoding.swift */,
+			);
+			path = ParameterEncoding;
+			sourceTree = "<group>";
+		};
+		CF140D101E20479300B9849C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		CF35B7341D3814F500F74678 = {
 			isa = PBXGroup;
 			children = (
@@ -99,13 +178,17 @@
 		CF35B7401D3814F500F74678 /* OperationKit */ = {
 			isa = PBXGroup;
 			children = (
-				CF35B7581D38176900F74678 /* Conditions */,
-				CFF022771D514E5500421603 /* Observers */,
-				CF35B75B1D38176900F74678 /* Operation Queue */,
-				CF35B75D1D38176900F74678 /* Operations */,
-				CF35B7621D38176900F74678 /* ParameterEncoding */,
-				CF35B7411D3814F500F74678 /* OperationKit.h */,
+				CF140CF21E20471F00B9849C /* Conditions */,
+				CF140D101E20479300B9849C /* Extensions */,
+				CF140CF51E20471F00B9849C /* Observers */,
+				CF140CF91E20471F00B9849C /* Operation Queue */,
+				CF140CFB1E20471F00B9849C /* Operations */,
+				CF140D011E20471F00B9849C /* ParameterEncoding */,
+				CF943FC71E216DA200E9EEF3 /* Response Serializers */,
+				CF943FCA1E217A0600E9EEF3 /* Result */,
 				CF35B7431D3814F500F74678 /* Info.plist */,
+				CF35B7411D3814F500F74678 /* OperationKit.h */,
+				CF943FC51E216B5600E9EEF3 /* Protocols.swift */,
 			);
 			path = OperationKit;
 			sourceTree = "<group>";
@@ -113,71 +196,52 @@
 		CF35B74C1D3814F500F74678 /* OperationKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				CF943FD51E22D9A600E9EEF3 /* Extensions */,
 				CF35B76C1D381BE100F74678 /* Operations */,
 				CF35B74D1D3814F500F74678 /* OperationKitTests.swift */,
+				CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */,
 				CF35B74F1D3814F500F74678 /* Info.plist */,
 			);
 			path = OperationKitTests;
 			sourceTree = "<group>";
 		};
-		CF35B7581D38176900F74678 /* Conditions */ = {
-			isa = PBXGroup;
-			children = (
-				CF35B7591D38176900F74678 /* OperationCondition.swift */,
-				CF35B75A1D38176900F74678 /* ReachabilityCondition.swift */,
-			);
-			name = Conditions;
-			path = Operations/Conditions;
-			sourceTree = "<group>";
-		};
-		CF35B75B1D38176900F74678 /* Operation Queue */ = {
-			isa = PBXGroup;
-			children = (
-				CF35B75C1D38176900F74678 /* OperationQueue.swift */,
-			);
-			name = "Operation Queue";
-			path = "Operations/Operation Queue";
-			sourceTree = "<group>";
-		};
-		CF35B75D1D38176900F74678 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				CF35B75E1D38176900F74678 /* DownloadOperation.swift */,
-				CF35B7601D38176900F74678 /* Operation.swift */,
-				CF35B7611D38176900F74678 /* UploadOperation.swift */,
-				CFF4F21F1DE01F5D00775B48 /* TaskOperation.swift */,
-			);
-			name = Operations;
-			path = Operations/Operations;
-			sourceTree = "<group>";
-		};
-		CF35B7621D38176900F74678 /* ParameterEncoding */ = {
-			isa = PBXGroup;
-			children = (
-				CF35B7631D38176900F74678 /* ParameterEncoding.swift */,
-			);
-			name = ParameterEncoding;
-			path = Operations/ParameterEncoding;
-			sourceTree = "<group>";
-		};
 		CF35B76C1D381BE100F74678 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				CF35B76D1D381BE100F74678 /* DownloadOperationTests.swift */,
+				CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */,
+				CF35B76D1D381BE100F74678 /* DownloadRequestOperationTests.swift */,
 				CF35B76E1D381BE100F74678 /* OperationTests.swift */,
-				CF35B76F1D381BE100F74678 /* UploadOperationTests.swift */,
+				CF35B76F1D381BE100F74678 /* UploadRequestOperationTests.swift */,
+				CF943FD31E22CF6600E9EEF3 /* URLRequestOperationTests.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
 		};
-		CFF022771D514E5500421603 /* Observers */ = {
+		CF943FC71E216DA200E9EEF3 /* Response Serializers */ = {
 			isa = PBXGroup;
 			children = (
-				CFF022781D514EA900421603 /* BackgroundObserver.swift */,
-				CFF022791D514EA900421603 /* NetworkObserver.swift */,
-				CFF022751D514E4400421603 /* TimeoutObserver.swift */,
+				CF943FCD1E217D1A00E9EEF3 /* DataResponseSerializer.swift */,
+				CF943FC81E216DBA00E9EEF3 /* JSONResponseSerializer.swift */,
+				CF943FD11E21900300E9EEF3 /* StringResponseSerializer.swift */,
 			);
-			name = Observers;
+			name = "Response Serializers";
+			sourceTree = "<group>";
+		};
+		CF943FCA1E217A0600E9EEF3 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				CF943FCB1E217A1600E9EEF3 /* Result.swift */,
+			);
+			name = Result;
+			sourceTree = "<group>";
+		};
+		CF943FD51E22D9A600E9EEF3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CF943FD61E22D9BC00E9EEF3 /* OperationKitError+Tests.swift */,
+				CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,17 +354,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF35B7651D38176900F74678 /* ReachabilityCondition.swift in Sources */,
-				CF35B76A1D38176900F74678 /* UploadOperation.swift in Sources */,
-				CF35B76B1D38176900F74678 /* ParameterEncoding.swift in Sources */,
-				CFF0227A1D514EA900421603 /* BackgroundObserver.swift in Sources */,
-				CFF4F2201DE01F5D00775B48 /* TaskOperation.swift in Sources */,
-				CF35B7661D38176900F74678 /* OperationQueue.swift in Sources */,
-				CF35B7641D38176900F74678 /* OperationCondition.swift in Sources */,
-				CF35B7671D38176900F74678 /* DownloadOperation.swift in Sources */,
-				CF35B7691D38176900F74678 /* Operation.swift in Sources */,
-				CFF022761D514E4400421603 /* TimeoutObserver.swift in Sources */,
-				CFF0227B1D514EA900421603 /* NetworkObserver.swift in Sources */,
+				CF140D051E20471F00B9849C /* BackgroundObserver.swift in Sources */,
+				CF140D081E20471F00B9849C /* OperationQueue.swift in Sources */,
+				CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */,
+				CF943FD01E21892800E9EEF3 /* DataRequestOperation.swift in Sources */,
+				CF140D041E20471F00B9849C /* ReachabilityCondition.swift in Sources */,
+				CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */,
+				CF943FC01E216B4300E9EEF3 /* DownloadRequestOperation.swift in Sources */,
+				CF943FD21E21900300E9EEF3 /* StringResponseSerializer.swift in Sources */,
+				CF943FCC1E217A1600E9EEF3 /* Result.swift in Sources */,
+				CF943FC11E216B4300E9EEF3 /* GroupOperation.swift in Sources */,
+				CF140D0D1E20471F00B9849C /* ParameterEncoding.swift in Sources */,
+				CF140D071E20471F00B9849C /* TimeoutObserver.swift in Sources */,
+				CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */,
+				CF943FC31E216B4300E9EEF3 /* UploadRequestOperation.swift in Sources */,
+				CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */,
+				CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */,
+				CF140D061E20471F00B9849C /* NetworkObserver.swift in Sources */,
+				CF140D031E20471F00B9849C /* OperationCondition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,9 +380,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF35B74E1D3814F500F74678 /* OperationKitTests.swift in Sources */,
-				CF35B7701D381BE100F74678 /* DownloadOperationTests.swift in Sources */,
-				CF35B7721D381BE100F74678 /* UploadOperationTests.swift in Sources */,
+				CF943FD91E22DCC700E9EEF3 /* OperationTestObserver.swift in Sources */,
+				CF35B7701D381BE100F74678 /* DownloadRequestOperationTests.swift in Sources */,
+				CF943FDB1E2409A900E9EEF3 /* DataRequestOperationTests.swift in Sources */,
+				CF35B7721D381BE100F74678 /* UploadRequestOperationTests.swift in Sources */,
+				CF943FD71E22D9BC00E9EEF3 /* OperationKitError+Tests.swift in Sources */,
+				CF943FD41E22CF6600E9EEF3 /* URLRequestOperationTests.swift in Sources */,
 				CF35B7711D381BE100F74678 /* OperationTests.swift in Sources */,
+				CF943FDD1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +537,7 @@
 		CF35B7561D3814F500F74678 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = OperationKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.OperationKitTests;
@@ -472,6 +549,7 @@
 		CF35B7571D3814F500F74678 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = OperationKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.OperationKitTests;

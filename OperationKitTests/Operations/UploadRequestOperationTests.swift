@@ -24,39 +24,7 @@
 import XCTest
 @testable import OperationKit
 
-struct OperationTestObserver: ObservableOperation {
-    
-    let operationDidStartObserver: ((OperationKit.Operation) -> Void)?
-    let operationDidProduceNewOperationObserver: ((OperationKit.Operation, Foundation.Operation) -> Void)?
-    let operationDidFinishObserver: ((OperationKit.Operation, [Error]?) -> Void)?
-    
-    // MARK: Initialization
-    
-    init(operationDidStartObserver: ((OperationKit.Operation) -> Void)? = nil,
-         operationDidProduceNewOperationObserver: ((OperationKit.Operation, Foundation.Operation) -> Void)? = nil,
-         operationDidFinishObserver: ((OperationKit.Operation, [Error]?) -> Void)? = nil) {
-        
-        self.operationDidStartObserver = operationDidStartObserver
-        self.operationDidProduceNewOperationObserver = operationDidProduceNewOperationObserver
-        self.operationDidFinishObserver = operationDidFinishObserver
-    }
-    
-    // MARK: ObservableOperation
-    
-    func operationDidStart(_ operation: OperationKit.Operation) {
-        operationDidStartObserver?(operation)
-    }
-    
-    func operation(_ operation: OperationKit.Operation, didProduceOperation newOperation: Foundation.Operation) {
-        operationDidProduceNewOperationObserver?(operation, newOperation)
-    }
-    
-    func operationDidFinish(_ operation: OperationKit.Operation, errors: [Error]) {
-        operationDidFinishObserver?(operation, errors)
-    }
-}
-
-class UploadOperationTests: OperationKitTests {
+/*class UploadRequestOperationTests: OperationKitTests {
     
     private let operationQueue = OperationKit.OperationQueue()
     
@@ -161,4 +129,4 @@ class UploadOperationTests: OperationKitTests {
             XCTFail()
         }
     }
-}
+}*/

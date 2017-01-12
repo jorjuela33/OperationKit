@@ -38,6 +38,14 @@ public protocol ObservableOperation {
     func operationDidFinish(_ operation: Operation, errors: [Error])
 }
 
+public protocol OperationStateObserver: ObservableOperation {
+    /// Invoked when `Operation.resume(_:)` is executed.
+    func operationDidResume(_ operation: Operation)
+    
+    /// Invoked when `Operation.suspend(_:)` is executed.
+    func operationDidSuspend(_ operation: Operation)
+}
+
 open class Operation: Foundation.Operation {
     
     fileprivate enum State: Int, Comparable {

@@ -21,16 +21,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-public protocol TaskOperationObservable: class {
-    func taskOperationDidCancel(_ taskOperation: TaskOperation)
-    func taskOperationDidFinish(_ taskOperation: TaskOperation)
-    func taskOperationDidResume(_ taskOperation: TaskOperation)
-    func taskOperationDidSuspend(_ taskOperation: TaskOperation)
-}
-
-open class TaskOperation: OperationKit.Operation {
+open class GroupOperation: OperationKit.Operation {
     
     fileprivate let internalQueue = OperationKit.OperationQueue()
+    fileprivate var completeOperations: [BlockOperation] = []
     fileprivate let startingOperation = BlockOperation(block: {})
     fileprivate let finishingOperation = BlockOperation(block: {})
     private let lock = NSLock()
@@ -38,32 +32,7 @@ open class TaskOperation: OperationKit.Operation {
     
     fileprivate var aggregatedErrors = [Error]()
     
-    private var canResume: Bool {
-        let conditionGroup = DispatchGroup()
-        
-        var results = [OperationConditionResult?](repeating: nil, count: conditions.count)
-        
-        for (index, condition) in conditions.enumerated() {
-            conditionGroup.enter()
-            condition.evaluate(for: self) { result in
-                results[index] = result
-                conditionGroup.leave()
-            }
-        }
-        
-        conditionGroup.notify(queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default)) {
-            self.aggregatedErrors += results.flatMap { $0?.error }
-            
-            if self.isCancelled {
-                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.conditionFailed.rawValue, userInfo: nil)
-                self.aggregatedErrors.append(error)
-            }
-        }
-        
-        return aggregatedErrors.isEmpty
-    }
-    
-    /// the allowed states for the Task
+    /// the allowed states for the Operation
     public enum State {
         case cancelled
         case finished
@@ -86,56 +55,40 @@ open class TaskOperation: OperationKit.Operation {
         set {
             lock.lock()
             _state = newValue
-            lock.lock()
+            lock.unlock()
         }
     }
     
-    /// the observers for the task
-    fileprivate var taskObservers: [TaskOperationObservable] = []
+    // MARK: Initialization
     
-    public convenience init(operations: OperationKit.Operation...) {
-        self.init(operations: operations)
-    }
-    
-    public init(operations: [OperationKit.Operation]) {
+    public init(operations: [Foundation.Operation]) {
         super.init()
         
         internalQueue.delegate = self
-        internalQueue.maxConcurrentOperationCount = 1
         internalQueue.isSuspended = true
         internalQueue.addOperation(startingOperation)
         
         for operation in operations {
-            let dependencies = operation.conditions.flatMap({ $0.dependency(for: operation) })
-            
-            for operationDependency in dependencies {
-                operation.addDependency(operationDependency)
-                addOperation(operationDependency)
-            }
             internalQueue.addOperation(operation)
         }
     }
     
     // MARK: Instance methods
     
-    /// adds a new observer to the operation task
-    public final func add(observer: TaskOperationObservable) {
-        taskObservers.append(observer)
-    }
-    
     /// Adds the operation to the internal queue
     open func addOperation(_ operation: Foundation.Operation) {
+        for completeOperation in completeOperations {
+            completeOperation.addDependency(operation)
+        }
+        
         internalQueue.addOperation(operation)
     }
     
     /// Adds multiple operations to the queue
     open func addOperations(_ operations: [Foundation.Operation]) {
-        internalQueue.addOperations(operations)
-    }
-    
-    /// Adds the new error to the internal errors array
-    public final func aggregateError(_ error: NSError) {
-        aggregatedErrors.append(error)
+        for operation in operations {
+            addOperation(operation)
+        }
     }
     
     /// For use by subclassers.
@@ -144,64 +97,77 @@ open class TaskOperation: OperationKit.Operation {
     // MARK: Instance methods methods
     
     /// cancels all the current operation in the internal queue
-    override open func cancel() {
+    override open func cancel()  {
         assert(state != .cancelled)
         
         state = .cancelled
         internalQueue.cancelAllOperations()
-        for observer in taskObservers {
-            observer.taskOperationDidCancel(self)
-        }
+        super.cancel()
     }
     
     /// adds a new operation to be executed when the operation finish
-    public final func complete(_ completionHandler: @escaping ([Error]?) -> Void) {
+    @discardableResult
+    public final func completed(_ completionHandler: @escaping ([Error]?) -> Void) -> GroupOperation {
+        /// tested against retain cycle and deinit still invoked if I add self as dependency
         let completeOperation = BlockOperation { [weak self] in
             guard let strongSelf = self else { return }
             
-            DispatchQueue.main.async {
-                completionHandler(strongSelf.aggregatedErrors)
-            }
+            completionHandler(strongSelf.aggregatedErrors)
         }
         
-        finishingOperation.addDependency(completeOperation)
-        internalQueue.addOperation(completeOperation)
+        completeOperation.addDependency(self)
+        OperationQueue.main.addOperation(completeOperation)
+        return self
     }
     
     /// resume all the operations in the queue
-    public final func resume() {
+    @discardableResult
+    public final func resume() -> GroupOperation {
         assert(state == .suspended)
         
         state = .running
         internalQueue.isSuspended = false
-        
-        guard canResume else {
-            cancel()
-            return
+        for observer in observers {
+            guard let ob = observer as? OperationStateObserver else { continue }
+            
+            ob.operationDidResume(self)
         }
         
-        for observer in taskObservers {
-            observer.taskOperationDidResume(self)
-        }
-        
-        guard internalQueue.operations.contains(finishingOperation) == false else { return }
-        
-        internalQueue.addOperation(finishingOperation)
+        return self
     }
     
     /// suspends all the operations in the current queue
-    public final func suspend() {
+    @discardableResult
+    public final func suspend() -> GroupOperation {
         assert(state == .running)
         
         state = .suspended
         internalQueue.isSuspended = true
-        for observer in taskObservers {
-            observer.taskOperationDidSuspend(self)
+        for observer in observers {
+            guard let ob = observer as? OperationStateObserver else { continue }
+            
+            ob.operationDidSuspend(self)
         }
+        
+        return self
+    }
+    
+    // MARK: Overrided methods
+    
+    override open func finished(_ errors: [Error]) {
+        aggregatedErrors.append(contentsOf: errors)
+        completeOperations.removeAll()
+        internalQueue.isSuspended = true
+        state = .finished
+    }
+    
+    override open func execute() {
+        resume()
+        internalQueue.addOperation(finishingOperation)
     }
 }
 
-extension TaskOperation: OperationQueueDelegate {
+extension GroupOperation: OperationQueueDelegate {
     
     // MARK: OperationQueueDelegate
     
@@ -221,11 +187,7 @@ extension TaskOperation: OperationQueueDelegate {
         aggregatedErrors.append(contentsOf: errors)
         
         if operation === finishingOperation {
-            internalQueue.isSuspended = true
-            state = .finished
-            for observer in taskObservers {
-                observer.taskOperationDidFinish(self)
-            }
+            finish(aggregatedErrors)
         }
         else if operation !== startingOperation {
             operationDidFinish(operation, withErrors: errors)
