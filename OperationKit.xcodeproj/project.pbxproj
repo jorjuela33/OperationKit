@@ -37,6 +37,7 @@
 		CFD780FF1E2AE7E50079E409 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */; };
 		CFD781011E2AE8D10079E409 /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */; };
 		CFD781031E2AE96F0079E409 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781021E2AE96F0079E409 /* ExclusivityController.swift */; };
+		CFD781051E2AEEE10079E409 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781041E2AEEE10079E409 /* NetworkObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
 		CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
 		CFD781021E2AE96F0079E409 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
+		CFD781041E2AEEE10079E409 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */,
+				CFD781041E2AEEE10079E409 /* NetworkObserver.swift */,
 				CF140CF81E20471F00B9849C /* TimeoutObserver.swift */,
 			);
 			path = Observers;
@@ -153,13 +156,6 @@
 			path = ParameterEncoding;
 			sourceTree = "<group>";
 		};
-		CF140D101E20479300B9849C /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Extensions;
-			sourceTree = "<group>";
-		};
 		CF35B7341D3814F500F74678 = {
 			isa = PBXGroup;
 			children = (
@@ -182,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				CF140CF21E20471F00B9849C /* Conditions */,
-				CF140D101E20479300B9849C /* Extensions */,
 				CF140CF51E20471F00B9849C /* Observers */,
 				CF140CF91E20471F00B9849C /* Operation Queue */,
 				CF140CFB1E20471F00B9849C /* Operations */,
@@ -359,6 +354,7 @@
 			files = (
 				CF140D081E20471F00B9849C /* OperationQueue.swift in Sources */,
 				CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */,
+				CFD781051E2AEEE10079E409 /* NetworkObserver.swift in Sources */,
 				CF943FD01E21892800E9EEF3 /* DataRequestOperation.swift in Sources */,
 				CF140D041E20471F00B9849C /* ReachabilityCondition.swift in Sources */,
 				CFD780FF1E2AE7E50079E409 /* BlockObserver.swift in Sources */,
