@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
   s.name         = "OperationKit"
-  s.version      = "2.0.7"
+  s.version      = "2.1.0"
   s.summary      = "OperationKit is a small group of classes."
 
   # This description is used to generate tags and improve search results.
