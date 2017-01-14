@@ -34,6 +34,9 @@
 		CF943FD91E22DCC700E9EEF3 /* OperationTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */; };
 		CF943FDB1E2409A900E9EEF3 /* DataRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */; };
 		CF943FDD1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */; };
+		CFD780FF1E2AE7E50079E409 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */; };
+		CFD781011E2AE8D10079E409 /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */; };
+		CFD781031E2AE96F0079E409 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781021E2AE96F0079E409 /* ExclusivityController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +80,9 @@
 		CF943FD81E22DCC700E9EEF3 /* OperationTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTestObserver.swift; sourceTree = "<group>"; };
 		CF943FDA1E2409A900E9EEF3 /* DataRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestOperationTests.swift; sourceTree = "<group>"; };
 		CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "URLRequestOperation+Tests.swift"; path = "Extensions/URLRequestOperation+Tests.swift"; sourceTree = "<group>"; };
+		CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
+		CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
+		CFD781021E2AE96F0079E409 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +107,7 @@
 		CF140CF21E20471F00B9849C /* Conditions */ = {
 			isa = PBXGroup;
 			children = (
+				CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */,
 				CF140CF31E20471F00B9849C /* OperationCondition.swift */,
 				CF140CF41E20471F00B9849C /* ReachabilityCondition.swift */,
 			);
@@ -110,6 +117,7 @@
 		CF140CF51E20471F00B9849C /* Observers */ = {
 			isa = PBXGroup;
 			children = (
+				CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */,
 				CF140CF81E20471F00B9849C /* TimeoutObserver.swift */,
 			);
 			path = Observers;
@@ -118,6 +126,7 @@
 		CF140CF91E20471F00B9849C /* Operation Queue */ = {
 			isa = PBXGroup;
 			children = (
+				CFD781021E2AE96F0079E409 /* ExclusivityController.swift */,
 				CF140CFA1E20471F00B9849C /* OperationQueue.swift */,
 			);
 			path = "Operation Queue";
@@ -352,6 +361,7 @@
 				CF943FC91E216DBA00E9EEF3 /* JSONResponseSerializer.swift in Sources */,
 				CF943FD01E21892800E9EEF3 /* DataRequestOperation.swift in Sources */,
 				CF140D041E20471F00B9849C /* ReachabilityCondition.swift in Sources */,
+				CFD780FF1E2AE7E50079E409 /* BlockObserver.swift in Sources */,
 				CF943FC21E216B4300E9EEF3 /* Operation.swift in Sources */,
 				CF943FC01E216B4300E9EEF3 /* DownloadRequestOperation.swift in Sources */,
 				CF943FD21E21900300E9EEF3 /* StringResponseSerializer.swift in Sources */,
@@ -360,9 +370,11 @@
 				CF140D0D1E20471F00B9849C /* ParameterEncoding.swift in Sources */,
 				CF140D071E20471F00B9849C /* TimeoutObserver.swift in Sources */,
 				CF943FCE1E217D1A00E9EEF3 /* DataResponseSerializer.swift in Sources */,
+				CFD781011E2AE8D10079E409 /* MutuallyExclusive.swift in Sources */,
 				CF943FC31E216B4300E9EEF3 /* UploadRequestOperation.swift in Sources */,
 				CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */,
 				CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */,
+				CFD781031E2AE96F0079E409 /* ExclusivityController.swift in Sources */,
 				CF140D031E20471F00B9849C /* OperationCondition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
