@@ -46,3 +46,6 @@ public struct MutuallyExclusive<T>: OperationCondition {
         completion(.satisfied)
     }
 }
+
+public enum Alert { }
+public typealias AlertPresentation = MutuallyExclusive<Alert>
