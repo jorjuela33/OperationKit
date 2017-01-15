@@ -26,6 +26,10 @@ import XCTest
 
 private struct FailTestCondition: OperationCondition {
     
+    static var isMutuallyExclusive: Bool {
+        return true
+    }
+    
     // MARK: OperationCondition
     static var name = "test condition"
     

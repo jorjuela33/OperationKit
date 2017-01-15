@@ -1,5 +1,5 @@
 //
-//  ExclusivityController.swift
+//  ExclusivityManager.swift
 //
 //  Copyright © 2016. All rights reserved.
 //
@@ -24,13 +24,13 @@
 
 import Foundation
 
-class ExclusivityController {
+class ExclusivityManager {
     
-    private let queue = DispatchQueue(label: "com.operationKit.ExclusivityController")
+    private let queue = DispatchQueue(label: "com.operationKit.ExclusivityManager")
     private var operations: [String: [Operation]] = [:]
     
     /// a shared instance of the controller
-    static let shared = ExclusivityController()
+    static let shared = ExclusivityManager()
     
     // MARK: Initialization
     

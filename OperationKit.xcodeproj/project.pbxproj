@@ -36,7 +36,7 @@
 		CF943FDD1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */; };
 		CFD780FF1E2AE7E50079E409 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */; };
 		CFD781011E2AE8D10079E409 /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */; };
-		CFD781031E2AE96F0079E409 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781021E2AE96F0079E409 /* ExclusivityController.swift */; };
+		CFD781031E2AE96F0079E409 /* ExclusivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781021E2AE96F0079E409 /* ExclusivityManager.swift */; };
 		CFD781051E2AEEE10079E409 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781041E2AEEE10079E409 /* NetworkObserver.swift */; };
 		CFD781071E2AF18A0079E409 /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781061E2AF18A0079E409 /* PhotosCondition.swift */; };
 		CFD781091E2AF3680079E409 /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD781081E2AF3680079E409 /* LocationCondition.swift */; };
@@ -85,7 +85,7 @@
 		CF943FDC1E240C3C00E9EEF3 /* URLRequestOperation+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "URLRequestOperation+Tests.swift"; path = "Extensions/URLRequestOperation+Tests.swift"; sourceTree = "<group>"; };
 		CFD780FE1E2AE7E50079E409 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
 		CFD781001E2AE8D10079E409 /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
-		CFD781021E2AE96F0079E409 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
+		CFD781021E2AE96F0079E409 /* ExclusivityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityManager.swift; sourceTree = "<group>"; };
 		CFD781041E2AEEE10079E409 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		CFD781061E2AF18A0079E409 /* PhotosCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCondition.swift; sourceTree = "<group>"; };
 		CFD781081E2AF3680079E409 /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCondition.swift; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 		CF140CF91E20471F00B9849C /* Operation Queue */ = {
 			isa = PBXGroup;
 			children = (
-				CFD781021E2AE96F0079E409 /* ExclusivityController.swift */,
+				CFD781021E2AE96F0079E409 /* ExclusivityManager.swift */,
 				CF140CFA1E20471F00B9849C /* OperationQueue.swift */,
 			);
 			path = "Operation Queue";
@@ -378,7 +378,7 @@
 				CF943FC31E216B4300E9EEF3 /* UploadRequestOperation.swift in Sources */,
 				CF943FC61E216B5600E9EEF3 /* Protocols.swift in Sources */,
 				CF943FC41E216B4300E9EEF3 /* URLRequestOperation.swift in Sources */,
-				CFD781031E2AE96F0079E409 /* ExclusivityController.swift in Sources */,
+				CFD781031E2AE96F0079E409 /* ExclusivityManager.swift in Sources */,
 				CF140D031E20471F00B9849C /* OperationCondition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
