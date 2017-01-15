@@ -64,9 +64,9 @@ open class OperationQueue: Foundation.OperationQueue {
             })
             
             if concurrencyCategories.isEmpty == false {
-                ExclusivityController.shared.add(operation, categories: concurrencyCategories)
+                ExclusivityManager.shared.add(operation, categories: concurrencyCategories)
                 operation.addObserver(BlockObserver { operation, _ in
-                    ExclusivityController.shared.removeOperation(operation: operation, categories: concurrencyCategories)
+                    ExclusivityManager.shared.removeOperation(operation: operation, categories: concurrencyCategories)
                 })
             }
              
