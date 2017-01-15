@@ -26,6 +26,10 @@ import SystemConfiguration
 
 public struct ReachabilityCondition: OperationCondition {
     
+    public static var isMutuallyExclusive: Bool {
+        return false
+    }
+    
     public static let hostKey = "Host"
     public static let name = "Reachability"
     

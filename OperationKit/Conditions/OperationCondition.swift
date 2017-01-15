@@ -35,6 +35,9 @@ public protocol OperationCondition {
     /// The name of the condition. This is used in userInfo dictionaries of `.ConditionFailed`
     static var name: String { get }
     
+    /// yes if two conditions can run at the same time
+    static var isMutuallyExclusive: Bool { get }
+    
     /// Returns the operation dependency for the given operation
     func dependency(for operation: Operation) -> Foundation.Operation?
     

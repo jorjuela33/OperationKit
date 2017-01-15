@@ -38,3 +38,8 @@ public protocol ResponseSerializer {
     
     func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data) -> Result<SerializedValue>
 }
+
+public protocol NetworkIndicatorObserver {
+    
+    var isNetworkActivityIndicatorVisible: Bool { get set }
+}

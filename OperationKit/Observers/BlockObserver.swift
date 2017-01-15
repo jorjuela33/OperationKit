@@ -1,5 +1,5 @@
 //
-//  TimeoutObserver.swift
+//  BlockObserver.swift
 //
 //  Copyright © 2016. All rights reserved.
 //
@@ -23,33 +23,33 @@
 
 import Foundation
 
-public struct TimeoutObserver: ObservableOperation {
+struct BlockObserver: ObservableOperation {
     
-    public static let timeoutKey = "Timeout"
+    private let startHandler: ((Operation) -> Void)?
+    private let produceHandler: ((Operation, Foundation.Operation) -> Void)?
+    private let finishHandler: ((Operation, [Error]) -> Void)?
     
-    private let timeout: TimeInterval
-    
-    // MARK: Initialization
-    
-    public init(timeout: TimeInterval = 30) {
-        self.timeout = timeout
+    init(
+        startHandler: ((Operation) -> Void)? = nil,
+        produceHandler: ((Operation, Foundation.NSOperation) -> Void)? = nil,
+        finishHandler: ((Operation, [Error]) -> Void)? = nil) {
+        
+        self.startHandler = startHandler
+        self.produceHandler = produceHandler
+        self.finishHandler = finishHandler
     }
     
-    // MARK: OperationObserver
+    // MARK: ObservableOperation
     
     public func operationDidStart(_ operation: Operation) {
-        // When the operation starts, queue up a block to cause it to time out.
-        let when = DispatchTime.now() + Double(Int64(timeout * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        
-        DispatchQueue.global(qos: .default).asyncAfter(deadline: when) {
-            if !operation.isFinished && !operation.isCancelled {
-                let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.executionFailed.rawValue, userInfo: [type(of: self).timeoutKey: self.timeout ])
-                operation.cancelWithError(error)
-            }
-        }
+        startHandler?(operation)
     }
     
-    public func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) { /* No op.*/ }
+    public func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) {
+        produceHandler?(operation, newOperation)
+    }
     
-    public func operationDidFinish(_ operation: Operation, errors: [Error]) { /* No op. */ }
+    public func operationDidFinish(_ operation: Operation, errors: [Error]) {
+        finishHandler?(operation, errors)
+    }
 }

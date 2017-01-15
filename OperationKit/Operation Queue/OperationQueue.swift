@@ -57,6 +57,19 @@ open class OperationQueue: Foundation.OperationQueue {
                 addOperation(operationDependency)
             }
             
+            let concurrencyCategories: [String] = operation.conditions.flatMap({ condition in
+                if type(of: condition).isMutuallyExclusive { return nil }
+                
+                return "\(type(of: condition))"
+            })
+            
+            if concurrencyCategories.isEmpty == false {
+                ExclusivityController.shared.add(operation, categories: concurrencyCategories)
+                operation.addObserver(BlockObserver { operation, _ in
+                    ExclusivityController.shared.removeOperation(operation: operation, categories: concurrencyCategories)
+                })
+            }
+             
             operation.willEnqueue()
         } else {
             op.completionBlock = { [weak self, weak op] in
