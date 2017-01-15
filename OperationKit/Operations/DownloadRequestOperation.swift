@@ -26,6 +26,10 @@ import Foundation
 open class DownloadRequestOperation: URLRequestOperation {
     
     fileprivate let cacheFile: URL
+    fileprivate var progressHandler: ((Progress) -> Void)?
+    
+    /// the progress for the operation
+    public let progress = Progress(totalUnitCount: 1)
     
     // MARK: Initialization
     
@@ -35,6 +39,14 @@ open class DownloadRequestOperation: URLRequestOperation {
         super.init(request: request, configuration: sessionConfiguration)
         
         sessionTask = session.downloadTask(with: request)
+    }
+    
+    // MARK: Instance methods
+    
+    /// reports the progress for the task
+    public final func downloadProgress(_ progressHandler: ((Progress) -> Void)?) -> Self {
+        self.progressHandler = progressHandler
+        return self
     }
 }
 
@@ -85,6 +97,26 @@ extension DownloadRequestOperation {
 extension DownloadRequestOperation: URLSessionDownloadDelegate {
     
     // MARK: NSURLSessionDownloadDelegate
+    
+    public func urlSession(_ session: URLSession,
+                           downloadTask: URLSessionDownloadTask,
+                           didWriteData bytesWritten: Int64,
+                           totalBytesWritten: Int64,
+                           totalBytesExpectedToWrite: Int64) {
+        
+        progress.completedUnitCount = totalBytesWritten
+        progress.totalUnitCount = totalBytesExpectedToWrite
+        progressHandler?(progress)
+    }
+    
+    public func urlSession(_ session: URLSession,
+                           downloadTask: URLSessionDownloadTask,
+                           didResumeAtOffset fileOffset: Int64,
+                           expectedTotalBytes: Int64) {
+        
+        _progress.completedUnitCount = fileOffset
+        _progress.totalUnitCount = expectedTotalBytes
+    }
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         try? FileManager.default.removeItem(at: cacheFile)

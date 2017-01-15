@@ -97,6 +97,35 @@ class DownloadRequestOperationTests: OperationKitTests {
         }
     }
     
+    func testThatExecuteDownloOperationShouldInvokeProgress() {
+        /// given
+        let expectation = self.expectation(description: "download operation should get success response")
+        var isProgressInvoked = false
+        var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
+        request.httpMethod = HTTPMethod.GET.rawValue
+        let cacheFile = cacheFolder.appendingPathComponent("\(NSUUID().uuidString).json")
+        let downloadOperation = DownloadRequestOperation(request: request, cacheFile: cacheFile)
+        downloadOperation.downloadProgress { _ in
+            isProgressInvoked = true
+        }
+        let finishOperation = BlockOperation {
+            expectation.fulfill()
+        }
+        
+        /// when
+        finishOperation.addDependency(downloadOperation)
+        operationQueue.addOperations([downloadOperation, finishOperation])
+        
+        /// then
+        waitForExpectations(timeout: networkTimeout, handler: nil)
+        XCTAssertTrue(downloadOperation.response?.statusCode == 200)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: cacheFile.path))
+        
+        defer {
+            FileManager.default.removeItemAt(cacheFile)
+        }
+    }
+    
     func testThatDownloadOperationCancellation() {
         /// given
         let expectation = self.expectation(description: "download operation should get cancelled")
