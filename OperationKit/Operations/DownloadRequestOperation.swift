@@ -25,8 +25,10 @@ import Foundation
 
 open class DownloadRequestOperation: URLRequestOperation {
     
+    public typealias DownloadProgressHandler = ((Progress) -> Void)
+    
     fileprivate let cacheFile: URL
-    fileprivate var progressHandler: ((Progress) -> Void)?
+    fileprivate var progressHandler: DownloadProgressHandler?
     
     /// the progress for the operation
     public let progress = Progress(totalUnitCount: 1)
@@ -44,7 +46,7 @@ open class DownloadRequestOperation: URLRequestOperation {
     // MARK: Instance methods
     
     /// reports the progress for the task
-    public final func downloadProgress(_ progressHandler: ((Progress) -> Void)?) -> Self {
+    public final func downloadProgress(_ progressHandler: DownloadProgressHandler?) -> Self {
         self.progressHandler = progressHandler
         return self
     }
@@ -114,8 +116,8 @@ extension DownloadRequestOperation: URLSessionDownloadDelegate {
                            didResumeAtOffset fileOffset: Int64,
                            expectedTotalBytes: Int64) {
         
-        _progress.completedUnitCount = fileOffset
-        _progress.totalUnitCount = expectedTotalBytes
+        progress.completedUnitCount = fileOffset
+        progress.totalUnitCount = expectedTotalBytes
     }
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {

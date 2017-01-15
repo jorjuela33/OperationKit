@@ -108,18 +108,16 @@ class DownloadRequestOperationTests: OperationKitTests {
         downloadOperation.downloadProgress { _ in
             isProgressInvoked = true
         }
-        let finishOperation = BlockOperation {
+        downloadOperation.completionBlock = {
             expectation.fulfill()
         }
         
         /// when
-        finishOperation.addDependency(downloadOperation)
-        operationQueue.addOperations([downloadOperation, finishOperation])
+        operationQueue.addOperation(downloadOperation)
         
         /// then
         waitForExpectations(timeout: networkTimeout, handler: nil)
-        XCTAssertTrue(downloadOperation.response?.statusCode == 200)
-        XCTAssertTrue(FileManager.default.fileExists(atPath: cacheFile.path))
+        XCTAssertTrue(isProgressInvoked)
         
         defer {
             FileManager.default.removeItemAt(cacheFile)
