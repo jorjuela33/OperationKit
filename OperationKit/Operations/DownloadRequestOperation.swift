@@ -25,7 +25,13 @@ import Foundation
 
 open class DownloadRequestOperation: URLRequestOperation {
     
+    public typealias DownloadProgressHandler = ((Progress) -> Void)
+    
     fileprivate let cacheFile: URL
+    fileprivate var progressHandler: DownloadProgressHandler?
+    
+    /// the progress for the operation
+    public let progress = Progress(totalUnitCount: 1)
     
     // MARK: Initialization
     
@@ -35,6 +41,19 @@ open class DownloadRequestOperation: URLRequestOperation {
         super.init(request: request, configuration: sessionConfiguration)
         
         sessionTask = session.downloadTask(with: request)
+        progress.cancellationHandler = { [unowned self] in
+            let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.executionFailed.rawValue, userInfo: [NSLocalizedDescriptionKey: "Progress was cancelled"])
+            self.cancelWithError(error)
+        }
+    }
+    
+    // MARK: Instance methods
+    
+    /// reports the progress for the task
+    @discardableResult
+    public final func downloadProgress(_ progressHandler: DownloadProgressHandler?) -> Self {
+        self.progressHandler = progressHandler
+        return self
     }
 }
 
@@ -85,6 +104,26 @@ extension DownloadRequestOperation {
 extension DownloadRequestOperation: URLSessionDownloadDelegate {
     
     // MARK: NSURLSessionDownloadDelegate
+    
+    public func urlSession(_ session: URLSession,
+                           downloadTask: URLSessionDownloadTask,
+                           didWriteData bytesWritten: Int64,
+                           totalBytesWritten: Int64,
+                           totalBytesExpectedToWrite: Int64) {
+        
+        progress.completedUnitCount = totalBytesWritten
+        progress.totalUnitCount = totalBytesExpectedToWrite
+        progressHandler?(progress)
+    }
+    
+    public func urlSession(_ session: URLSession,
+                           downloadTask: URLSessionDownloadTask,
+                           didResumeAtOffset fileOffset: Int64,
+                           expectedTotalBytes: Int64) {
+        
+        progress.completedUnitCount = fileOffset
+        progress.totalUnitCount = expectedTotalBytes
+    }
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         try? FileManager.default.removeItem(at: cacheFile)
