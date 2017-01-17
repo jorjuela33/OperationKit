@@ -41,11 +41,16 @@ open class DownloadRequestOperation: URLRequestOperation {
         super.init(request: request, configuration: sessionConfiguration)
         
         sessionTask = session.downloadTask(with: request)
+        progress.cancellationHandler = { [unowned self] in
+            let error = NSError(domain: OperationErrorDomainCode, code: OperationErrorCode.executionFailed.rawValue, userInfo: [NSLocalizedDescriptionKey: "Progress was cancelled"])
+            self.cancelWithError(error)
+        }
     }
     
     // MARK: Instance methods
     
     /// reports the progress for the task
+    @discardableResult
     public final func downloadProgress(_ progressHandler: DownloadProgressHandler?) -> Self {
         self.progressHandler = progressHandler
         return self
