@@ -20,16 +20,16 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
 import Foundation
 import SystemConfiguration
 
+public protocol NetworkObservable: class {
+    func reachabilityManager(manager: ReachabilityManager, didChangeToNetworkStatus status: ReachabilityManager.ReachabilityStatus)
+}
+
 public struct ReachabilityCondition: OperationCondition {
     
-    public static var isMutuallyExclusive: Bool {
-        return false
-    }
-    
+    public static let isMutuallyExclusive = false
     public static let hostKey = "Host"
     public static let name = "Reachability"
     
@@ -64,28 +64,35 @@ private let defaultReferenceKey = "_defaultReferenceKey"
 public enum ReachabilityError: Error {
     case failedToCreateWithAddress(sockaddr_in)
     case failedToCreateWithHostname(String)
+    case failedToMonitorWithHostName(String)
 }
 
 open class ReachabilityManager {
     
     private static var reachabilityRefs = [String: SCNetworkReachability]()
+    private let host: String
+    private var observers: [NetworkObservable] = []
     private let queue = DispatchQueue(label: "com.operations.reachability", attributes: [])
     
-    open private(set) var status: ReachabilityStatus = .notReachable
+    open private(set) var status: ReachabilityStatus = .unknown
     
     public enum ReachabilityStatus {
-        case notReachable, reachableViaWiFi, reachableViaWWAN
+        case notReachable, reachableViaWiFi, reachableViaWWAN, unknown
     }
     
-    // MARK: Initialization 
+    // MARK: Initialization
     
     required public init(reference: SCNetworkReachability, host: String = defaultReferenceKey) {
+        self.host = host
         queue.sync {
             var reachabilityFlags: SCNetworkReachabilityFlags = []
             if SCNetworkReachabilityGetFlags(reference, &reachabilityFlags) {
-                guard reachabilityFlags.contains(.reachable) else { return }
-                
-                self.status = reachabilityFlags.contains(.isWWAN) == false ? .reachableViaWiFi : .reachableViaWWAN
+                if reachabilityFlags.contains(.reachable) {
+                    self.status = reachabilityFlags.contains(.isWWAN) == false ? .reachableViaWiFi : .reachableViaWWAN
+                }
+                else {
+                    status = .notReachable
+                }
             }
             
             if ReachabilityManager.reachabilityRefs.keys.contains(host) == false {
@@ -100,6 +107,72 @@ open class ReachabilityManager {
         }
         
         self.init(reference: ref, host: host)
+    }
+    
+    deinit {
+        stopMonitoring()
+    }
+    
+    // MARK: Instance methods
+    
+    /// append a new observer for the current instance of the reachability
+    open func addObserver(_ observer: NetworkObservable) {
+        queue.sync {
+            self.observers.append(observer)
+        }
+    }
+    
+    /// remove the observer for the current instance of the reachability
+    open func removeObserver(_ observer: NetworkObservable) {
+        queue.sync {
+            guard let index = self.observers.index(where: { $0 === observer }) else { return }
+            
+            self.observers.remove(at: index)
+        }
+    }
+    
+    /// Starts monitoring for changes in network reachability status.
+    open func startMonitoring() throws {
+        guard let reference = ReachabilityManager.reachabilityRefs[host] else {
+            return
+        }
+        
+        var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
+        context.info = Unmanaged.passRetained(self).toOpaque()
+        let callback = SCNetworkReachabilitySetCallback(reference, { _, reachabilityFlags, info in
+            var status: ReachabilityStatus = .notReachable
+            
+            if reachabilityFlags.contains(.reachable) {
+                status = reachabilityFlags.contains(.isWWAN) == false ? .reachableViaWiFi : .reachableViaWWAN
+            }
+            
+            let reachability = Unmanaged<ReachabilityManager>.fromOpaque(info!).takeUnretainedValue()
+            reachability.notifyObservers(status)
+            
+        }, &context)
+        
+        guard SCNetworkReachabilitySetDispatchQueue(reference, DispatchQueue.main) && callback else {
+            throw ReachabilityError.failedToMonitorWithHostName(host)
+        }
+    }
+    
+    /// Stops monitoring for changes in network reachability status.
+    open func stopMonitoring() {
+        guard let reference = ReachabilityManager.reachabilityRefs[host] else { return }
+        
+        SCNetworkReachabilitySetCallback(reference, nil, nil)
+        SCNetworkReachabilitySetDispatchQueue(reference, nil)
+    }
+    
+    // MARK: Private methods
+    
+    private final func notifyObservers(_ status: ReachabilityStatus) {
+        guard self.status != status else { return }
+        
+        self.status = status
+        for observer in observers {
+            observer.reachabilityManager(manager: self, didChangeToNetworkStatus: status)
+        }
     }
     
     // MARK: Static methods
@@ -127,8 +200,8 @@ open class ReachabilityManager {
         }
         
         do {
-          let reachabilityManager = try ReachabilityManager(host: host)
-          completionHandler(reachabilityManager.status != .notReachable)
+            let reachabilityManager = try ReachabilityManager(host: host)
+            completionHandler(reachabilityManager.status != .notReachable)
         }
         catch {
             completionHandler(false)
