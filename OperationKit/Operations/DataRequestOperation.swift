@@ -26,7 +26,7 @@ import Foundation
 open class DataRequestOperation: URLRequestOperation {
     
     /// the data returned for the server
-    fileprivate(set) var data = Data()
+    public fileprivate(set) var data = Data()
     
     // MARK: Initialization
     

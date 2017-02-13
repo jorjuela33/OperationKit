@@ -58,7 +58,7 @@ open class OperationQueue: Foundation.OperationQueue {
             }
             
             let concurrencyCategories: [String] = operation.conditions.flatMap({ condition in
-                if type(of: condition).isMutuallyExclusive { return nil }
+                if type(of: condition).isMutuallyExclusive == false { return nil }
                 
                 return "\(type(of: condition))"
             })

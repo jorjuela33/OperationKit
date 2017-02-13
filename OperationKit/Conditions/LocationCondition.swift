@@ -45,7 +45,7 @@
             
             // There are several factors to consider when evaluating this condition
             switch (enabled, usage, actual) {
-            case (true, _, .authorizedAlways):
+            case (true, _, .authorizedAlways), (true, .always, .authorizedWhenInUse):
                 // The service is enabled, and we have "Always" permission -> condition satisfied.
                 break
                 
